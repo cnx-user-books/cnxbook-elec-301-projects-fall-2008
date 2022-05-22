@@ -1,0 +1,19 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- Acknowledgments</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>72f51030-943d-40b3-84af-13d3d31d59e9</md:uuid>
+</metadata>
+  <content>
+    <section id="id13229869">
+      <title>Acknowledgments</title>
+      <para id="id11200537">We are grateful for all of the help given to us by our professor Dr. Rich Baraniuk, Dr. Scott Douglas from SMU for doing most of the work by writing the STFICA code for us to implement, Aapo Hyvärinen at Helsinki University of Technology for creating the FastICA algorithm and coding, and Chinmay Hedge for mentoring us on the Fast ICA and some of the more advanced topics of the STFICA. </para>
+      <para id="id13102116">Group Members:</para>
+      <list id="element-557" list-type="bulleted"><item>Jon Stanley</item>
+<item>Jose Hernandez</item>
+<item>Ricardo Frank Barrera</item>
+<item>Jacob Holladay Poteet</item></list>
+      
+      
+      
+    </section>
+  </content>
+</document>

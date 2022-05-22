@@ -1,0 +1,41 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Your Digits!: Image Processing</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>8acba65e-87fb-46de-b341-278cf53bd0ce</md:uuid>
+</metadata>
+  <content>
+    <section id="id15138667">
+      <title>Give Your Digits!: Image Processing</title>
+      
+      <para id="id12995356">When an image is acquired, its size and dimensions will vary. Since the database we use is in grayscale and 28x28 pixels large, each input image must be processed so that it also has the same dimensions.</para>
+      <figure id="id6410322"><media id="idp2934640" alt=""><image src="../../media/graphics1-c9fc.jpg" mime-type="image/jpeg" height="77" width="553"/></media><caption>Acquired Image</caption></figure>
+      
+      <section id="id11485688">
+        <title>Convert to Grayscale </title>
+        <para id="id14023579">The acquired image is in RGB format, where each pixel in the image consists of 3 components: the intensity of red, green and blue. Grayscale consists of a single intensity value for each pixel. Therefore, to change each input image to grayscale, we will use the Matlab operator, rgb2gray().</para>
+      </section>
+      <section id="id11135253">
+        <title>Edge Detection</title>
+        <para id="id15135702">The only information of interest in the input image are the intensities of the actual digits, rather than the intensities of the background. Edge detection will remove background noise and filter the image so that only areas of high contrast (which is the shape of the handwritten digits) remain. The figure below shows the result of applying a simple Sobel edge detector using the edge() command with the threshold set to default.</para>
+        <figure id="id12554254"><media id="idm971440" alt=""><image src="../../media/fig2-sobel.png" mime-type="image/png" height="80" width="563"/></media><caption>Result of edge detection with sobel operator.</caption></figure>
+        
+      </section>
+      <section id="id12053637">
+        <title>Dilation: Morphological Operator</title>
+        <para id="id13961911">A morphological operator such as dilation processes an image so that its shape is changed in some way. Dilation expands all the boundaries of objects in the image. Dilation in this case also serves to connect any disconnected regions of an outline together. Through the imdilate() command, we can specify how to expand the digit outlines by a structuring element. Depending on the shape of the structuring element, the appearance of the image will change. The ‘ball’ structuring element will be a good choice, since this uses a gradient to make the digits look smoother and rounded out, similar to the way the data is normalized. Depending on how large the digits are written, the size of the structuring element will need adjustment – larger images require a larger structuring element in order to fill more of the outline. In order to get consistent results from dilation, we made sure all writing samples were approximately the same size. The figure below shows the result of dilation.</para>
+        <figure id="id14530471"><media id="idp19408" alt=""><image src="../../media/graphics2-e8c6.jpg" mime-type="image/jpeg" height="80" width="563"/></media><caption>Dilation of Digit Outlines</caption></figure>
+        
+      </section>
+      <section id="id14067600">
+        <title>Separating Individual Digits</title>
+        <para id="id14518569">Now that the only identifiable regions in the image are the digits themselves, the Matlab operator regionprops() with the ‘boundingbox’ option, we will be able to separate the digits into individual images. </para>
+        <figure id="id11062646"><media id="idm18838160" alt=""><image src="../../media/graphics3-1b2b.png" mime-type="image/png" height="82" width="599"/></media><caption>Connected regions are identified by ‘boundingbox’</caption></figure>
+        
+      </section>
+      <section id="id14057126">
+        <title>Resize and Normalize Image</title>
+        <para id="id6580314">Most input images are much larger than needed and must be rescaled and centered to 28x28 pixels. Imresize() scales the image to 20x20 pixels. Afterwards, zero padding adds zeros to each side of the image, resulting in a 28x28 pixel image. The input image is now standardized and ready to be identified. </para>
+        
+      </section>
+    </section>
+  </content>
+</document>

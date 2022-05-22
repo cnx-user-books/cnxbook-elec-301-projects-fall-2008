@@ -1,0 +1,18 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening:Drown Out the Noise - Conclusion</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>cb8eddd0-38d6-48fb-a3fd-f32de4676b96</md:uuid>
+</metadata>
+  <content>
+    <section id="id42308639">
+      <title>Conclusion</title>
+      <section id="id44671074">
+        <title>Final Thoughts</title>
+        <para id="id42477834">Our work has shown how important it is to have the right model for the right situation. The fact that the use of convolutive rather than a multiplicative mixing matrix led to success attests to the importance of proper modeling. This was clearly demonstrated by the results of our testing. The Fast ICA model is appropriate for the ideal case of mixing signals in Matlab because all the necessary fast ICA assumptions are met. In particular, the mixing matrix is multiplicative. However, for the case or acoustically mixing signals by recording two sources simutaneously, we saw that fast ICA failed competely to isolate individual sources because a convolutive mixing matrix is involved instead of a multiplicative one. It should be noted that there are a least two stages in which convolution occurs: both in the room and in the air on the way to the microphone, and as the microphone transduces the signal to an electric signal. These processes may be grouped into a single mixing matrix without loss of information because of the transitive property of convolution and because we are not exclusively interested in what the signal of the microphone was, but rather in what the original source sounded like. Using the STFICA algorithm, we were able to at least successfully separate the sources for the tone and noise case, therefore proving that the STFICA model is suited for this secnario. However, we were not successful in more complicated cases such as voice and tone due to the fact that our group did not have enough time to fully undertand and implement the concept of variable stages of prewhtening. So there is potential for the STFICA model to be fully applicable to all acoustically mixed sources, but further modifcations as well as a better understand of the model is needed. Another testament to the importance of choosing the correct model for a particular application, is that while it is true that fast ICA failed with acoustically mixed signals, fast ICA works exceptionally well with image applications such as visual noise removal. </para>
+      </section>
+      <section id="id42700468">
+        <title>Steps Toward Improvement</title>
+        <para id="id46929562">Since our team did not yet achieve exceptional separation of more complicated acoustic signals, such as the voice and tone case, there are some steps to take to improve our results. For example, there must be a refinement of the prewhitening process, which requires additional study on the part of our group members. With this better understanding of the prewhitening concept and process, we expect to gain a better comprehension of the number of required prewhitening stages to make the given mixed signals become more independent of one another in time and space. This should in effect significantly help in the demixing of any complicated mixed signals to its individual sources with as much success as with the tone and noise case. Another method for improvement includes the use of expected behavior in order to better isolate the signal sources. For exmaple, if we know that a man and a woman are speaking, we should be able to tell our algorithm some additional information about the expected spectra of our speakers. </para>
+      </section>
+    </section>
+  </content>
+</document>

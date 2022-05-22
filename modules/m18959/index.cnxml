@@ -1,0 +1,38 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Me Your Digits!: Introduction and Background</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>f5e12884-637d-4615-955c-909272a4c7f3</md:uuid>
+</metadata>
+  <content>
+    <section id="id16316912">
+      <title>Give Me Your Digits!: Introduction and Background</title>
+      <section id="id13247475">
+        <title>Introduction</title>
+        <para id="id16771795">Digital technology can allow us to save labor and time through the automation of menial tasks. Here we are developing a program to transcribe digits using a computer and a camera. Computers are notorious for excelling at repeating similar tasks/ instructions. The following modules will describe how we have implemented a rudimentary system to acquire, process, and identify handwritten digits (0-9).</para>
+      </section>
+      <section id="id13346800">
+        <title>Background</title>
+        <para id="id9484738">The conversion of handwriting to the digital regime has been implemented industrially by the USPS; more theoretical work has been compiled by academia most notably by Dr. Yann Lecun. We identified and classified handwritten digits through the utilization of the MNIST (modified national institute of standards and technology) database and classifiers – which include feature extractors and identifiers. We also preprocessed input images through the usage of morphological operators. All of the computation was done using Matlab version 7.1. The process we have developed and many like it have its usages in a world which is developing and converting to the digital regime.</para>
+      </section>
+      <section id="id3352644">
+        <title>Process Overview</title>
+        <para id="id5788791">The systematic process of identifying handwritten digits follows 3 major parts: image acquisition, image processing, and identification.</para>
+        <section id="id16299469">
+          <title>Image Acquisition</title>
+          <para id="id14857601">Firstly in the project an image must be acquired. This part of the project could have been simplified with the usage of a scanning device. Instead we opted for the usage of a digital camera to make our system more flexible. Along the way we found that the images produced by a digital camera required more rigorous image processing steps due to varying input qualities of images. </para>
+        </section>
+        <section id="id3298037">
+          <title>Database</title>
+          <para id="id14478357">The MNIST database: Its extensiveness is described here. We tested our identification algorithms using the database alone.</para>
+        </section>
+        <section id="id14943413">
+          <title>Image Processing</title>
+          <para id="id3306867">This part of the process deals with converting raw input images into the standard MNIST database format. Most notably here we deal with cleaning up images and use morphological operators to help us separate digits.</para>
+        </section>
+        <section id="id3863202">
+          <title>Identification Algorithms</title>
+          <para id="id16048438">This part of the process deals with extracting features from each individual input digit and comparing them with features of images in the MNIST database. Feature extraction was implemented in the field with the 2D FFT. Identification/ classification or the actual matching algorithms goes into the regime of computer science courses and is slightly out of the scope of this course.</para>
+        </section>
+      </section>
+    </section>
+  </content>
+</document>

@@ -1,0 +1,31 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Background Subtraction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>429e67f7-5cae-4eb6-9096-56e9006d5a34</md:uuid>
+</metadata>
+  <content>
+    <section id="id13226527">
+      <title>Background Subtraction</title>
+      
+      <para id="id8656829"><title>What is Background Subtraction?</title>Background Subtraction is a process to detect a movement or significant differences inside of the video frame, when compared to a reference, and to remove all the non-significant components (background). Background subtraction is applied in many areas, such as surveillance system (to effectively segment the only moving object).</para>
+      
+      <list id="element-988" list-type="bulleted"><title>Steps to implement background subtraction</title><item>Learning Background – we captured ten background frames and calculated the mean(µ) and the standard deviation(σ) with the below equations</item>
+	<item>We assumed the value of the background was iid-normal distribution</item>
+</list>
+      
+      <para id="id13637633">
+        <figure id="id2680744"><media id="idm7056672" alt=""><image src="../../media/graphics1-60e0.png" mime-type="image/png" height="107" width="518"/></media><caption>calculation of mean and standard deviation. xi is the value at a particular pixel of ith image</caption></figure>
+      </para>
+      
+      
+      
+      <list id="id15458230" list-type="bulleted"><title>Processing Data (real time) – Distinguishing Background and Non-Background Objects</title><item>First, we set the threshold of background as µ ± 2σ </item>
+	<item>Each pixel in the background -&gt; N ~ (µ, σ), if that pixel is part of the background, its value will lie within µ ± 2σ range 95% of the time.</item>
+	<item>Any pixels that go beyond the threshold are considered as parts of non-background object. </item>
+</list>
+      <figure id="id2895460"><media id="idm3406288" alt=""><image src="../../media/graphics2-f0e8.png" mime-type="image/png" height="268" width="401"/></media><caption>Normal distribution of background pixels</caption></figure>
+      
+      <para id="element-421"><title>The Below figures are the result of implementing background subtraction</title></para><figure id="id15022648"><media id="idm3151680" alt=""><image src="../../media/graphics3-800a.png" mime-type="image/png" height="357" width="508"/></media><caption>Figure a is the background frame we set. When non-background object is introduced (figure b), we can see the object is segmented out (figure d).</caption></figure>
+      
+    </section>
+  </content>
+</document>

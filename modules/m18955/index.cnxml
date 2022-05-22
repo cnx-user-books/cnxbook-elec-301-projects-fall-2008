@@ -1,0 +1,44 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction: Building an Electrocardiogram (ECG) Based Diagnostic System</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>36da43a9-908c-441f-b9b3-11676ae78ac1</md:uuid>
+</metadata>
+  <content>
+    <section id="id44319721">
+      <title>Introduction: Building an Electrocardiogram (ECG) Based Diagnostic System</title>
+      <para id="id44305898">Our goal is to build an Electrocardiogram (ECG) that not only calculates the heart rate automatically, but can also detect other heart abnormalities as well. This requires more advanced analysis of the ECG Signal. There are several steps that need to be accomplished in order to achieve this goal, as outlined in the flowchart below. </para>
+      <figure id="id45371142"><title>Overall Data Flowchart for an Automatic ECG</title><media id="idm16953760" alt=""><image src="../../media/graphics1-c84e.png" mime-type="image/png" height="146" width="576"/></media><caption>Breaks down the different steps which need to be accomplished in order to accomplish ECG signal analysis</caption></figure>
+      <para id="id47607633">Data acquisition and signal conditioning are covered in <link resource="m18956">Collecting and Filtering Live ECG Signal</link>. The remaining phases, which are all related to signal analysis are covered in <link resource="m18957">Algorithms for ECG Signal Analysis</link>.</para>
+      <para id="id44266103">Before we go into more detail about how to build an ECG, it is helpful to understand how the ECG works and how to interpret the data you receive.</para>
+      <section id="id45543698">
+        <title>Physiological Background of the ECG</title>
+        <para id="id45385666">An ECG is a non-invasive diagnostic device to monitor the condition of the heart through its electrical activity. This signal is acquired through externally located electrodes that adhere to the skin. A simple, clinical lead placement uses three leads: left arm, right arm and left leg (Figure 2). The electrical activity versus time forms an electrograph and can be used to determine and diagnose heart abnormalities and arrhythmias. This principle is based on Einthoven’s law. </para>
+        <figure id="id44719887">
+          <title>Electrode Placement for Three-Lead ECG</title>
+          <media id="idm9404592" alt=""><image src="../../media/graphics2-dde9.png" mime-type="image/png" height="185" width="181"/></media>
+          <caption>Lead 1 is attached to the right wrist, Lead 2 to the left wrist and Lead 3 is attached to the right ankle as a ground electrode.</caption>
+        </figure>
+        <para id="id44559734">All recorded electrical activity of the electrocardiogram corresponds to the net electrical current in the heart over time, depolarizing parts of the heart in sequence. The electrical impulse is initiated by the sinoatrial (SA) node. This causes the atria to contract and is evident on the ECG as the <term>P wave</term>. Next, there is a delay caused by the conduction of the impulse to the atrioventricular (AV) node such that the physical contraction of the atria have time to complete before the contraction of the ventricles. The <term>QRS complex</term> on the ECG is due to the depolarization of the ventricles, and occurs when the ventricles contract. Finally, the <term>T wave</term> on the ECG is due to the repolarization of the ventricles (<cite><cite-title>Pflanzer, 2004</cite-title></cite>). Therefore, each heartbeat corresponds to a pulse on the ECG beginning with each P wave and the ending with each T wave. The heart rate can be determined by determining the time it takes to complete one beat and is typically reported in beats per minute. Figure 3 demonstrates the characteristic shape of the waveform in a healthy patient. </para>
+        <figure id="id45384475">
+          <title>Typical ECG Signal</title>
+          <media id="idm6115824" alt=""><image src="../../media/graphics3-43cf.png" mime-type="image/png" height="153" width="199"/></media>
+          <caption>An example of the typical shape and location of the various components of an ECG signal.</caption>
+        </figure>
+      </section>
+      <section id="id46039800">
+        <title>Background Information on Monitored Heart Conditions</title>
+        <para id="id45734237">To perform automatic detection of an ECG signal, there needs to be something that clearly delineates a certain abnormality from other signals. Therefore, the signal processing selected is to detect ventricular hypertrophy and old myocardial infarctions. Luckily, these types of abnormalities are both very useful for doctors to diagnose a patient and have distinguishable ECG features.</para>
+        <para id="id44430360"><emphasis>Ventricular hypertrophy</emphasis> is the enlargement of either of the ventricles. Left ventricular hypertrophy is particularly common in athletes as well as an indicator of hypertension. It is also used in the Framingham risk equation to predict future cardiac problems the patient may face (<cite><cite-title>ECG Abnormalities, 2006</cite-title></cite>). One of its characteristic ECG patterns is the inverted T wave (Figure 4).</para>
+        <figure id="id44304471">
+          <title>An Example of an ECG Signal with an Inverted T-wave</title>
+          <media id="idm10736944" alt=""><image src="../../media/graphics4-b4e3.png" mime-type="image/png" height="112" width="127"/></media>
+        </figure>
+        <para id="id45715663"><emphasis>A myocardial infarction</emphasis> (a.k.a. heart attack) is caused by the complete blockage of one of the coronary arteries. The coronary artery is what supplies the heart muscle with blood. A blockage prevents blood from reaching the surrounding muscular tissue resulting in necrosis. This damage is permanent so the resulting ECG characteristic will remain with the patient. Therefore, the doctor can easily tell if a patient has had a heart attack in the past. The ECG of an old myocardial infarction is characterized by a significant Q wave (Figure 5). This means that the Q peak is unusually deep, usually with amplitude of about one-third that of the R peak (<cite><cite-title>Dubin, 2000</cite-title></cite>).</para>
+        <figure id="id45377701">
+          <title>An Example of an ECG Signal with a Significant Q-wave</title>
+          <media id="idp1814992" alt=""><image src="../../media/graphics5-a9c6.png" mime-type="image/png" height="113" width="140"/></media>
+        </figure>
+        <para id="id44713259">By building an ECG that can automatically detect these and potentially other heart abnormalities, it will be easier for doctors to monitor multiple patients. This is especially important in third world countries where there are often far too many patients in one clinic than one doctor or nurse can adequately care for.</para>
+      </section>
+    </section>
+  </content>
+</document>

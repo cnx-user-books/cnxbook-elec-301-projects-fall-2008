@@ -1,0 +1,24 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- FICA Assumptions</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>da71a6a3-3798-4a25-88a6-e02e0c4a10fe</md:uuid>
+</metadata>
+  <content>
+    <section id="id8094986">
+      <title>FICA Assumptions</title>
+      <para id="id22914328">The fastICA algorithm is founded upon several important assumptions:</para>
+      <list id="element-510" list-type="enumerated"><item>The sources are all independent random variables: i.e. P(AB)= P(A)P(B) </item>
+<item>The sum of signals into a microphone is linear.</item>
+<item>The signal energy is finite</item>
+<item> The mathematical model is represented as y=Hx where y is the observed mixed signal, H is the square mixing matrix, and x is the source.  It is important to note, as will be discussed later, that this assumption states that the mixing matrix is multiplicative with the source. </item>
+<item>All signals are recorded simultaneously, analogous to the Cocktail Party problem.</item>
+<item>The number of sources and the number of microphones is equal.  The fastICA will find as many independent component sources as there are microphones, which input the mixed signals.</item></list>
+      
+      
+      
+      
+      
+      
+      <para id="id15131043">All of these assumptions must be met in order for the fastICA algorithm to successfully isolate the independent sources from one another.</para>
+    </section>
+  </content>
+</document>

@@ -1,0 +1,55 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- Results</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>d2f51f48-cbf5-4d26-b96b-312a8b9520df</md:uuid>
+</metadata>
+  <content>
+    <section id="id15246966">
+      <title>Results</title>
+      <para id="element-407">Note: all supporting code needed for the main Matlab codes to work is attached below
+<media id="idm2385456" alt=""><download src="Supporting Code.zip" mime-type="application/octet-stream"/></media></para><section id="id14921364">
+        <title>Ideal Case: MATLAB</title>
+        <para id="id8557043">Like last year, fastICA works well in MATLAB. For example, mixing and then separating a siren and a voice using MATLAB exclusively works quite well as can be seen in the figure below. fastICA in this very ideal environment was able to separate the two mixed signals into the independent sources of a voice, the lower left spectrogram, and a siren, the lower right spectrogram. </para>
+        <figure id="id12053188">
+          <media id="idp4009088" alt=""><image src="../../media/graphics1-19ad.jpg" mime-type="image/jpeg" height="299" width="403"/></media>
+        </figure><para id="element-855">For a better grasp of our results, here are the sound files of the mixed signal, isolated siren, and isolated voice, respectively.  Also, the MATLAB code used for this trial is also attached after the sound files.
+
+<media id="idm3096192" alt=""><download src="demo1_mix.wav" mime-type="application/octet-stream"/></media>
+<media id="idm5770544" alt=""><download src="demo1_sr1.wav" mime-type="application/octet-stream"/></media>
+<media id="idp3592720" alt=""><download src="demo1_sr2.wav" mime-type="application/octet-stream"/></media>
+<media id="idp3133904" alt=""><download src="demo1.m" mime-type="application/octet-stream"/></media></para>
+      </section>
+      <section id="id15537932">
+        <title>Real Time Acoustic Mixing Case: fast ICA used</title>
+        <para id="id14544335">Performing this same feat using an actual microphone, however, fails. For example, we recorded two sources, voice and tone, simultaneously with two microphones which resulted in the spectrograms of the two mixed signals shown below. Once these mixed signals were passed through the fastICA algorithm, the results were terrible source isolation. As you can see by the lower two spectrograms of the figure below, the independent components look almost the same as the mixed signals we started out with. </para>
+        <figure id="id9763034">
+          <media id="idp5129072" alt=""><image src="../../media/graphics2-832d.jpg" mime-type="image/jpeg" height="289" width="386"/></media>
+        </figure><para id="element-81">Here are the sound files for the two mixed signals and the two "separated sources". The code use to carry out this trial is last.
+
+<media id="idp5776960" alt=""><download src="demo2_mix1.wav" mime-type="application/octet-stream"/></media>
+<media id="idp4983248" alt=""><download src="demo2_mix2.wav" mime-type="application/octet-stream"/></media>
+<media id="idp4027888" alt=""><download src="demo2_source1.wav" mime-type="application/octet-stream"/></media>
+<media id="idm934896" alt=""><download src="demo2_source2.wav" mime-type="application/octet-stream"/></media>
+<media id="idp1011152" alt=""><download src="demo2 code.m" mime-type="application/octet-stream"/></media></para>
+      </section>
+      <section id="id15943315">
+        <title>Real Time Acoustic Mixing: STFICA or fastICA used</title>
+        <para id="id3956170">We conjecture two reasons to explain why fastICA is unsuccessful in this scenario.</para>
+        <para id="id15300352">First, atmospheric and room conditions will change the signal using convolutive operations, rather than the scaling ones that fastICA implements. Second, the characteristic response of the microphones both changes the signals and varies from microphone to microphone, introducing both inaccuracy and imprecision. The original ICA technique, fastICA, does not automatically account for these deviations. Also, although the fastICA does implement a single stage of prewhitening, it may not be enough to alter the input mixed signals so that they look independent of one another in time and space, therefore satisfying the fastICA assumption of independent inputs. So we decided to use the STFICA model in order to account for the convolutive matrix involved and to allow for a user-specifiable number of prewhitening stages.</para>
+        <para id="id14519357">It was at this time that we experimented with the number of prewhitening stages by setting an iteration level and then watching the output spectrograms for each iteration. Our group could not find a pattern or relation between the iteration number of the prewhitening and the effectiveness of the source isolation, but it was definitely observed that more than stage helps in the source isolation process. Sometimes one iteration would result in some separation, and then the next few iterations did not result in any source separation at all.</para>
+        <para id="id3712379">Using the STFICA algorithm in some real world cases worked out better than the original fastICA procedure. In one experiment, we produced a pure tone and recoded the source with two microphones. The expected sources that would be isolated were the tone and any ambient noise. The mixed signal of each of the two microphones was passed through the fastICA code and also separately through the STFICA code for comparison. Even with this very simple case, fastICA produced poor results as can be seen in the middle two spectrograms of the output independent components. The spectrograms look almost identical to the original mixed signals that were the inputs. STFICA, on the other hand, separated the pure tone from the white noise exceptionally well. As can be seen in the last row of the figure, the tone (located on the bottom left) was well isolated from the ambient white noise (spectrogram on the bottom right). </para>
+        <figure id="id8256301">
+          <media id="idp3879536" alt=""><image src="../../media/graphics3-07ca.jpg" mime-type="image/jpeg" height="359" width="307"/></media>
+        </figure>
+        <para id="element-414">Here are the sound files for the two mixed signals, the two "separated signals" produced by fastICA, and the two separated components produced by the STFICA.
+
+<media id="idm1117888" alt=""><download src="demo3_mix1.wav" mime-type="application/octet-stream"/></media>
+<media id="idm2491360" alt=""><download src="demo3_mix2.wav" mime-type="application/octet-stream"/></media>
+<media id="idp3877872" alt=""><download src="demo3_source1 ICA.wav" mime-type="application/octet-stream"/></media>
+<media id="idm13443376" alt=""><download src="demo3_source2 ICA.wav" mime-type="application/octet-stream"/></media>
+<media id="idm70048" alt=""><download src="demo3_source1 STFICA.wav" mime-type="application/octet-stream"/></media>
+<media id="idm5600272" alt=""><download src="demo3_source2 STFICA.wav" mime-type="application/octet-stream"/></media>
+<media id="idm1204288" alt=""><download src="demo3 code.m" mime-type="application/octet-stream"/></media></para><para id="id6715700">In more complicated situations where the sources were multiple human speakers, a human speaker and a tone, or other, we did not achieve the same success. The modified algorithm sometimes made one voice more prominent than the other, but it appeared to be doing filtering in a way that was not achieving the desired result. The success here was not as great as with the simple tone with noise case.</para>
+      </section>
+    </section>
+  </content>
+</document>

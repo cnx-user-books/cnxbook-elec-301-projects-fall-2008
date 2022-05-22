@@ -1,0 +1,24 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Random Music Generator</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>62219fba-96df-418a-b9aa-14fddd7c30fa</md:uuid>
+</metadata>
+  <content>
+    <section id="id7266918">
+      <title>Random Music Generator</title>
+      <section id="id19738298">
+        <title>Introduction</title>
+        <para id="id3506823">Our original idea was to be able to generate random music once the instrument sounds were synthesized. Unfortunately, due to time constraints, the best we could do was to have a program randomly pick chords and note durations from an input library. The resulting output was, as expected, random chords and notes that most people would probably not consider as music. How does one teach a program how to write music? One technique is the Markov chain.</para>
+      </section>
+      <section id="id8113300">
+        <title>Markov Chains</title>
+        <para id="id17324727">Teaching a program music theory so that it can create music would be an extremely tedious task. You would have to teach chord structure, common progressions, the different musical styles, and so on. What if you could give the program examples of pieces you considered to be music and ask it, “write something like that for me.” This is essentially how our Markov chain would work. The principle behind Markov chains in music is to generate a probability table to determine what note should come next. By feeding the program an example piece of music, the program can analyze the piece and create a probability table to determine which notes are more likely follow a given note. Below is an example of a first order Markov chain.</para>
+        <figure id="id3346630">
+          <title>Example of First Order Markov Chain Table for Music</title>
+          <media id="idp6511488" alt=""><image src="../../media/graphics1-e419.png" mime-type="image/png" height="239" width="464"/></media>
+          <caption>The entries in each box indicate the probability or likelihood of the note in the column label to follow the note in the row label. Blank boxes indicate 0 probability, meaning that note will never be the next note given your current note. For example, if the current note is A#, the next note chosen will always be A.</caption>
+        </figure>
+        <para id="id16536343">With the probability table, one can generate random notes that still has some musical structure to it. By constructing a similar table for beats or note durations, one can complete the first order Markov chain for music generation. Increasing to a second order Markov chain simply means constructing a larger probability table where the row headings are now pairs of notes. The program will choose the next note according to the probability table, consequently updating the current note pair to include the newest note. The idea behind determining what order Markov chain to use is a balance between ensuring that the program has enough musical structure and allowing it enough freedom for creativity.</para>
+      </section>
+    </section>
+  </content>
+</document>

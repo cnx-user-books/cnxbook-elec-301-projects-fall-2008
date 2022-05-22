@@ -1,0 +1,18 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>825dcd8a-9637-4cb0-9486-be9602e032f9</md:uuid>
+</metadata>
+  <content>
+    <section id="id17352943">
+      <title>Introduction to a Music Synthesizer</title>
+      <section id="id8082952">
+        <title>Our Goal</title>
+        <para id="id20333870">The aim of the project was to create realistic instrument sounds by means of digital signal processing (DSP). Algorithms and theories already exist for mimicking various instrument families and all revolve around modeling the instrument structure and material as well as how the instrument is played. One of the simpler algorithms is the Karplus-Strong, which produces amazingly realistic guitar sounds. Using this algorithm in combination with attack-delay-sustain-release (ADSR) concepts, we were able to synthesize some decent instrument sounds.</para>
+      </section>
+      <section id="id8998481">
+        <title>Next Step</title>
+        <para id="id10825699">The first step would be to increase our instrument library to include different instrument families. Karplus-Strong mainly works for string and some percussion instruments, which greatly limited the diversity of our virtual orchestra. This would consist of implementing different algorithms to simulate the various types of instruments. Finally, how does mimicking instruments through DSP constitute music synthesis? The next objective would be to generate random pieces of music. A plausible scheme would be to implement a first or second order Markov model to generate random pieces with musical structure but leave enough room for creativity.</para>
+      </section>
+    </section>
+  </content>
+</document>

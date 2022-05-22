@@ -1,0 +1,25 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>DMT Receiver</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>9c6b71e1-d633-4d5f-83f4-871b02d64bad</md:uuid>
+</metadata>
+  <content>
+    
+    <para id="id20148319">The received signal is an analog, modulated version of the original signal which has been transmitted by multiple carriers. The receiver is just an inverted version of the transmitter described earlier.</para>
+    
+    <section id="element-990"><title>Outline for Receiving Text After Transmission</title>
+<para id="element-887">
+
+</para></section><list id="id18150500" list-type="enumerated"><item>Convert .wav file into a row vector, remove impulses and modulate: Once the signal has been received by the receiver end (see System Specifications on how to do this), the first step is to convert it into a row vector. This can be done by using the wavread() function in Matlab. After this we need to remove the impulses before and after the sent signal. The easiest way to do this is to plot the received signal and then determine a threshold above which only the values for the impulse exist. Truncate the vector to the same length as the original vector without impulses by removing all values greater than the threshold set by analyzing the plot. After retrieving the original data back, cosine/sine modulate again to return to retrieve the original signal.</item>
+      <item>Low pass filter to retrieve original signal and remove some noise Design: LPF filter in Matlab.</item>
+      <item>Remove the cyclic prefix: Remove vector of length equal to the impulse response from the beginning and ending of the current vector. NOTE: These vectors may not be purely zero anymore because of introduction of noise</item>
+      <item>Find one period in the received signal by comparing the complete received signal with the length of the original signal: We need to find a segment of the same length as the original vector that we received after taking the IFFT in the transmitter. This vector should also be approximately periodic. </item>
+      <item>Take the FFT of this signal: This should return approximately the same vector that was the input into the IFFT on the transmitter end.</item>
+      <item>Create thresholds to round values to -1 and 1: This serves two purposes. First, we are now back to the -1/1 values that we had originally when we transmitted our signal. Also, since -1 and 1 represent two very distinct phases, we can assume are values less than 0 to be -1 and all values greater than 0 to be 1. This corrects for the phase errors that may have been introduced by the channel.</item>
+      <item>Repeat steps 4-6 for multiple received periods: This is to minimize the effects that noise may have had on any given block of data and to correct for any phase inversions that may have occurred.</item>
+      <item>Find two rows that are symmetric: Convert all -1 to 0 of first rowDo this by implementing the function (x+1)./2 where x is the original vector</item>
+      <item>Convert values of first row to ASCII and map these values to text: Now we have a binary vector which can be converted back to decimal using the command bi2de() and once the decimal value is retrieved, we can map back to ASCII</item>
+    </list>
+    
+    <figure id="id9235539"><title>Block Diagram Implementation of Receiver</title><media id="idm91840" alt=""><image src="../../media/graphics1-5625.png" mime-type="image/png" height="146" width="650"/></media></figure>
+  </content>
+</document>

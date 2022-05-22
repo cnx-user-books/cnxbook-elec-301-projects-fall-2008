@@ -1,0 +1,17 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>References and Acknowledgements</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>e1ab2417-5520-4d20-8e4c-165981c1ff07</md:uuid>
+</metadata>
+  <content>
+    <section id="id16337387">
+      <title>References</title>
+      <para id="id16096770">D.H. Johnson, C.R. Johnson, Jr., A.G. Klein, W.A. Sethares, H. Lee, E. Hendricks, “A Thread Counting Algorithm for Art Forensics”, 2008</para>
+    </section>
+    <section id="id16142378">
+      <title>Acknowledgements</title>
+      <para id="id14354457">We wish to thank Dr. Don Johnson of Rice University’s ECE Department.</para>
+      <para id="id8478076">The thread counting algorithm is collaboration between the Thread Count Automation Project directed by Professor Rick Johnson at Cornell University and Van Gogh Museum, Amsterdam.</para>
+      <para id="id15947463">Images of this collection are courtesy of Van Gogh Museum, Dr. Don H. Johnson. </para>
+    </section>
+  </content>
+</document>

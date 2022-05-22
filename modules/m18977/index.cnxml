@@ -1,0 +1,51 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- STFICA Implementation</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>d1eb4f30-df4e-4c18-9c1a-86c0349f2541</md:uuid>
+</metadata>
+  <content>
+    <section id="id12739607">
+      <title>STFICA Implementation</title>
+      <para id="id12739613">Dr. Scott Douglas, an SMU signals professor, wrote the STFICA code that is well known for its ability to determine demixing matrices that are not simple scalar additions. The key to analyzing audio recordings with the FastICA method is to implement convolutive matrices along with prewhitening—convolution is what occurs between the source and the microphone with the air and the soundwave. The benefit to prewhitening is that it allows us to prepare the recorded signal in such a fashion that they will more accurately fit the Fast ICA model assumptions. A prewhitening stage is already implemented in FastICA as part of the whole package but only in one stage, whereas the STFICA allows one to set as many prewhitening stages as one needs. Therefore, fastICA code was used except for the unmixing matrix algorithm, which we substituted with the one from Douglas’s STFICA. This carried the advantage of giving us more control over how many prewhitening stages we were able to implement and creating more elegant demixing matrices. There are some imperfections, however, because we do not understand the correlation between the number of prewhitening stages required to treat the recordings and the complexity of the recordings.</para>
+      <code display="block" id="idm2673168">% Signal in this demonstration has a 440Hz tone and noise.
+% read the two files
+
+a = wavread('demo3_mix1.wav'); % mixed signal 1
+b = wavread('demo3_mix2.wav'); % mixed signal 2
+
+% truncate both signals to equal lengths
+if(length(a)&gt;length(b))
+    a = a(1:length(b),1);
+else
+    b = b(1:length(a),1);
+end
+
+y = [a';b']; % mixed signal matrix
+
+% perform stfical to demonstrate better success of noise removal
+% stfical does not prewhiten the signal beforehand so this must be done
+
+[E, D]=pcamat(y,1,2,'off','off');
+[whitesig, whiteningMatrix, dewhiteningMatrix] = whitenv(y,E,D,'off');
+[s, W] = stfical(whitesig,1,1);
+f2 = dewhiteningMatrix*W*s;
+</code>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <para id="id11557424">This code performs all of the necessary steps to implement the STFICA algorithm with one prewhitening stage.</para>
+    </section>
+  </content>
+</document>

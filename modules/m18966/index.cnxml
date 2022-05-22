@@ -1,0 +1,27 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Me Your Digits!: Identification Algorithm</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>6657cdb3-3803-4923-a8cb-11a8fab9545a</md:uuid>
+</metadata>
+  <content>
+    <section id="id16401658">
+      <title>Give Me Your Digits!: Identification Algorithm</title>
+      
+      <section id="id13982950">
+        <title>Feature Extraction</title>
+        <para id="id16451307"><title>In General</title>Now that the image is in the format of the database (28 x 28 grayscale), a method to match the image to the database must be explored. To achieve a high accuracy rate in matching from the database, a feature extraction method could be employed. Three methods will be explored: pixel matching, Principle Component Analysis (PCA), and two-dimensional Fast Fourier Transform (2D FFT). </para>
+        <para id="id17445914"><title>Pixel Matching</title>Pixel matching, the first method, is not to use any feature extraction. It is meant to match the image to the database in the most obvious manner. The identifier literally compares the images pixel by pixel and computes the mean squared error (MSE, sums up all the error). In fact, the following two methods employ pixel matching after the transforms.</para>
+        <para id="id4369283"><title>PCA Principle Component Analysis</title>Next, the Principle Component Analysis, employs an orthogonal linear transformation that transform the matrix to a new matrix such that the greatest variance of the projection of the data comes to the first coordinate (principle component), and the second highest variance to the second coordinate, and so on. For our purposes of matching the image from the database, the PCA actually performs very poorly. This is due to the fact that because the images so closely resemble each other (same variance). This similar variance is attributed to it being so small (28 x 28) and gray scale. As a result, the PCA transform of the images are almost identical for this specific database. Experimentally, roughly a 30% matching rate was observed, which is barely better than random guessing. PCA would be much better suited for large images with great variances.</para>
+        <para id="id10725441"><title>2D FFT</title>Last, our method of choice, is the two-dimensional Fast Fourier Transform. Recall that the FFT is a form of Discrete Fourier Transform. The 2D FFT, for our purpose of image extraction, is the a frequency representation of the images. Note that the magnitude of the FFT must be used to compute the MSE. Also, the Matlab fftshift command was used shift the high frequency to the center.</para>
+        <figure id="id9314554"><media id="idp8553312" alt=""><image src="../../media/allffts.png" mime-type="image/png"/></media><caption>The formatted images and their 2D FFT’s</caption></figure>
+        
+      </section>
+      <section id="id3287563">
+        <title>Identification</title>
+        <para id="id17618286"><title>In General</title>Once the input images are transformed, they are now ready to be matched and identified by the images in the database. Three algorithms can be used: a) finding the lowest MSE, b) finding the best averaged MSE, and c) finding the highest frequency digit from the best one hundred MSE.</para>
+        <para id="id17514830"><title>Absolute Nearest Neighbor</title>The first algorithm finds the database image that has the lowest MSE from the input image out of all the randomly selected database images and declares that the input image is the digit the matched database image represents. In other words, it is an absolute nearest neighbor approach. The accuracy of this method depends heavily on the number of randomly selected database images since the bigger the database to choose from, the higher the chance that there will be a perfect match.</para>
+        <para id="id17135119"><title>Averaging Database Per Digit</title>Another algorithm that could be used is to average all of the MSE’s of the database of one digit with a input digit,and declare the digit with the lowest average as the input’s digit. This method, in theory, should eliminate the chance picking an outlier.</para>
+        <para id="id3958429"><title>Majority of Nearest Neighbors</title>Finally, the last algorithm is a variation of the aforementioned minimum MSE approach. This method picks the one hundred lowest MSE’s observed from the selected database and tallies the frequency of digits represented and declares the highest frequency digit is the input’s digit. In other words, it is finding the digit with the most nearest neighbors. In theory, this approach should be more associated with finding common features since higher frequency of certain digit means shared characteristics. A drawback of this method could come from a particularly poor input (say a 3 that looks awfully like an 8), there is a possibly of “tying” since the digits are separated by integers.</para>
+      </section>
+    </section>
+  </content>
+</document>

@@ -1,0 +1,25 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Channel Characteristics</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>eb160bf2-0b2c-4ebb-8711-9eb69f147620</md:uuid>
+</metadata>
+  <content>
+    <section id="element-275"><title>Channel Selection</title>
+<para id="element-499">The channel for our system was chosen after a lot of research into the kind of qualities required by the specific goal of sending data over the channel. We tried various materials such as a fishing line, copper wire and various types of threads, and tested each of them on the system to find out which one of those materials would be best to carry longitudinal vibrations (of the transmitted wav-file) successfully and with the least amount of error.</para><para id="element-766">We decided that the material needs to be lightweight and not stretchy – hence sewing thread would work great for our system. The longer the string is, the more lossy it will be – so we moderated the length of the string we used to about 35 inches.</para><para id="element-857">The sewing thread channel has specific parameters that should be taken into consideration when implementing the system. It is important to have an understanding of these specifications to allow for successful data transmission by reducing possible bit errors.</para></section>
+    
+    
+    
+    <section id="element-292"><title>Channel Parameters</title>
+<para id="element-494">
+
+The parameters that we took into consideration are:
+
+</para><list id="element-790" list-type="bulleted"><item>Channel Capacity – the capacity of a channel is defined to be the upper bound of the maximum bit rate that can be sent over the channel without introducing errors. After taking the channel capacity into consideration, we realized that it would not be possible to send voice or images over the channel simply because these transmission types would require intensive bit rate, which the sewing thread channel is not capable of. Hence, we resorted to sending text over the channel.</item>
+      <item>Multipath Effects – the signal being transmitted might take more than one path to reach the receiver, causing superposition/interference with the original signal on the channel. For example, the transmitted sound might travel through the air and superimpose with the signal on the channel, causing unnecessary complications. To reduce these multipath effects, we used a method called cyclic prefix.(Figure 1) What this does is that it takes a chunk (of the same length as the impulse response of the system) from the end of the bit-stream being sent over the channel, replicates it, and then prefixes the bit-stream with the same data. This essentially makes the channel perform circular convolution rather than the linear convolution it would normally carry out. Hence, this cyclic prefix allows the multipath to settle before the main data arrives at the receiver.</item>
+    </list></section>
+    <figure id="id24973660"><media id="idm6341504" alt=""><image src="../../media/graphics1-238e.png" mime-type="image/png" height="165" width="424"/></media></figure>
+    <list list-type="bulleted" id="id5101597">
+      <item>Signal Distortion – this could be caused by noise interfering with the signal being transmitted. This introduction of noise could cause synchronization problems at the receiver end, since the receiver would not be able to distinguish where it is just receiving noise from the actual signal being transmitted. Therefore, for synchronization, we sent two impulses before and after the actual data being sent over the channel. These impulses help the receiver know when the actual data is being received – starting right after the first impulse and ending right before the second impulse.</item>
+      <item>Bandwidth Wastage – not using the entire range of frequencies available on the channel would obviously lead to wastage of its bandwidth, since a lot more data could be sent over the channel by modulating data at different carrier frequencies. This is essentially the idea of Frequency Division Multiplexing, which forms the basis of the DMT modulation depicted in this project. Hence, sending different blocks of data at different available frequency pass-bands would lead an efficient use of the channel bandwidth. In our project, we didn’t need to send over multiple frequencies since the amount of data sent could easily be modulated within one pass-band – specifically the one band between 160Hz to about 320Hz.</item>
+    </list>
+  </content>
+</document>

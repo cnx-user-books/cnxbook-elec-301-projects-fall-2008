@@ -1,0 +1,38 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>ADSR</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ef4f6118-0013-40c4-adba-c2cb9ecd82e2</md:uuid>
+</metadata>
+  <content>
+    <section id="id18366146">
+      <title>ADSR</title>
+      <figure id="id18620500">
+        <title>Attack-Decay-Sustain-Release (ADSR)</title>
+        <media id="idm3818416" alt=""><image src="../../media/graphics1-31e1.png" mime-type="image/png" height="192" width="404"/></media>
+        <caption>The ADSR curve models different instruments by their temporal characteristics. Instruments have varying degrees of the abruptness of the attack, the initial decay in sound, how long the sound resonates for without appreciable attenuation, and how quickly the sound fades away at the end.</caption>
+      </figure>
+      <section id="id4588550">
+        <title>Introduction</title>
+        <para id="id14362597">ADSR stands for attack, decay, sustain, and release and is used to model the timbre of an instrument. The timbre or tone quality is determined by various factors such as the way the sound is produced and the material of the instrument. Different families of instruments have their own characteristic ADSR profiles. The attack refers to the phase in which the sound is initiated. This could be the fast attack of a strum on a guitar or the slower one of a pipe organ. The decay phase occurs immediately after the attack impulse and describes how rapidly the sound dies. Some instruments like a drum have extremely fast decay and the sound is virtually nonexistent after the attack. The sustain profile of an instrument refers to how long the sound resonates for when it is played. String instruments such as a violin have an extremely long sustain because the violin’s sound box is receiving constant vibrational energy from the bowed string. Finally, the release phase describes how rapidly the sound fades away once the instrument is not being played.</para>
+        <figure id="id17556439">
+          <title>Guitar ADSR Profile</title>
+          <media id="idm21632" alt=""><image src="../../media/graphics2-1020.png" mime-type="image/png" height="262" width="437"/></media>
+          <caption>The guitar has a fairly abrupt attack due to the method of playing through plucks and strums. The rapid decay is a result of the nonharmonic frequencies fading quickly leaving only the fundamental frequency and its harmonics. The sustain and release phases are merged in this case since the sound just fades away slowly.</caption>
+        </figure>
+        <figure id="id12417251">
+          <title>Violin ADSR Profile</title>
+          <media id="idp8480256" alt=""><image src="../../media/graphics3-2cd6.png" mime-type="image/png" height="256" width="437"/></media>
+          <caption>The violin has a slightly slower attack than the guitar but the other phases are drastically different. Because a violin is bowed to produce sound, there is virtually no decay and a very long sustain. Constant vibrational energy is delivered to the violin’s sound box and the sound only fades once the bowing stops.</caption>
+        </figure>
+      </section>
+      <section id="id11968539">
+        <title>Implementation</title>
+        <para id="id16665953">In order to synthesize different sounding instruments, the ADSR envelope could be applied directly to the output of the Karplus-Strong algorithm. Since the algorithm models string and certain percussion instruments, there were limitations on the diversity of instruments that could be synthesized using this technique. After modeling an instrument’s temporal characteristics with an ADSR envelope, one could apply it to the output of the Karplus-Strong by point-wise multiplication. By using ADSR, we were able to manipulate the guitar sounding output of the Karplus-Strong algorithm to sound like different instruments such as an organ or a bell.</para>
+        <figure id="id18522542">
+          <title>Applying ADSR to Karplus-Strong</title>
+          <media id="idp5965936" alt=""><image src="../../media/graphics4-0ca9.png" mime-type="image/png" height="184" width="515"/></media>
+          <caption>Synthesis of different instruments in an instrument family can be achieved through applying ADSR concepts to the Karplus-Strong algorithm. The output of the Karplus-Strong is point-wise multiplied with the modeled ADSR envelope to produce the final output sound.</caption>
+        </figure>
+      </section>
+    </section>
+  </content>
+</document>

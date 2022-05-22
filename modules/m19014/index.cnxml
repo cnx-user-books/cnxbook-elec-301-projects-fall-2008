@@ -1,0 +1,74 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>2-D Projective Geometry</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>88c23cba-4590-409a-a663-a9502fc91e2c</md:uuid>
+</metadata>
+  <content>
+    <section id="id3081923">
+      <title>2-D Projective Geometry</title>
+      <para id="id13990334"><title>What is Projective Geometry</title></para>
+      <para id="id9753388">Projective Geometry was developed in the 17th century by Girard Desargues, a French mathematician. It is a type of geometry that is based upon the principles of perspective art (approximate representation of an image perceive by the eye on a flat surface). It deals with the properties and invariants of geometric figures under projection-any mapping of points in the plane that preserves straight lines.</para>
+      <para id="id19323059"><title>Steps to Implement 2-D Projective Geometry</title></para>
+      <para id="id9210491">In our case, we performed 2-D Projective Geometry on the image taken by a camera. We defined the location of the object we see in the camera image as the location on “camera plane” and the actual location of the object as the location on “world plane”. This is shown in figure 1 below.</para>
+      <figure id="id15796821"><media id="idp8927568" alt=""><image src="../../media/graphics1-d9e7.png" mime-type="image/png" height="247" width="538"/></media><caption>Image Plane vs World Plane</caption></figure>
+      <para id="id18400703">The first step to implement 2-D Projective Geometry (i.e. maps camera plane onto world plane) is to calibrate many parameters of our located camera. This step is to find the location of the camera (distance + angles) from our designated world plane. This is essential to perform required calculations in the next step. We calibrated necessay parameters by running a program called “Camera Calibration tool” provided by Caltech. Details about this program can be found on its supporting website:  </para>
+      <para id="id13687530"><link url="www.vision.caltech.edu/bouguetj/calib_doc/">www.vision.caltech.edu/bouguetj/calib_doc/</link></para>
+      <para id="id18801715">Once we run the program to locate the camera's position, we will obtain a result that looks similar to the two figures below:</para>
+      <figure id="id18485576">
+        <media id="idp7167424" alt=""><image src="../../media/graphics2-9b9a.png" mime-type="image/png" height="286" width="649"/></media>
+      </figure>
+      <para id="id19036692">Besides the 2 figures above, we will also obtain all data necessary in the mapping process. These includes: 
+</para>
+      <para id="element-114">- Focal length, fc: measurement of how strongly camera converges or diverges light</para><para id="id11533434"> - Principal Point, cc: the point where camera plane intersects the axis</para>
+      <para id="id17655956">
+        <figure id="id5452106"><media id="idp17109840" alt=""><image src="../../media/graphics3-6602.png" mime-type="image/png" height="306" width="443"/></media><caption>Principal Point</caption></figure>
+      </para>
+      <para id="id18220930">- Skew Coefficient, α </para>
+      <para id="element-531">- Distortions (image distortion coefficients), kc </para><para id="element-801">- Camera Matrix, KK  </para><para id="id17257692">
+        <figure id="id4388456">
+          <media id="idp9254352" alt=""><image src="../../media/graphics4-8648.png" mime-type="image/png" height="98" width="204"/></media>
+        </figure>
+      </para>
+      <para id="id16182985">Coordinate of the origin of the camera reference frame, Tc_1 - Surface normal vector of the plane of camera reference frame, Rc_1</para>
+      <para id="id20713630">Finally once we obtain all the necessary information, we are now ready to begin the mapping process:The mapping process is as followed (we also obtained these steps from Caltech): </para>
+      <list list-type="bulleted" id="id5264798">
+        <item>Let P be a point space of coordinate vector XX = [X;Y;0] in the world plane (point on the right picture of figure 1)</item>
+        <item>Let XXc = [Xc;Yc;Zc] be the coordinate vector of P in the camera reference frame. Then we will get the relationship: </item>
+      </list>
+      <para id="id21860522">
+        <figure id="id3776994">
+          <media id="idm162144" alt=""><image src="../../media/graphics5-5627.png" mime-type="image/png" height="46" width="358"/></media>
+        </figure>
+      </para>
+      <list list-type="bulleted" id="id4223728">
+        <item>Let xn be the normalized image projection:</item>
+      </list>
+      <para id="id18373946">
+        <figure id="id3353061">
+          <media id="idp8922608" alt=""><image src="../../media/graphics6-c016.png" mime-type="image/png" height="88" width="144"/></media>
+        </figure>
+      </para>
+      <list list-type="bulleted" id="id10379707">
+        <item>Also let the square of the distance:</item>
+      </list>
+      <figure id="id20256940">
+        <media id="idp9994528" alt=""><image src="../../media/graphics7-ce12.png" mime-type="image/png" height="66" width="153"/></media>
+      </figure>
+      <list list-type="bulleted" id="id19182136">
+        <item>After including lens distortion, the new normalized point coordinate xd is defined as follows:</item>
+      </list>
+      <figure id="id21491795">
+        <media id="idp18074240" alt=""><image src="../../media/graphics8-6a24.png" mime-type="image/png" height="78" width="554"/></media>
+      </figure>
+      <para id="id18949642">Where dx is the tangential distortion vector:</para>
+      <figure id="id10953728"><media id="idp5339648" alt=""><image src="../../media/graphics9-d60a.png" mime-type="image/png" height="77" width="401"/></media></figure>
+      <list list-type="bulleted" id="id3258427">
+        <item>Once distortion is applied, the final pixel coordinates x_pixel = [xp;yp] of the projection of P on the image plane is:</item>
+      </list>
+      <figure id="id8998582">
+        <media id="idp18176112" alt=""><image src="../../media/graphics10.png" mime-type="image/png" height="100" width="185"/></media>
+      </figure>
+      <para id="id21860073">After we follow all the above steps, we will obtain the result as in figure 11. In this case, the process above maps chess board in the photo (left buttom figure) onto chess board on the world plane (right buttom figure). When the image of the car is mapped on to the world plane, it looks deformed. This is because the camera cannot tell the difference between the height and the depth of the object on the image plane. Therefore in this process, everything is assumed to be flat (zero height). This will become a problem later as we would not be able to locate exact position of the object.         </para>
+      <figure id="id19752936"><media id="idp18063648" alt=""><image src="../../media/graphics11.png" mime-type="image/png" height="225" width="551"/></media><caption>Result of our mapping</caption></figure>
+    </section>
+  </content>
+</document>

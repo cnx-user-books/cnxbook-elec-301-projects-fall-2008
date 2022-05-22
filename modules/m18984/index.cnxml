@@ -1,0 +1,36 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>DMT Transmitter</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>f492b325-df2d-4db3-a0de-d2be0f0f6cde</md:uuid>
+</metadata>
+  <content>
+    
+    <para id="id14077550">The transmitted signal consists of a sum of sub-carriers with data on each carrier being modulated independently using BPSK</para>
+    
+    
+    
+    <section id="element-319"><title>Outline for Transmitting Text Over Channel</title>
+<para id="element-806"/></section><list id="id12214696" list-type="enumerated"><item>Convert text to ASCII and ASCII to binary (1 and -1):
+
+In order to convert text to ASCII in Matlab, use the int8() function. Once we have the ASCII values, the next step is to convert these values into binary. The first step is to convert the int8() output values into values with an output in double format. This can be done by using the double() function in Matlab. Once the values are in double format, use the de2bi() function to convert them to binary values. Now we need to convert all 0s in this binary number into -1s. This allows for easier phase correction at the receiver end.To do this, assign this vector to x and perform the function y = 2.*x-1 </item>
+      <item>Transpose and reshape matrix to combine all rows into 1 row vector:
+
+Originally, each column will represent a different letter. To get each row to represent a letter, we transpose the matrix. Then we use the reshape() function to convert the matrix into one row vector.</item>    
+      <item>Create another symmetric row and take their IFFT:
+
+This is a neat trick that can be employed to simplify the transmitter. If we take the IFFT of two symmetric rows instead of one row, the result will be purely real. Therefore, we will only need to transmit and decode one vector instead of two. To produce these vectors, take the original vector and use the shiftlr() function. Use the output of this function as the second row in a 2 row matrix. The first row will be the original row. Take the IFFT of this matrix. </item>
+      <item>Add cyclic prefix of same length as impulse response:
+
+The cyclic prefix is described in more detail under Channel Characteristics. For now, create a vector of zeroes that is as long as the non-zero component of the impulse response of the channel and add it to the beginning and end of each symbol (block). </item>
+      <item>Combine rows and modulate to pass band frequency of channel:
+
+Make a row vector of the two symmetric rows and cosine/sine modulate them at the pass-band frequency</item>
+      <item>Make .wav file and add impulses before and after signal to synchronize:
+
+Use the wavwrite() function in Matlab to convert the row vector into a .wav file. Introduce short bursts before and after the signal to mark the beginning and end of the signal.The block diagram below provides a basic layout of the transmitter employed:</item>
+    </list>
+    <figure id="id15298961">
+      <media id="idm4181696" alt=""><image src="../../media/graphics1-08ac.png" mime-type="image/png" height="168" width="650"/></media>
+    </figure>
+    <para id="id6859227"/>
+  </content>
+</document>

@@ -1,0 +1,19 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Birdcall Identification: Matlab GUI</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>7dbe1b7b-d7a3-4077-a712-99e313207a81</md:uuid>
+</metadata>
+  <content>
+    <section id="id7753124">
+      <title>Matlab Bird Call Identification Program</title>
+      <section id="id8691039">
+        <title>Matlab GUI</title>
+        <para id="id16763000">The group created a MATLAB Graphical User Interface (GUI) to implement the birdcall identification algorithms.</para>
+        <figure id="id15863437">
+          <media id="idm5043424" alt=""><image src="../../media/GUI.png" mime-type="image/png" height="450" width="599"/></media>
+        </figure>
+        <para id="id8211839">Our GUI was able to load in audio files, play them, and display the result of convolving the audio signal with a specific filter. It also produced a bar graph of the maximum of the convolution result for each filter. This would graphically show us not only which birdcall the audio signal contained, but also how confidently the program was reporting one birdcall over another.</para>
+        <para id="id4107532">The GUI has the ability to choose whether or not to use our frequency content checking algorithm.</para>
+      </section>
+    </section>
+  </content>
+</document>

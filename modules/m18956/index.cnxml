@@ -1,0 +1,43 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Collecting and Filtering Live ECG Signal</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>9ece426f-16e6-4a20-af9f-52d4b42b67a6</md:uuid>
+</metadata>
+  <content>
+    <section id="id6043486">
+      <title>Collecting ECG Signal: Hardware </title>
+      <para id="id13475491">Using the NI Elvis breadboard and data acquisition system, the ECG signal is collected from the three leads. Lead 1 is connected to the right arm, Lead 2 is connected to the left wrist and Lead 3 is connected to the right ankle (see <link resource="m18955">Introduction: Building an ECG Based Diagnostic System</link> for more information about lead placement). The diodes placed between the input leads and the rest of the circuit are to protect the patient from any backflowing current.</para>
+      <figure id="id17475115"><title>ECG Signal Collection Circuit</title><media id="idm32064" alt=""><image src="../../media/graphics1-be5d.png" mime-type="image/png" height="424" width="536"/></media><caption>ECG signal collection circuit adapted from that of Radio Locman (www.rlocman.ru). The AD620 is used as a differential amplifier with a gain of ~7 in order to combine the electrical signals from each of the leads into one easily readable signal.</caption></figure>
+      <para id="id19137502">In NI LabVIEW, the Data Acquisition Assistant (DAQ Assistant) is used to collect the signal after preliminary band pass filtering. The data is sampled at a rate of 1 kHz. Our LabVIEW VI is available <link resource="ECG_LIVE.vi">here</link>. </para>
+    </section>
+    <section id="id6820476">
+      <title>Signal Conditioning</title>
+      <para id="id9706594">Signal filtering is necessary to help isolate the frequencies found in the ECG signal from the noise. With a three lead system, the majority of the noise comes from the electrical activity in the muscles on the arm, or electromyography (EMG) noise. EMG signals are present in a wide frequency band which overlaps with the ECG signal in the lower frequencies. Therefore, with this set-up, it is impossible to completely remove EMG noise from the ECG signal. Therefore, it is helpful for the patient to relax and remain still while the data is being collected. In addition, 60 Hz noise is present from power line interference which also must be removed. </para>
+      <section id="id5643974">
+        <title>Analog Band Pass Filter Design</title>
+        <para id="id19226928">The first stage of filtering is an analog filter built onto the NI Elvis breadboard. It is a bandpass filter with cut-off frequencies of 0.5 and 150 Hz. This will help eliminate the high frequency noise from the muscles before the signal is greatly amplified.</para>
+        <figure id="id15995155">
+          <title>Analog Bandpass Filter Circuit Diagram</title>
+          <media id="idm9638960" alt=""><image src="../../media/graphics2-0887.png" mime-type="image/png" height="296" width="300"/></media>
+        </figure>
+        <figure id="id12842307">
+          <title>Bode Plot – Analog Band Pass Filter</title>
+          <media id="idm1363040" alt=""><image src="../../media/graphics3-0cb1.png" mime-type="image/png" height="276" width="367"/></media>
+        </figure>
+      </section>
+      <section id="id14214843">
+        <title>Digital Filters Using LabVIEW</title>
+        <para id="id16606423">Once the signal has been acquired by the DAQ Assistant into LabVIEW, it is processed by two additional filters and amplification of 100 times. The first filter is a band stop filter between 55 and 65 Hz to eliminate power line interference. A third order Butterworth (IIR) was used to implement this filter because it is low order and has a good frequency response for this signal.</para>
+        <figure id="id15488730">
+          <title>Magnitude of the Frequency Response – Digital Band Stop Filter</title>
+          <media id="idm12473840" alt=""><image src="../../media/graphics4-e749.png" mime-type="image/png" height="182" width="338"/></media>
+        </figure>
+        <para id="id12442480">The second is a tenth order Butterworth low pass filter. The cutoff frequency of this filter is 80 Hz to further eliminate EMG noise. The ECG signal is located between 0.5 Hz and about 70-80 Hz depending on the individual.</para>
+        <figure id="id6172328">
+          <title>Magnitude of the Frequency Response – Digital Low Pass Filter</title>
+          <media id="idm5559760" alt=""><image src="../../media/graphics5-4a22.png" mime-type="image/png" height="184" width="333"/></media>
+        </figure>
+        <para id="id11503060">The resulting signal is displayed in real time in the graphical user interface, also designed in LabVIEW. </para>
+      </section>
+    </section>
+  </content>
+</document>

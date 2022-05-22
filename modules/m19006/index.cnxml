@@ -1,0 +1,28 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Karplus-Strong Algorithm</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>451702d5-935a-407b-a8c5-1499c88b34c2</md:uuid>
+</metadata>
+  <content>
+    <section id="id12451503">
+      <title>Karplus-Strong Algorithm</title>
+      <section id="id26354445">
+        <title>How It Works</title>
+        <para id="id15943315">The Karplus-Strong algorithm was developed by Alexander Strong and analyzed by Kevin Karplus as a model of hammered or plucked string instruments. It simulates the sharp impact through a short wideband signal such as a burst of white noise. The signal is fed back through a delay line whose length depends on the frequency of the desired note. The delayed signal is sent through a lowpass filter to attenuate all other frequencies except the frequency of the note and its harmonics.</para>
+        <figure id="id24508285">
+          <title>Karplus-Strong Algorithm</title>
+          <media id="idm2596176" alt=""><image src="../../media/graphics1-a224.png" mime-type="image/png" height="143" width="425"/></media>
+          <caption>A diagram representation of a burst of white noise being delayed, filtered, and combined with the original burst. The output sounds like a realistic guitar string pluck.</caption>
+        </figure>
+      </section>
+      <section id="id14955948">
+        <title>Concepts</title>
+        <para id="id11948076">The main concept behind the algorithm is to model the sudden attack of a pluck with white noise containing equal energy in all frequencies. Due to the cavity of the instrument, the instrument material, and various other parameters, only a given frequency and its harmonics will resonate. This is simulated by recursively shaping the output signal. By matching the length of the time delay to correspond with the frequency of the note desired, the output will ultimately sound at the selected frequency given a short period of time. The feedback loop only reinforces the fundamental frequency and its harmonics. This technique is sometimes referred to as a comb filter because of the characteristic shape of the output.</para>
+        <figure id="id21120626">
+          <title>Spectrum of a Plucked String</title>
+          <media id="idm6340800" alt=""><image src="../../media/graphics2-20a1.jpg" mime-type="image/jpeg" height="357" width="475"/></media>
+          <caption>The output of the Karplus-Strong algorithm with its characteristic comb shape. Notice the rapid attenuation of all other frequencies not near a harmonic.</caption>
+        </figure>
+      </section>
+    </section>
+  </content>
+</document>

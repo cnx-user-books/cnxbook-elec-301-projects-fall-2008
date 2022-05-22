@@ -1,0 +1,115 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Surviving Attacks on Information Hiding and Audio Watermarking</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>4b27c1fb-26cb-42c9-9a0d-23b1dad59cfd</md:uuid>
+</metadata>
+  <content>
+    <section id="id10307035">
+      <title>Noise Addition</title>
+      <para id="id6568949">We added varying amounts of Gaussian noise to our 
+marked test signals and attempted to retrieve the hidden message with varying 
+success.</para>
+      <para id="id9742745">In order to account for the noise, we adjusted the 
+threshold we used in the decoding algorithm. From Figures 10,12, and 14, it is 
+clear that a threshold can be drawn between the higher observed differences 
+(one-bits) and the lower observed differences. However, in the cases where too 
+much noise was added (see Figures 11,13, and 15), this threshold is not so 
+clearly defined. In fact, for the PSA and EA, any threshold value is difficult 
+to determine whether by calculation or by “eyeing it.” </para>
+      <figure id="id10810571"><media id="idp4462256" alt=""><image src="../../media/graphics10.jpg" mime-type="image/jpeg" height="281" width="375"/></media><caption>Observed differences between frequencies of original signal and frequencies of marked signal for FMA with no added noise</caption></figure>
+      
+      <figure id="id9176113"><media id="idp9474624" alt=""><image src="../../media/graphics11.jpg" mime-type="image/jpeg" height="274" width="366"/></media><caption>Observed differences between frequencies of original signal and frequencies of marked signal for FMA with added noise of SNR 30 dB</caption></figure>
+      
+      <figure id="id10645861"><media id="idp5330048" alt=""><image src="../../media/graphics12.jpg" mime-type="image/jpeg" height="313" width="417"/></media><caption>Observed differences between frequencies of original signal and frequencies of marked signal for PSA with no added noise</caption></figure>
+      
+      <figure id="id8911794"><media id="idp7338384" alt=""><image src="../../media/graphics1-5321.jpg" mime-type="image/jpeg" height="321" width="426"/></media><caption>Observed differences between frequencies of original signal and frequencies of marked signal for PSA with added noise of SNR 30 dB</caption></figure>
+      
+      <figure id="id9889445"><media id="idp7864720" alt=""><image src="../../media/graphics14.jpg" mime-type="image/jpeg" height="262" width="350"/></media><caption>Observed differences between frequencies of original signal and frequencies of marked signal for EA with no added noise</caption></figure>
+      
+      <figure id="id8284662"><media id="idp1233248" alt=""><image src="../../media/graphics15.jpg" mime-type="image/jpeg" height="280" width="375"/></media><caption>Observed differences between frequencies of original signal and frequencies of marked signal for EA with added noise of SNR 70 dB</caption></figure>
+      
+      <para id="id9062498">Based on studying these threshold values, we found 
+maximum noise we could add to the marked signal for each algorithm. The minimum 
+SNR for the FMA, PSA, and EA were 30 dB, 30 dProject! ElB, and 60 dB, 
+respectively. At these SNR values and with an input of “Elec301 Project! ”, the 
+algorithms output as follows:</para>
+      <para id="id9478968">FMA</para>
+      <para id="id10671191">Elec301 Pro*ect! Elec301 Project! ElB, and 60 dB, 
+respectively. At these SNR values and with an input of “Elec301 Project! ”, the 
+algorithms output as follows:</para>
+      <para id="id9428207">ec301 Project! Elec30ec301 Project! Elec30</para>
+      <para id="id8253252">PSA</para>
+      <para id="id8253256">Elec301Elec301Elec301ELec301Elec301EleC#01Elec301Elec300Elec301El
+ek30qElec301Elec301Elec301Elec301El El`c 1El</para>
+      <para id="id8283320">EA</para>
+      <para id="id8240228">Elec381 Pzg*ect!MleC343 RzebesT!eoec#p1 
+Psozec|#GleC#00 P2ojEct)Mmec301 QrozEkw Umea3p1'PRgbmct!Eleg:0q 
+P2ojea4%D|</para>
+      <para id="id8980453">The FMA and PSA clearly outperformed the EA in the 
+noise category. In fact, at the point that we begin to miss bits, we can already 
+significantly hear the white noise. Because the FMA only looks at the difference 
+between the frequencies of the original and marked signals for a small segment 
+of the frequency spectrum (in particular around the maximum frequency of the 
+original signal), the noise power included in the difference is much smaller for 
+the FMA than for the PSA and the EA which both calculate the difference over the 
+whole frequency range. The PSA is good because our ears cannot detect 
+significant alterations in phase; in fact, the phase shift could go up to .1*pi 
+without audible detection. This large phase shift power difference between a one 
+and zero is much more than the power added by the noise. </para>
+      <para id="id9010677">For all of our algorithms some genres of our test 
+signals performed better in every case. We found that ‘pop’ and ‘techno’ both 
+failed noise tests at least 20db SNR higher than any of the others. Examining 
+the magnitude in the frequency domain for both of these signals (see Figure 8) 
+shows us that the 90% power bandwidth is wider than in the others. I.e. there is 
+significant information at higher frequencies, so more significant frequencies 
+are altered by the noise, which lessens the amount of tolerable SNR.</para>
+      <para id="id8283512">To defend against noise we encode the user-input 
+phrase over and over as many times as will fit. This increases our chances of 
+getting the phrase back since the probability of several bits being wrong is 
+lower than the probability of one bit being judged incorrectly.</para>
+      <para id="id9900109">Another defense against noise was to raise our 
+various predefined values closer to human-hearable level. For example we can 
+increase the amount of phase shift in the PSA from .01*pi all the way to .1*pi. 
+These increases mean that the value shifting caused by adding noise is not 
+significant when compared to the value shifting created by encoding a one. In 
+general, there is a balance between how much noise a marked signal can take and 
+how audible the mark becomes. This balance is found by toying with the 
+predefined values for each algorithm.</para>
+    </section>
+    <section id="id10669102">
+      <title>Compression and Decompression</title>
+      <para id="id9801131">We also tested an attack in which the wave file was 
+compressed using MPEG-1 and AAC compression algorithms. In order to test whether 
+we could still recover our encoded bits in MATLAB (MATLAB can only work with 
+wave audio files), we then decompressed the files. We found that we were 
+completely unable to recover our encoded message and received as output either 
+nothing or complete garbage. </para>
+      <para id="id8185615">These results were not unexpected as audio 
+compression algorithms take advantage of the same psycho-acoustical phenomena 
+that we used to</para>
+    </section>
+    <section id="id9798307">
+      <title>Cropping</title>
+      <para id="id8201734">Our encoding scheme can survive truncation on the 
+back end. We simply lose any bits contained in the deleted data. While we did 
+not implement this process, we could implement a matched filter setup to survive 
+truncation on the front end. We could take the marked audio file and attempt to 
+place it in the unmarked original file using convolution.</para>
+    </section>
+    <section id="id8979091">
+      <title>Remarking </title>
+      <para id="id8226192">We tested whether our algorithm could be marked with 
+a second message and still recover either message. We provided our decoder with 
+the original signal and the signal that had been marked two different times. If 
+we had provided the decoder with the once-marked signal and the original signal 
+(cascading the decoder), we could have easily recovered our original signal; 
+however, we felt this solution was trivial and against the point of the 
+attack.</para>
+      <para id="id8232911">We found, as expected, that when encoding two 
+different messages, we could not correctly recover either message. We, however, 
+found that if two of the same letter were encoded in the same place, we could 
+recover this particular letter. Remarking the signal with the same message does 
+not affect our ability to decode the message, but remarking can affect the 
+quality of the output. </para>
+    </section>
+  </content>
+</document>

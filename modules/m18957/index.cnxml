@@ -1,0 +1,49 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Algorithms for ECG Signal Analysis</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>0da1ea64-db0a-47aa-ad96-d4651d9476a9</md:uuid>
+</metadata>
+  <content>
+    <section id="id7725810">
+      <title>ECG Signal Analysis: Abnormality Detection</title>
+      <para id="id10458372">The flowchart below breaks down the tasks needed to accomplish signal analysis in greater detail. Both LabVIEW and Matlab were used to accomplish these tasks. </para>
+      <figure id="id10976988"><title>Signal Analysis Flow Chart</title><media id="idm2592208" alt=""><image src="../../media/graphics1-ff01.png" mime-type="image/png" height="255" width="446"/></media></figure>
+    </section>
+    <section id="id10759751">
+      <title>Matlab Implementation of Filter Banks Analysis</title>
+      <para id="id10321269">Many scenarios deal with signals which contain specific energy distributions in the frequency domain. For example, with regard to the ECG, a significant proportion of the energy from the QRS complex extends to a frequency of 40 Hz, and even more if the Q, R, and S waves have very sharp morphologies. The P and T waves, in general, have a significant proportion of their energy only up to 10 Hz. Thus, a strategic approach to detecting heartbeats is to analyze different sub-bands of the ECG, rather than just the output of one filter which maximizes SNR of the QRS.</para>
+      <para id="id10750881">In this filter bank analysis technique we use 5 sub-bands, each one has bandwidth 5Hz. The ECG signal is processed by those 5 sub-band filters and downsampled. The downsampled signal is</para>
+      <figure id="id9539615">
+        <media id="idp432240" alt=""><image src="../../media/graphics2-f5c6.png" mime-type="image/png" height="113" width="246"/></media>
+      </figure>
+      <para id="id10937822">A variety of features which are indicative of the QRS complex can be designed by combining sub-bands of interest from l = 0, 1, … , M-1. For example a sum-of-absolute values feature P1 can be computed using sub-bands 1, 2, and 3.</para>
+      <figure id="id9535717">
+        <media id="idm2597168" alt=""><image src="../../media/graphics3-2137.png" mime-type="image/png" height="48" width="101"/></media>
+      </figure>
+      <para id="id8516369">P1 has a value which corresponds to the energy in the frequency band [5.6, 22.5] Hz. Similarly, P2 and P3 can be computed using sub-bands {1, 2, 3, 4}, and {2, 3, 4}, respectively, and these values are proportional to the energy in their respective sub-bands. Heuristic beat detection logic can be used to incorporate some of the above features which are indicative of the QRS complex.</para>
+      <para id="id8624415">Figure 4 gives an overview of the sequential levels in the beat detection algorithm. The goal of the detection algorithm is to maximize the number of true positives (TP’s), while keeping the number of false negatives (FN’s) and false positives (FP’s) to a minimum. Since it is not possible to arrive at this goal using one simple detector, multiple detectors with complementary FN’s and FP’s performances are simultaneously operated and the results of each fused together to arrive at an overall decision. The advantage of this strategy is that multiple features which are indicative of the QRS complex can be used to detect beats.</para>
+      <figure id="id9249593">
+        <title>Beat Detection Algorithm Schematic</title>
+        <media id="idp55504" alt=""><image src="../../media/graphics4-00b6.png" mime-type="image/png" height="336" width="599"/></media>
+      </figure>
+      <para id="id9302338">A one-channel beat detection block is described in Figure 5. </para>
+      <figure id="id10244833">
+        <title>Schematic of One-Channel Beat Detection Block</title>
+        <media id="idp6554336" alt=""><image src="../../media/graphics5-adb0.png" mime-type="image/png" height="200" width="337"/></media>
+      </figure>
+      <para id="id8579056">The detection strength Ds of an incoming feature (e.g., P1, P2, P3) is determined by comparing with the signal and noise levels (SL and NL, respectively):</para>
+      <figure id="id10975018"><media id="idp2562704" alt=""><image src="../../media/graphics6-0fb0.png" mime-type="image/png" height="50" width="102"/></media></figure>
+      <para id="id10248860">If a feature’s value is less than NL then Ds is limited at 0, and if it is above SL then DS is limited to one. When a feature has a greater than a specified threshold (preset between zero and one) it is classified as a signal peak and the signal history is updated with the feature’s value. If the feature has a smaller than the threshold it is classified as a noise peak and the noise history is updated with the feature’s value.</para>
+      <para id="id10432160">The detail operations of each level can be found in the paper by V. Afonso et al (<cite><cite-title>ECG beat detection using filter banks, IEEE Trans. Biomed. Eng. 46: 1999</cite-title></cite>). Also, download and run <link resource="ECGmain.m">ECGmain.m</link> to test out filter banks. Supplementary mfiles: <link resource="nqrsdetect.m">nqrsdetect.m</link>, <link resource="ECGSigProcFB.m">ECGSigProc.m</link>, <link resource="t.mat">t.mat</link>, <link resource="x.mat">x.mat</link>. </para>
+    </section>
+    <section id="id10501835">
+      <title>LabVIEW Programming for Signal Processing and Interfacing</title>
+      <para id="id4367671">LabVIEW is used to not only process and acquire the signal, but to also develop an user friendly interface that automatically alerts the user to any abnormalities or arrhythmias detected. This particular ECG is developed to detect left ventricular hypertrophy and old myocardial infarction. It will also automatically display the heart rate and whether or not the patient’s heart rate is within a healthy range.</para>
+      <figure id="id4359488">
+        <title>The Graphical User Interface</title>
+        <media id="idm1088208" alt=""><image src="../../media/graphics7-b946.png" mime-type="image/png" height="290" width="650"/></media>
+        <caption>This view of the the GUI shows a normal, healthy ECG signal. The indicator lights (6) will change color depending on the diagnosis. Additionally, the green trace turns red if any abnormality or arrhythmia is detected.</caption>
+      </figure>
+      <para id="id4713525">The user interface consists of several useful features. First, there is a text input for the patient’s name to avoid confusion in the clinic. Second, the ECG chart is automatically updated with the name and live signal data. Third, the user can control the data acquisition periods. The heart rate and any abnormalities are displayed in the patient report. The warning lights to the left of the patient report correspond to the current condition of the patient’s ECG. If everything is normal, the green light is on and the signal is green. If an arrhythmia is detected, the yellow light turns on and a warning message will appear in the patient report that indicates the type. Similarly, the orange light turns on if an abnormality is detected and a warning message appears in the report. For either of these, the ECG trace turns red in the chart window. A red light indicates that no recognizable signal is being detected. This can mean that the patient has flat-lined, that the circuit board is not powered or that the leads are not connected properly. As a result, the warning message will ask the user to check the lead and power connections. Finally, the form can be reset between patients. You can download our VI <link resource="ECG_LIVE.vi">here</link> to test it out.</para>
+    </section>
+  </content>
+</document>

@@ -1,0 +1,16 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Extension</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>88b7a5fe-58ce-4e83-97fc-a9696cb4f194</md:uuid>
+</metadata>
+  <content>
+    <section id="id11711596">
+      <title>Extension</title>
+      <section id="id10813250">
+        <title>What Next?</title>
+        <para id="id10883339">Having synthesized a few instruments and come up with a method to generate music randomly, the next step would be to include different families of instruments by trying other algorithms to physically model them. This would expand the library of instruments for our synthesizer to make it more interesting. Our long-range goal is to be able to analyze music input such as a voice and generate random musical accompaniment. The inspiration for this project was the research done at Microsoft in developing a program called MySong that automatically chooses chords to accompany a singer. This allows casual singers to create songs complete with accompaniment on their own. The project helped us learn many of the tools we would need to build a program similar to MySong.</para>
+        <para id="id10884234"><link url="http://research.microsoft.com/en-us/um/people/dan/mysong/">Link</link> to Microsoft’s MySong page.</para>
+        
+      </section>
+    </section>
+  </content>
+</document>

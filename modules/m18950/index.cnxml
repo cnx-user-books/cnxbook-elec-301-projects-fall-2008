@@ -1,0 +1,18 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Birdcall Identification: Introduction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>acc9d18e-cda8-4065-9516-54a19bd39136</md:uuid>
+</metadata>
+  <content>
+    <section id="id9560350">
+      <title>Birdcall Identification Project</title>
+      <section id="id14122835">
+        <title>Motivation</title>
+        <para id="id12709974">Birdwatchers around the world have struggled with the arduous task of remembering and identifying the many birdcalls native to their area. As an added struggle, those who live in an urban environment are challenged to pull the sound of a birdcall out of the background noise present in the city. Our birdcall identification program attempts to computationally identify birdcalls. With a computational identifier, many problems associated with birdcall identification are mitigated: there is no need to remember birdcalls, the program can algorithmically separate the birdcall from the background, and the sound file can be automatically saved to the computer.</para>
+      </section>
+      <section id="id11565909">
+        <title>Method</title>
+        <para id="id12637338">Previous attempts to identify bird sounds relied solely on spectrograms. Our process focuses on using a time-domain matched filter and frequency analysis in tandem to achieve accurate results. The matched filter identifies the similarities between two sounds as a function of time. Frequency analysis differs two sounds based on the energy in the frequency spectrum. The matched filter in conjunction with frequency analysis provide accuracy far surpassing that of lone spectrograms.</para>
+      </section>
+    </section>
+  </content>
+</document>

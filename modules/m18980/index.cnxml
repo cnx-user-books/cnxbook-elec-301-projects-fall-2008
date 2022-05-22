@@ -1,0 +1,25 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- Applications</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>5f3688e4-3f21-43ca-88e5-e33391c2e6c5</md:uuid>
+</metadata>
+  <content>
+    <section id="id9676923">
+      <title>Applications</title>
+      <para id="id15088662">Given our results for the STFICA, we are confident that with more knowledge of the prewhitening stage we could effectively separate sources from far more complicated signals such as voice, music, noise, etc. Our original goal was to utilize the FastICA to separate voice from music and improve speech recognition. That is feasible if recording the live audio, but it seems ill-posed if attempted from music files and speakers. There are, however, many other potential avenues such as:</para>
+      <list id="element-218" list-type="bulleted"><item>Effective noise filtering</item>
+<item>Speech recognition improvement</item>
+<item>EKG noise removal</item>
+<item>Surveillance</item>
+<item>Acoustic source separation</item></list>
+      
+      
+      
+      
+      <para id="id3257316">For the FastICA, though not effective in acoustic environments, there are applications that it is well-suited for such as:</para>
+      <list id="element-896" list-type="bulleted"><item>Digital image separation</item>
+<item>Digital music separation</item>
+</list>
+      
+    </section>
+  </content>
+</document>

@@ -1,0 +1,72 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Methods and Results</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>b260d824-737e-4b0f-8fe4-b845aed7d800</md:uuid>
+</metadata>
+  <content>
+    <section id="id4768764">
+      <title>Whole Painting Analysis and Results</title>
+      <section id="id14728599">
+        <title>Step 1: Obtain the Raw Data</title>
+        <para id="id12739574">We received x-ray images of paintings from the Van Gogh Museum of Amsterdam. Images usually sampled at 600. Figure 1 shows the x-ray image of Van Gogh’s <code display="inline">Backyards of Old Houses in Antwerp in the Snow</code> (F260) provided by the Van Gogh Museum.</para>
+        <figure id="id4623204">
+          <media id="idm8236464" alt=""><image src="../../media/graphics1-c31c.jpg" mime-type="image/jpeg" height="783" width="600"/></media>
+        </figure>
+      </section>
+      <section id="id4249950">
+        <title>Step 2: Short Time Fourier Analysis</title>
+        <para id="id15070009">We apply shot time Fourier analysis for each 0.5” × 0.5” swatch. We discarded the outrange frequency peaks and set the value as NaN for the corresponding swatches. For multiple peaks in the frequency region of interest, we accepted the peak that is closest to the median value.</para>
+      </section>
+      <section id="id11364012">
+        <title>Step 3: Spectra of Whole-Painting</title>
+        <para id="id14824096">We sampled the short-space spectrum every 1/4” in both directions (horizontal and vertical) for the whole-painting by choosing swatches overlap each other by half in each direction. Thus the spectra of whole-painting were obtained. And we could determine the warp and weft direction of the canvas according to the spread of measurements. Calculations were made in Matlab and took about three hours to analyze F205 on a laptop computer.</para>
+        <para id="id4884302">Figure 2 shows the resulting spectra of F205.</para>
+        <figure id="id14615824">
+          <media id="idm7696944" alt=""><image src="../../media/graphics2-0b12.jpg" mime-type="image/jpeg" height="376" width="599"/></media>
+        </figure>
+      </section>
+      <section id="id11131851">
+        <title>Step 4: Deviations Matching Analysis</title>
+        <para id="id14013382">From the spectra of the whole-painting, we obtained thread count deviations spectra by calculating the distributions of frequencies and subtracting the averages.</para>
+        <para id="id4762528">Figure 3 and 4 show the vertical thread count deviations of F205 and F260 respectively. Horizontal deviations spectra are not shown here.</para>
+        <para id="id4800951">
+          <figure id="id4249000">
+            <media id="idm3740736" alt=""><image src="../../media/graphics3-d8c9.jpg" mime-type="image/jpeg" height="547" width="600"/></media>
+          </figure>
+          <figure id="id4253361">
+            <media id="idm9635840" alt=""><image src="../../media/graphics4.jpg" mime-type="image/jpeg" height="549" width="600"/></media>
+          </figure>
+        </para>
+        <para id="id11427506">Visually, we can see the matching strips between these two painting. But how well do they match?</para>
+      </section>
+      <section id="id14251062">
+        <title>Step 5: 2D to 1D Conversion</title>
+        <para id="id14662414">We first computed the 1D thread count deviations from the 2D data. The 1D thread count deviations are obtained by summing the column deviations of 2D data while discarding all the NaNs if any.</para>
+        <para id="id14308386">Figure 5 and 6 are the corresponding 1D plot of F205 and F260.</para>
+        <para id="id13496406">
+          <figure id="id13808943">
+            <media id="idm9631360" alt=""><image src="../../media/graphics5.jpg" mime-type="image/jpeg" height="307" width="426"/></media>
+          </figure>
+          <figure id="id15164753">
+            <media id="idm8879088" alt=""><image src="../../media/graphics6.jpg" mime-type="image/jpeg" height="307" width="429"/></media>
+          </figure>
+        </para>
+        <para id="id12703692">We can clearly see the similarities now. But how do they correlate then?</para>
+      </section>
+      <section id="id13022327">
+        <title>Step 6: Correlation Determination</title>
+        <para id="id5713029">We then computed unbiased correlation coefficient between 1D vertical thread count deviations of F205 and F260 along the x-axis. You can clearly see a peak (0.7479) appears at the 55th alignment as two paintings are mapped to the matching alignment, or visually “best fit” together. The correlation mapping plot is shown in figure 7.</para>
+        <figure id="id13737524">
+          <media id="idm6725600" alt=""><image src="../../media/graphics7.jpg" mime-type="image/jpeg" height="214" width="598"/></media>
+        </figure>
+        <para id="id13983048">
+          <emphasis>The results indicate that these two paintings (F205 and F260) were likely cut from the same canvas roll, sharing the more variable weft direction.</emphasis>
+        </para>
+      </section>
+    </section>
+    <section id="id4218889">
+      <title>Orientation Issues in Matching</title>
+      <para id="id15850410">When we computed the correlation for the paintings, we actually did it four times in our Matlab programs. This is because that any two paintings could possibly match in either direction and each painting could be rotated 0, 90 or 180 degree.</para>
+      <para id="id15644366">In plotting the correlation mapping, we choose the one that gave the best fit among all possible orientations.</para>
+    </section>
+  </content>
+</document>

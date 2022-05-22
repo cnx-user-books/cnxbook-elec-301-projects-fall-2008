@@ -1,0 +1,12 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction to Estimating Target Location Using 2-D Projective Geometry and Background Subtraction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>a49b0428-9968-44da-b2c3-405add8c9e9d</md:uuid>
+</metadata>
+  <content>
+    <para id="element-134"><title>Project Intro-Summary</title>Our ideal objective of this project was to build a surveillance system that can detect any moving object and locate its exact position. First, We used background subtraction in order to segment out only moving object from the background. Next, we came up with an idea of using projective geometry to map the frame from camera’s point of view onto the world plane. When one camera was used to locate an object, the results were sometimes misleading (i.e. could not distinguish height and depth). By using multiple cameras instead, we were able to obtain a more precise location of the object. This project was more focused on detecting the changes in the background and locate its position, rather than finding the object's shape. Thus, each camera had equal weights on providing data. In the next modules, we are going to present how we used background subtraction and 2-D projective geometry in order to build our simple surveillance system.
+</para><para id="delete_me">
+       <!-- Insert module text here -->
+    </para>   
+  </content>
+  
+</document>

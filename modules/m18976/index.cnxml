@@ -1,0 +1,17 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- STFICA/Whitening Differences</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>71704ab3-92d7-4ae0-9d6c-d1c87bc6a78b</md:uuid>
+</metadata>
+  <content>
+    <section id="id12956511">
+      <title>STFICA/Whitening Differences</title>
+      <para id="id11607673">In 2007, a 301 Research Group explored how FASTICA works by demonstrating how well it works in its ideal form—when mixing is handled in MATLAB. For use in more general situations, however, Fast ICA must be compatible with every day recording equipment exposed to multiple sources. Mixing in MATLAB creates a simple mixing matrix of the form y=Hx. Given the mixed outputs y, FastICA generates the mixing matrix, H, and its inverse, then multiplies y by the inverse mixing matrix to produce a vector of the original source signals. </para>
+      <para id="id13572155">Our model accounts for a convolutive mixing matrix that models the effects of the channel and recording equipment. For example, room characteristics can affect echo and dampening, and even the best microphones have an impulse response that does not perfectly model delta pulse. Accordingly, a convolutive model of our system is the most appropriate for our system.</para>
+      <para id="id17055014">This changes our equations to: y=H*x</para>
+      <para id="id17192312">where H is a circulant matrix, meaning that each row vector is shifted one to the right relative to the previous row vector. This matrix implements circular convolution.</para>
+      <para id="id15115050">Sometimes signals that appear to be independent at first glance will, after analysis, have properties of dependence. In order to maximize the effectiveness of component analysis, it makes sense to make signals appear even more independent through a process of decorrelation known as prewhitening, which decorrelates the signals in both space and time. </para>
+      <para id="id10288988">A signal is white if its values are statistically independent--knowing some values of a signal does not reveal information about other values. Consider white noise, for example. Knowing any value of a white signal gives you no additional information about another.</para>
+      <para id="id3978624">Because one of the assumptions of FastICA is that the individual components are independent variables, a pre-whitening process applied to the mixed signals improves the signal separation during the ICA process. Originally, the FastICA algorithm included one stage of pre-whitening. This was not sufficient, however, because we needed to add additional stages to achieve better decorrelation with different numbers of sources. The Spatio-Temporal FastICA tools had begun to explore whitening, so we began to look into their work for inspiration.</para>
+    </section>
+  </content>
+</document>

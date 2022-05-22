@@ -1,0 +1,40 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Birdcall Identification: Conclusion</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>df7f0631-f90b-42a7-b0b9-580a3046a89c</md:uuid>
+</metadata>
+  <content>
+    <section id="id48445853">
+      <title>Birdcall Identification Project</title>
+      <section id="id48445859">
+        <title>Conclusion</title>
+        <para id="id48445866">The combination of the matched filter process with the frequency content analysis proved to be a fairly robust tool in identifying birdcalls. The matched filter tells us which birdcall is found in the time-domain, while the frequency analysis confirms the proper frequency content at the site of the match.</para>
+        <para id="id48445875">Our MATLAB GUI implementation gave a simple interface to identify birdcalls within a wave file. The interface gives a visual confidence reading regarding which birdcalls are within a sound sample. With more time, the program could easily be translated to a web application or mobile interface for use in the field.</para>
+      </section>
+      <section id="id48445886">
+        <title>Future Work</title>
+        <para id="id48445892">Our implementation was simply a test of concept. If we wished to take the project further, the first step would be to increase the filter library size. If made mobile, we could create a filter library that would mold itself to the species of birds in the specific geographic location, giving our algorithm less to check against.</para>
+        <para id="id48445902">Though our program can be made faster, the project as a whole was highly successful. Further work needs to be done to ensure the reliability of the program, especially as birdcalls are added. In the end, a venture into a marketing plan could prove to be lucrative. </para>
+      </section>
+      <section id="id48445912">
+        <title>Acknowledgments :</title>
+        <para id="id48445919">Special Thanks to:</para>
+        <list list-type="bulleted" id="id48445923">
+          <item>Our instructor, Rich Baraniuk</item>
+          <item>Our TA, Matthew Moravec</item>
+          <item>Our Mentor, Marcos Duarte</item>
+        </list>
+        <para id="id48445942">Sound files from:</para>
+        <list list-type="bulleted" id="id48445946">
+          <item>www.dovehunt.org</item>
+          <item>wildspace.ec.gc.ca</item>
+          <item>www.michiganloons.org</item>
+          <item>www.wildernessbay.com</item>
+          <item>www.sylvialake.org</item>
+          <item>www.avians.net</item>
+          <item>www.birding.com.br</item>
+          <item>www.owling.com </item>
+        </list>
+      </section>
+    </section>
+  </content>
+</document>

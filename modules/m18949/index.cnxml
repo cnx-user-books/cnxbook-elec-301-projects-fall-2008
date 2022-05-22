@@ -1,0 +1,36 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>The Team</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>339bfe77-e608-42be-930c-fddb743b85f9</md:uuid>
+</metadata>
+  <content>
+    <section id="id8923330">
+      <title>The Team</title>
+      <para id="id9943991">
+        <term>Students</term>
+      </para>
+      <para id="id4719901">Lucia Sun: <link url="mailto:ls4@rice.edu">ls4@rice.edu</link></para>
+      <para id="id8047059">“露露” developed most Matlab codes for the project. Her GPA is greater than 4.0…</para>
+      <figure id="id11702900">
+        <media id="idm8394240" alt=""><image src="../../media/graphics1-802f.jpg" mime-type="image/jpeg" height="799" width="599"/></media>
+      </figure>
+      <para id="id9833420">Zeting Liu: <link url="mailto:zbl1@rice.edu">zbl1@rice.edu</link></para>
+      <para id="id8156122">"汀汀" is our poster master. He is an exchange student from a Hong Kong university. Oops, I always forget its name, should be something like HKUST (Hong Kong University of Science and Technology). He is also the CEO of a brilliant website <link url="http://www.boliance.com/">http://www.boliance.com</link>/.</para>
+      <figure id="id10720371">
+        <media id="idm6312208" alt=""><image src="../../media/graphics2-ce63.jpg" mime-type="image/jpeg" height="458" width="417"/></media>
+      </figure>
+      <para id="id6605550">Xiang Guo (Jash): <link url="mailto:xg1@rice.edu">xg1@rice.edu</link></para>
+      <para id="id3947386">"享享" Jash did a lot of things including bringing in snacks and treating the team for a buffet dinner. The most important thing he learned in 301 is “Totally!”</para>
+      <figure id="id11476626">
+        <media id="idm4017536" alt=""><image src="../../media/graphics3-b759.jpg" mime-type="image/jpeg" height="447" width="599"/></media>
+      </figure>
+      <para id="id10749794">
+        <term>Mentor</term>
+      </para>
+      <para id="id11915451">Professor Don H. Johnson: <link url="mailto:dhj@rice.edu">dhj@rice.edu</link></para>
+      <para id="id9356360">He is the BIG Guy in DSP. You know what I mean...</para>
+      <figure id="id10479424">
+        <media id="idm5759264" alt=""><image src="../../media/graphics4-a1af.png" mime-type="image/png" height="139" width="104"/></media>
+      </figure>
+    </section>
+  </content>
+</document>

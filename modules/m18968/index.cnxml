@@ -1,0 +1,25 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Me Your Digits!: Results</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>9293642a-2b38-49f3-85d5-e0599442d4af</md:uuid>
+</metadata>
+  <content>
+    <para id="id11465641">Give Me Your Digits!: Results </para>
+    <section id="id3405330">
+      <title>Using test database as input:</title>
+      <para id="id9475204">In order to compare and test the accuracy of our classifiers we randomly select 500 test images and test their accuracy using our identification algorithms (classifiers).</para>
+
+<figure id="fig1"><media id="idp2782288" alt=""><image src="../../media/results.png" mime-type="image/png"/></media><caption>Accuracy of Minimum and Average MSE with FFT and without FFT</caption></figure>
+
+      <para id="id6882833"><title>Reducing Size of Database</title>In general we vary K the number of training samples we randomly select – this effectively reduces the number of images we compare our input to using classifiers. In general as you increase K (effectively increase the size of the database we are comparing to and thusly our chances for finding a good match) we increase the accuracy of our algorithms.</para>
+      <para id="id11375834"><title>Pixel Matching</title>Pixel matching and minimum MSE give the best results. Pixel matching does so well here because the test images and training images we’re created by NIST using the same image processing algorithm and thus match pixel to pixel accurately. It is interesting to note that using the FFT2D does not stray far from the pixel matching result. More extensive testing of different types of nearest neighbors and even neural networks is beyond the scope of this course and enters computer science.</para>
+      <para id="id12795489"><title>Averaging</title>Averaging gives a poorer result because the database per digit is so varied: in theory taking a general average of some digits gives extremely similar answers; this could be the reason for such poor comparison; ~50percent accuracy could signify half of the digits have this poor averaging characteristic. Averaging was originally implemented to rid the chance for out-layers giving erroneous nearest neighbor result, with our random selection of the training database and inputs we should actually be trying to find out-layers (exact) or close to exact matches to our image to get better results. </para>
+    </section>
+    <section id="id10653594">
+      <title>Using camera photo (image acquisition) as an input:</title>
+      <para id="id9002866">Due to limitation of resources we were only able to approximate this data by taking 10 digits (0-9) from 10 people and approximating the accuracy.</para>
+      <para id="id8801311">-FFT2 with minimum mean squared error gave approximately 95% accuracy with adequate spacing between digits – (if not spaced properly bound box will cut off adjacent digits skewing results).</para>
+      <para id="id12561390">-Pixel matching with minimum mean squared error gave approximately 80% accuracy.</para>
+      <para id="id10116681">Reasoning behind this is that the sequence and morphological operation parameters we used are not exactly the same as the ones NIST used to develop their database. Thusly the FFT2 will give more of and averaging effect yielding better results than just strait pixel matching alone.</para>
+    </section>
+  </content>
+</document>

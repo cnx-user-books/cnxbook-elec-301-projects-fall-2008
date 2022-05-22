@@ -1,0 +1,15 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Me Your Digits!: Image Acquisition</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>8729015b-e341-40f1-9c87-837fd619068f</md:uuid>
+</metadata>
+  <content>
+    <section id="id10850460">
+      <title>Give Me Your Digits!: Image Acquisition</title>
+      
+      <para id="id12039577"><title>Camera Setup</title>A Canon XSI Digital SLR was mounted onto a tripod as shown below. A desk lamp was used for additional lighting. More specifically an 18-55mm zoom lens was used at the 18mm (fully zoomed out), the onboard flash was used on manual settings. Handwriting was standardized to half an inch in height with a pilot ballpoint pen to help simplify the subsequent image processing procedure.</para>
+      <figure id="id14043202"><media id="idm9197616" alt=""><image src="../../media/graphics1-ded2.jpg" mime-type="image/jpeg" height="197" width="296"/></media><caption>Camera setup</caption></figure>
+      <para id="id5495953"><title>One Time Manual Cropping</title>The algorithm used requires one line of handwritten digits at a time thus once the image was captured using the camera it was loaded into matlab using the uigetfile –(fancy gui to get filepath and filename) and Imread- (use filepath/filename to load in actual image into matlab workspace) commands. To finish off this step use the imcrop() command to manually crop one line of digits from the image with final product below. Note: this is the only time that there is manually cropping of the image from here on we complete the process algorithmically. Please see improvements on how we could of taken out all manual cropping entirely. </para>
+      <figure id="id12671252"><media id="idm18211680" alt=""><image src="../../media/original.jpg" mime-type="image/jpeg" height="90" width="650"/></media><caption>Photographed and manually cropped image of digits.</caption></figure>
+    </section>
+  </content>
+</document>

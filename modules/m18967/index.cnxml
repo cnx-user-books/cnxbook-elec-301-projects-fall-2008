@@ -1,0 +1,26 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Me Your Digits!: Improvements and Conclusion</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ce10d13d-efd7-45eb-ac27-da3f764a4798</md:uuid>
+</metadata>
+  <content>
+    <section id="id16203965">
+      <title>Give Me Your Digits!: Improvements and Conclusion</title>
+      <section id="element-313"><title>Suggested Improvements to the Digit Identifier</title>
+<para id="id5489322"><title>The Database</title>The database utilized in this project was developed solely for the testing classification techniques (analyzing identification algorithms). The size of the database files and vast diversity in the digits was good enough for our purposes. The USPS uses a similar database which can be found online, this database may be more suitable for input from a camera. More importantly we could expand our identification to letters if we expanded our database to include letters; this was out of the scope of our project as it requires extensive optimization of classifiers.</para>
+      <para id="id23180818"><title>Feature Extraction and Identifiers</title>Feature extraction is possibly one of the areas for improvement. The FFT2D really does not really vary enough from digit to digit and thus is not a great feature extractor. 
+
+Identifiers could be an area of extensive improvement, most notably instead of Nearest Neighbor approaches Neural Networks could of been used to train. An large list of types of classifiers has been compiled by Dr. Yann LeCun at http://yann.lecun.com/exdb/mnist/. </para>
+      <para id="id11402595"><title>Reduce Noise</title>Noise reduction methods can reduce the chance to detect noise as a digit, the many filters that are in the image processing toolbox of matlab could make our system flexible enough to allow crumpled/ paper, smeared ink ect. A big part of making our project more viable in the real world would be to make the parameters of each morphological operator dynamic with different input images. For example detect pen thickness (how thick the lines that make up the handwritten digit) and increase the size of dilate to fill in the larger gap between edges. Edge detection parameter can also be changed to have more precise threshold (lower bounds and upper bounds- see caney edge detection) based on input.</para>
+      <para id="id6572838"> -In more detail one should look into wiener2() command which adaptively filters out noise based on overall variance in the image. This effectively smoothes out edges (especially edges in noise dots) and thusly will reduce detecting edges in noise.</para>
+      <para id="id18583964"> -Another filter that we looked into but did not end up using is medfilt2() which is a median filter which pushes noise out to the boundaries of image and then zero pads the boundaries of the image. Since we have no information at the boundaries of each of our digits this method would have worked with few side effects.</para>
+      <para id="id21591422"><title>Be Prepared for Angled Imput</title>Input images may be angled based on both handwriting styles and/or due to tilt of the paper being photographed. Thusly the same identification algorithms used in this project could be calculated simultaneously with rotated (using imrotate()) versions of the input image.</para>
+      <para id="element-613"><title>Paragraph Cropping </title>We have accomplished the algorithm for cropping individual digits all on the same line. The extensive data from regionprops() command can be further analyzed to read in entire paragraphs of handwriting and even understand spacing and indentation.</para><para id="id23544811"><title>Scanner</title>Finally there are more accurate and faster methods of scanning in handwriting using an industrial scanner like the USPS (lazer technology) or even a convention scanner could greatly improve the quality of images.</para>
+</section>
+
+      <section id="id22571871">
+        <title>Conclusion:</title>
+        <para id="id9355525">With the use of image processing tools &amp; identification algorithms, in our case, the FFT2, minimum MSE, one can achieve high levels of accuracy in hand-written digit recognition. As seen from the results above, we see that pixel matching is superior when using the MNIST test images.</para>
+      </section>
+    </section>
+  </content>
+</document>

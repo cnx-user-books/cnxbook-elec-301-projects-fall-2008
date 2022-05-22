@@ -1,0 +1,19 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>System Specifications</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>52c4716f-3c24-4088-9469-7a1b01942a86</md:uuid>
+</metadata>
+  <content>
+    <list list-type="bulleted" id="id12571749">
+      <item>Used sewing thread string, considered the lightest material and therefore the most sensitive to vibrations; also tried using copper wire and fishing line</item>
+      <item>Instead of tin cans we used paper cups, since the paper diaphragm on the cup’s bottom is more mobile than that of the tin can, meaning it can better drive the string’s vibrations; also considered plastic cups</item>
+      <item>Each cup is raised off the ground on a wooden stand several feet tall, to make sure the audio that leaks from the system does not bounce off the floor and hit the system directly again, causing multipath</item>
+      <item>The stands also allow us to gauge the length at which we keep the cups separated, as the distance determines the tension in the string in between them, and any change in the string’s tension has a tremendous effect on the impulse response, which we cannot afford to change since we are modulating the sub-carriers over very specific frequencies</item>
+      <item>Styrofoam is used to separate the cups from the wooden stands, so that the cups do not vibrate the whole stand as much</item>
+      <item>The receiver cup with the microphone placed in it is padded with foam as well to keep multipath effects at a minimum</item>
+      <item>Speaker used for the transmitter had an output diameter that matched the diameter of the mouth of the cup to minimize leakage of audio from the transmitter</item>
+    </list>
+    <figure id="id11483870">
+      <media id="idm19095904" alt=""><image src="../../media/graphics1-247a.jpg" mime-type="image/jpeg" height="406" width="438"/></media>
+    </figure>
+  </content>
+</document>

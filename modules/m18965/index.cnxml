@@ -1,0 +1,16 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Give Me Your Digits!: Digit Database</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>9ef16f7a-5a60-4143-9190-d66cdb26acab</md:uuid>
+</metadata>
+  <content>
+    <section id="id18639735">
+      <title>Give Me Your Digits!: Digit Database</title>
+      
+      
+      <para id="id3836959"><title>The MNIST database</title>We used a database as a reference for comparing sample inputs. The database is a modified database from the National Institute of Standards and Technology (MNIST) database of handwritten digits. More specifically, we downloaded the database from http://yann.lecun.com/exdb/mnist/ and converted the database into Matlab format using code from http://www.cs.toronto.edu/~hinton/code/converter.m. 
+</para>
+      <para id="element-341">The format of the images in the MNIST database is a 20 by 20 grayscale image centered in a 28 by 28 box using its center of mass. The training set of the database is composed of ~60,000 (5,000 images/dig) images compiled from ~250 writers. The test database is disjoint form the training set and is composed of ~10,000 images (1,000 images/dig). This database was designed by computer scientists for the analyzing of classifiers (identification algorithm).</para><figure id="id20742614"><media id="idm1911616" alt=""><image src="../../media/graphics1-f3e3.jpg" mime-type="image/jpeg" height="380" width="380"/></media><caption>Image of the training database for the digit ‘0’ </caption></figure>
+      
+    </section>
+  </content>
+</document>

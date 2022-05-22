@@ -1,0 +1,165 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Testing Methods of Information Hiding and Watermarking</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>61c8b94b-9e33-4a7f-816a-edf4c641b734</md:uuid>
+</metadata>
+  <content>
+    <section id="id3676812">
+      <title>Testing</title>
+      <section id="id11331836">
+        <title>Aural Tests</title>
+        <para id="id18158651">As our primary objective was to make the changes 
+inaudible, we tested all of our algorithms aurally. </para>
+        <para id="id7563257">We initially tested the algorithms on a 440 Hz tone 
+to ensure that the algorithms were working as expected. (We did not test the FMA 
+on the tone as doing so would have been silly because the tone only has a single 
+frequency with no other frequencies to modify.)</para>
+        <para id="id14743114">We continued our aural testing with a suite of six 
+songs from different genres: classical, hip-hop, oldies, pop, rock, and techno. 
+We adjusted any thresholds and predefined constants to the point of aural 
+imperceptibility. Working within these limits we were then able to modify these 
+constants to maximize bitrate, accuracy, and noise resilience. </para>
+        <para id="id9288014">The following figure details the particular songs 
+chosen and their overall frequency spectrums. </para>
+        <figure id="id16173299"><media id="idm10019568" alt=""><image src="../../media/graphics8-0f78.png" mime-type="image/png" height="450" width="600"/></media><caption>Frequency spectrums of test suite songs</caption></figure>
+        
+      </section>
+      <section id="id12014152">
+        <title>Bitrates</title>
+        <para id="id17112927">Our test suite had a CD quality sampling 
+frequency: 44100Hz, which amounts to 220500 samples for a 5 second long clip. 
+Ideally with no noise it would be possible to use a segment length of 2 samples. 
+This setup translates to 220500/2 = 110250 segments in 5 seconds and 110250/5 = 
+22050bits/sec. I.e. at CD quality, we cannot get more than a 22Kbits/sec data 
+rate. </para>
+        <para id="id15466916">In practice we found that Mat lab was unable to 
+handle this amount of data. We were, however, able to successfully reach 4800 
+segments, or 46 samples per segment. These values translate to 220500/46 = 4793 
+segments in 5 seconds and 958bits/sec. I.e. we reliably demonstrated a 1Kbit/sec 
+data rate.</para>
+      </section>
+      <section id="id18197784">
+        <title>Power Ratios</title>
+        <para id="id18748270">To measure how much we had changed each of the 
+signals by encoding bits, we took a power ratio of the original signal to the 
+output signal. </para>
+        
+        
+<figure id="fig2"><title>Formula for Power Ratio</title><media id="idp2715008" alt="Formula for Power Ratio."><image src="../../media/Power_Ratio_Formula.PNG" mime-type="image/png"/></media><caption>Formula for Power Ratio</caption></figure>
+        <para id="id17215219">We found these ratios for two different input 
+characters: ‘@’ and ‘w’. Because ‘@’ is encoded by 100 0000 in ASCII, these 
+power ratios measure the minimum amount of change we make to our signals. 
+Because ‘w’ is encoded by 111 0111 in ASCII, these power ratios measure the 
+maximum amount of change we make to our signals. </para>
+        <table id="id15672280" summary="">
+          <tgroup cols="7">
+            <colspec colnum="1" colname="c1"/>
+            <colspec colnum="2" colname="c2"/>
+            <colspec colnum="3" colname="c3"/>
+            <colspec colnum="4" colname="c4"/>
+            <colspec colnum="5" colname="c5"/>
+            <colspec colnum="6" colname="c6"/>
+            <colspec colnum="7" colname="c7"/>
+            <tbody>
+              <row>
+                <entry namest="c1" nameend="c7">Power Ratios</entry>
+              </row>
+              <row>
+                <entry/>
+                <entry namest="c2" nameend="c3">FMA</entry>
+                <entry namest="c4" nameend="c5">PSA</entry>
+                <entry namest="c6" nameend="c7">EA</entry>
+              </row>
+              <row>
+                <entry/>
+                <entry>@</entry>
+                <entry>w</entry>
+                <entry>@</entry>
+                <entry>w</entry>
+                <entry>@</entry>
+                <entry>w</entry>
+              </row>
+              <row>
+                <entry>classical</entry>
+                <entry>1.0052</entry>
+                <entry>1.0362</entry>
+                <entry>1.0056</entry>
+                <entry>1.0352</entry>
+                <entry>0.9992</entry>
+                <entry>0.9955</entry>
+              </row>
+              <row>
+                <entry>hip/hop</entry>
+                <entry>1.0079</entry>
+                <entry>1.0507</entry>
+                <entry>1.0068</entry>
+                <entry>1.0413</entry>
+                <entry>0.997</entry>
+                <entry>0.9818</entry>
+              </row>
+              <row>
+                <entry>oldies</entry>
+                <entry>1.0133</entry>
+                <entry>1.0747</entry>
+                <entry>1.0069</entry>
+                <entry>1.0425</entry>
+                <entry>0.9986</entry>
+                <entry>0.9897</entry>
+              </row>
+              <row>
+                <entry>pop</entry>
+                <entry>1.0115</entry>
+                <entry>1.0776</entry>
+                <entry>1.0063</entry>
+                <entry>1.0388</entry>
+                <entry>0.9975</entry>
+                <entry>0.9842</entry>
+              </row>
+              <row>
+                <entry>rock</entry>
+                <entry>1.0131</entry>
+                <entry>1.0628</entry>
+                <entry>1.0072</entry>
+                <entry>1.0419</entry>
+                <entry>0.9975</entry>
+                <entry>0.9888</entry>
+              </row>
+              <row>
+                <entry>techno</entry>
+                <entry>1.0155</entry>
+                <entry>1.0897</entry>
+                <entry>1.0077</entry>
+                <entry>1.0463</entry>
+                <entry>0.9951</entry>
+                <entry>0.9723</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        
+        <para id="element-608">Table 1. Power Ratios for each algorithm encoding one 1 per seven bits (“@”) and one 0 per seven bits (“w”)</para><figure id="id18552830"><media id="idm5790416" alt=""><image src="../../media/graphics9-ab98.png" mime-type="image/png" height="357" width="441"/></media><caption>Chart of Power Ratios</caption></figure>
+        
+        <para id="id14865440">The most important feature of these results is 
+that all of our power ratios are very close to one, indicating that we have not 
+changed the signal very much. </para>
+        <para id="id17805215">We also see some variation across the different 
+songs because which values are changed and by how much depends on the song; for 
+example, with the PSA, the delay causes us to drop samples at the end of the 
+segment, and the power in the dropped samples depends on the song.</para>
+        <para id="id17810965">As expected, for ‘w’, the power ratio is further 
+from one as more one-bits are encoded. Because adding an echo can be variously 
+constructive or deconstructive, the power ratio does not reflect the number of 
+one-bits as much as FMA and PSA. This fact also explains why the power ratios 
+for the EA are generally lower than those for the FMA and PSA. </para>
+        <para id="id12625646">Finally for FMA and PSA the power of the marked 
+signal was lower than the power of the original signal. For the FMA, this 
+decline in power was expected because we scaled frequencies down, thus, 
+deceasing the power in the frequency spectrum, which, as Parseval’s Theorem 
+tells us, corresponds to decreasing the power of the signal. For the PSA, this 
+decline in power was also expected because the PSA delays the signal in various 
+segments, dropping samples in the marked signal. The EA was the only case in 
+which the marked signal had greater power than the original signal because the 
+echoes in this case were more constructive than destructive. </para>
+      </section>
+    </section>
+  </content>
+</document>

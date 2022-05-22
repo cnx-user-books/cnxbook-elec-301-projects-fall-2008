@@ -1,0 +1,20 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Acknowledgements and References</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ebaf1b4d-3021-47dc-8481-2284fa204704</md:uuid>
+</metadata>
+  <content>
+    <section id="element-185"><title>Acknowledgements</title>
+<para id="element-648">
+
+</para></section><para id="element-91">We would like to thank Dr. Richard Baraniuk and Dr. Don Johnson from the Rice University Department of Electrical and Computer Engineering for their unrelenting support throughout the course of this project.</para><section id="element-221"><title>References</title>
+<para id="element-216">
+
+</para></section><list id="id11732997" list-type="bulleted"><item>DIRECTIVE 95/47/EC OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL on the use of standards for the transmission of television signals</item>
+      <item>ETSI Standard: EN 300 744 V1.5.1 (2004-11).</item>
+      <item>http://www.commsdesign.com/article/printableArticle.jhtml?articleID=12805708 Agere gets Sirius about satellite radio design</item>
+      <item>http://www.citizens.coop/aboutus/newsreleases/TrulyMobileWireless.pdf</item>
+      <item>Nortel 3G World Congress Press Release</item>
+      <item>http://en.wikipedia.org/wiki/OFDM</item>
+    </list>
+  </content>
+</document>

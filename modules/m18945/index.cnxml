@@ -1,0 +1,50 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Background</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>c13dfdf1-6519-4ac1-b267-572ce3cccd98</md:uuid>
+</metadata>
+  <content>
+    <section id="id9019829">
+      <title>Warp and Weft</title>
+      <para id="id11740530"><emphasis>Warp</emphasis> – the vertical threads mounted in a loom. Warps are usually well aligned with a fairly uniform spacing.</para>
+      <para id="id14578022"><emphasis>Weft</emphasis> – the horizontal threads mounted in a loom. Wefts are usually threaded back and forth through the warp in an interlaced fashion. Therefore the weft shows more variability than the warp.</para>
+    </section>
+    <section id="id10804583">
+      <title>Vertical vs. Horizontal</title>
+      <para id="id14549995">An artist may orient the canvas on the stretcher in whatever way once he or she cuts a piece of canvas fro a painting. But we could expect the thread count having the narrower distribution to be the warp direction.</para>
+      <para id="id13175285">In our model, the vertical threads create oscillations of x-ray intensity in the x direction, which leads to a horizontal frequency component. The similar idea applies to the horizontal threads and the vertical frequency.</para>
+    </section>
+    <section id="id7159204">
+      <title>Canvas Texture Modeling</title>
+      <para id="id13864023">Canvas texture can be modeled as a sum of two sinusoids having nearly orthogonal spatial frequencies.</para>
+      <para id="id14688631">c(x) = p(x) + A/2 * [(2 + ahsin (2πfh*x + θh) + avsin(2πfv*x +θv)]</para>
+      <para id="id3911710">The quantity c(x) is the canvas x-ray image that depends on the 2D spatial variable x; p(x) represents the artist’s contribution (the painting) to the x-ray. The constants A, ah and av determine the average intensity and the amplitudes of the horizontal and vertical weave. fv and fh are the vector frequencies corresponding to the vertical and horizontal thread counts, respectively.</para>
+    </section>
+    <section id="id11754273">
+      <title>X-Ray Image</title>
+      <para id="id14294167">Our project uses X-ray images of a painting as the raw data.</para>
+      <para id="id14633357">The thread used to make a canvas is transparent to x-rays. Fortunately, artists usually prepared their canvases with a white undercoat to smooth the surface. The small variations in undercoat thickness filling the valleys of the canvas weave lead to variations in x-ray opacity that can be measured. The greater the radiographic-absorbing paint thickness along the bean, the greater the opacity, meaning that x-ray image intensity variations correspond to paint thickness variations.</para>
+      <para id="id7210014">Figure 2 is the X-ray image of Figure 1- van Gogh’s <term>Portrait of an Old Man with a Beard </term>(F205/JH971).</para>
+      <para id="id12303438">
+        <figure id="id14218127">
+          <media id="idp5972864" alt=""><image src="../../media/graphics1-07c6.jpg" mime-type="image/jpeg" height="666" width="494"/></media>
+        </figure>
+        <figure id="id14677092">
+          <media id="idm3483472" alt=""><image src="../../media/graphics2-b6ac.png" mime-type="image/png" height="605" width="461"/></media>
+        </figure>
+      </para>
+    </section>
+    <section id="id14367889">
+      <title>Weave Density</title>
+      <para id="id11075846">Thread counting algorithms seek the weave density, measured in threads/cm, within a swatch and to study how these counts vary throughout the painting.</para>
+    </section>
+    <section id="id10789005">
+      <title>Short-Space Spectrum</title>
+      <para id="id11919440">2-D Fourier transforms of small areas reveal isolated peaks at the proper vertical and horizontal frequencies.</para>
+      <para id="id12564871">A square section is extracted from the x-ray, the average subtracted and window applies to obtain spectral detail using the 2D Fourier transform.</para>
+      <para id="id5204524">Figure 3 represents a simple case: a 1” × 1” swatch from x-ray image and the detailed spectrum computed from a 0.5” × 0.5” square located in the upper left corner of the swatch. The wedges indicate areas where weave-related spectral peaks are found.</para>
+      <figure id="id11756324">
+        <media id="idp1468288" alt=""><image src="../../media/graphics3-c508.png" mime-type="image/png" height="398" width="600"/></media>
+      </figure>
+    </section>
+  </content>
+</document>

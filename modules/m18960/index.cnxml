@@ -1,0 +1,19 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>b5a064e4-86e5-4c4d-8c3f-e3cd2ee2962d</md:uuid>
+</metadata>
+  <content>
+    <section id="id21512319">
+      <title>Why Discrete Multi-tone Modulation?</title>
+      <para id="id22844779">Discrete multi-tone modulation, or DMT, is a modulation method often used for transmitter-receiver systems that have extremely poor channel characteristics. In our case, we are using a string and tin-can telephone; one of those toys that you may know as a childhood novelty where two people can communicate with each other by attaching the ends of a string to the bottoms of two tin cans and having one person speak into one can while the other listens. The string used to communicate between the two cans is a very bad channel for data transmission, which is why you cannot always distinctly understand what someone is trying to say in a tin-can telephone. That’s where DMT should come in.</para>
+    </section>
+    <section id="id10239268">
+      <title>What is DMT?</title>
+      <para id="id23345564">This modulation scheme uses frequency-division multiplexing of several sub-carriers that each carry a portion of the data that is intended for sending across the channel. The sub-carriers are not far from each other in frequency, but they are all orthogonal so they do not interfere. The sub-carrier itself can be modulated using any desired scheme as would be done for a single-carrier modulation scheme. These sub-carriers are then sent together across the channel.</para>
+    </section>
+    <section id="id21715625">
+      <title>What are the advantages of DMT for us?</title>
+      <para id="id3947214">The DMT method is simply slowly modulating narrowband signals as opposed to quickly modulating a wideband signal, meaning channel equalization is simplified. Then if we find out the passband for our string channel, which will probably be quite narrow, we can use DMT to make efficient use of such limited frequency space. DMT is also fairly immune to multipath and attenuation, which will be significant problems for our system as well.</para>
+    </section>
+  </content>
+</document>

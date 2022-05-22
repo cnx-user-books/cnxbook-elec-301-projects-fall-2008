@@ -1,0 +1,12 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- Introduction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>2eae3d45-abfc-4d89-a4fe-f99e7d1f863d</md:uuid>
+</metadata>
+  <content>
+    <section id="id17951942">
+      <title>Introduction</title>
+      <para id="id4346368">In common practice, there are few situations in which one can record a single audio source by itself; however, in signal analysis it is often useful to operate on just one component at a time. Consider, for example, what has come to be known as the Cocktail Party problem. A recording of a Cocktail party contains multiple sources, but most recording devices and formats combine all the sources into one signal. Home video makers might want to isolate a voice for a digital scrapbook, or a team of students might want to separate all the speakers in order to automatically generate a transcript of a conversation and properly attribute the lines to individual sources. There are also several situations in which one might run spectral analysis on just one person's voice.</para>
+      <para id="id13425925">There are a large number of situations in which it is beneficial to isolate individual signals either for individual playback or for individual analysis. We aim to explore the methods of isolating individual sources by developing techniques that use Independent Component Analysis tools in MATLAB.</para>
+    </section>
+  </content>
+</document>

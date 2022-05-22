@@ -1,0 +1,26 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>2c099bb0-1250-4f83-a20e-1f7d669efd24</md:uuid>
+</metadata>
+  <content>
+    <section id="id5783348">
+      <title>Abstract</title>
+      <para id="id4911528">A canvas can be characterized by the vertical and horizontal weave densities while the actual painting serves as an additive signal that only distracts from the thread-counting process. The thread counting algorithm and the spectral techniques we employ in our project can analyze weave density for entire paintings with an accuracy comparable to human measurements more efficiently.</para>
+    </section>
+    <section id="id4905473">
+      <title>Motivation</title>
+      <para id="id4979250">Van Gogh Museum of Amsterdam has a collection of artist's works and is looking for a more advanced analysis for sequencing paintings in addition to the traditional manual methods. Our whole-painting analysis shows that frequency distributions should match if two paintings are from the same canvas roll. This could better support the forensic evidence quantitatively when comparing two paintings.</para>
+    </section>
+    <section id="id6281554">
+      <title>Approach</title>
+      <section id="id3678433">
+        <title>Current Approach</title>
+        <para id="id6266273">Human measurement – weave threads are manually counted and compared. This approach is inefficient and may not be accurate.</para>
+      </section>
+      <section id="id4900625">
+        <title>Our New Approach</title>
+        <para id="id3727400">Use thread counting algorithm and spectral techniques to analyze weave density for entire paintings. Frequency distributions of weave densities should match if two paintings are from same canvas roll.</para>
+      </section>
+    </section>
+  </content>
+</document>

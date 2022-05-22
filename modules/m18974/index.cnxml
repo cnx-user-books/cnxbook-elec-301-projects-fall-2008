@@ -1,0 +1,11 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Selective Listening: Drown Out the Noise- FICA Past Work</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>1b1053d4-ccf2-40eb-8bfd-a3f20d3a4fe2</md:uuid>
+</metadata>
+  <content>
+    <section id="id12323333">
+      <title>FICA Past Work</title>
+      <para id="id12932266">The process of singling out individual components is known as Independent Component Analysis (ICA). Research and Development at the Helsinki University of Technology has led to the distribution of a Fast ICA package for MATLAB, which we used for most of our work. A 301 research group from 2007 effectively demonstrated that FastICA neatly separates signals that have been mixed in MATLAB, but failed in situations where mixing occured using microphones that were exposed to multiple sources at once. This latter setup is a scenario that needed to work in order to improve the effectiveness of ourmethod in the field.</para>
+    </section>
+  </content>
+</document>

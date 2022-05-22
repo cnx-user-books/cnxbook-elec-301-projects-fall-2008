@@ -1,0 +1,41 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Conclusions and Future Work</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>7f5c96cf-e4e3-4083-a2be-ba50351f5561</md:uuid>
+</metadata>
+  <content>
+    <section id="id10689611">
+      <title>Conclusions</title>
+      <para id="id5419047">Clearly, our correlation analysis result is consistent with the matching of F205 and F260 as we can see from the two spectra. <term>And in fact, F205 and F260 were painted by Van Gogh in the same month in 1885!</term></para>
+      <para id="id5106486">The spectral techniques of our project offer a more efficient and accurate approach to analyzing and sequencing paintings than manual methods. Whole-painting analysis could provide quantitative support for forensic evidence.</para>
+      <para id="id9801322">The following figure 1 shows the mapping result between all six paintings we worked on. Some paintings have multiple x-ray images due to its big size. Hot spots represent “good matches”. Hot spots along the diagonal are expected as weave density deviations should match in the same painting.</para>
+      <figure id="id11603619">
+        <media id="idm2666080" alt=""><image src="../../media/graphics1-3c05.jpg" mime-type="image/jpeg" height="579" width="600"/></media>
+      </figure>
+      <para id="id10248130">Figure 2 shows the same mapping result but with only hot spots left. (With correlation coefficient greater than 0.75)</para>
+      <para id="id11657668">
+        <figure id="id5492351">
+          <media id="idm3988064" alt=""><image src="../../media/graphics2-a352.jpg" mime-type="image/jpeg" height="438" width="584"/></media>
+        </figure>
+      </para>
+    </section>
+    <section id="id6337118">
+      <title>Future Work</title>
+      <section id="id4693711">
+        <title>Elimination of NaNs in Thread Counting Densities</title>
+        <para id="id7013319">NaNs are the result of outrange or multiple frequency peaks in the short time Fourier analysis for sample swatches. The reason for these abnormal frequencies are uncertain yet, might due to the x-ray scanning process, imperfect alignment of threads, etc.</para>
+      </section>
+      <section id="id10964606">
+        <title>Overlap and Critical Values</title>
+        <para id="id10385905">How big the correlation coefficient should be when we can say that two paintings match? This could vary much according to the size of paintings, alignment directions (warp or weft) and other facts. In addition, we noticed some peaks usually appear at the edge of our correlation plots. This is because small overlap sometimes results in matching accidently. We are working to find a threshold value for overlap and correlation coefficient.</para>
+      </section>
+      <section id="id6318278">
+        <title>Averages vs. Deviations</title>
+        <para id="id10894519">Another part of our project involves the Thread Count Average match between paintings which could be used collaborate with the result shown here to reach a more convincing analysis for art forensics.</para>
+      </section>
+      <section id="id11671930">
+        <title>Applications in Other Fields</title>
+        <para id="id10385538">Our research philosophy could extend to many related signal processing areas such as speech analysis, image identification and so on. The methods and techniques we developed could be employed not only for canvas paintings but also similar texture materials.</para>
+      </section>
+    </section>
+  </content>
+</document>

@@ -1,0 +1,79 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Birdcall Identification: Matched Filter Implementation</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>85689497-f515-4124-8c9d-6dd4cb04bafe</md:uuid>
+</metadata>
+  <content>
+    <section id="id47095268">
+      <title>Matched Filter Implementation</title>
+      <section id="id47550019">
+        <title>Matched Filter</title>
+        <para id="id43684239">Matched filters do an excellent job of identifying 
+sound samples, so we decided to apply the method here to identify birdcall audio 
+files. A matched filter searches for a sample clip, the filter, within a longer 
+audio recording. Convolution compares the filter to the longer signal at each 
+possible offset. The greater the maximum amplitude of the convolution result, 
+the stronger the match. By having a different filter for each birdcall, we can 
+search an audio file to identify which birdcall it contains.</para>
+        <para id="id46615300">The matched filter algorithm is as follows:</para>
+        <list list-type="enumerated" id="id46616230">
+          <item>Reverse the filters in the time-domain.</item>
+          <item>Normalize the energy of each of the filters.</item>
+          <item>Convolve each filter with the input signal and take the maximum 
+amplitude of the resulting convolution signals.</item>
+          <item>The filter that gives us the greatest maximum value indicates 
+which birdcall the signal contains.</item>
+        </list>
+        <figure id="id46861243">
+          <media id="idm5524352" alt=""><image src="../../media/graphics1-d259.jpg" mime-type="image/jpeg" height="374" width="599"/></media>
+        </figure>
+      </section>
+      <section id="id47846765">
+        <title>Filter Library Creation</title>
+        <para id="id46870954">Our first step in implementing the matched filter 
+algorithm was to create a library of birdcall filters. To do this, we looked at 
+the spectrograms of a few sample audio files of the same birdcall and selected a 
+portion that looked representative of the call. <figure id="id47300928"><media id="idm5965728" alt=""><image src="../../media/bobcalls.jpg" mime-type="image/jpeg" height="547" width="600"/></media></figure></para>
+        <para id="id46389467">For each birdcall, one of the representative audio 
+segments was saved as a filter. Because the first two steps of the above matched 
+filter algorithm affect only the filter library and are independent of the input 
+signal, we reversed the filters and normalized their energy before saving them 
+to wave files.</para>
+      </section>
+      <section id="id46706508">
+        <title>Matlab Implementation</title>
+        <para id="id46093340">The following MATLAB script performed our matched 
+filter algorithm. When given a wave file as input, it would tell us how well the 
+audio sample matched against each of the 6 birdcall filters.</para>
+        <note type="Note" id="idm2889952"><label>Note</label>We used circular convolution instead of linear 
+convolution because it computed much faster. MATLAB's built-in cconv function 
+zero-pads the two signals before multiplying their FFTs, generating the 
+convolution result we are looking for.</note>
+        <code display="block" id="idm6661536">function result = birdcheck(file)
+    [sig, fs, nbits] = wavread(file);
+    signal=sig(:,1);
+    signal=signal/max(abs(signal));
+    filters{1}=wavread('filters/bob.wav');
+    filters{2}=wavread('filters/lt.wav');
+    filters{3}=wavread('filters/lw.wav');
+    filters{4}=wavread('filters/pygmy.wav');
+    filters{5}=wavread('filters/red.wav');
+    filters{6}=wavread('filters/redcry.wav');
+    for i=1:6
+      filter=filters{i};
+      result(i) = max(abs(cconv(signal,filter(end:-1:1))));
+    end 
+  end
+    </code>
+        <para id="id46216873">The script was able to correctly identify several 
+birdcalls. It did fail to correctly identify four cases in two 
+categories:</para>
+        <list list-type="enumerated" id="id47131108">
+          <item>Two of our loon tremolo files registered as pygmy owl common 
+songs.</item>
+          <item>Two of our red-tailed hawk shriek files registered as red-tailed 
+hawk cries.</item>
+        </list>
+      </section>
+    </section>
+  </content>
+</document>

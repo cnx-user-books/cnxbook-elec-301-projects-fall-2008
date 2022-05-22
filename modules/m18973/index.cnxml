@@ -1,0 +1,39 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Key Results and Conclusion</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>f3c055cc-dcae-4731-a41d-c09d8d0b9cf3</md:uuid>
+</metadata>
+  <content>
+    
+    
+    
+    <section id="element-111"><title>Key Results</title>
+<para id="element-155">
+The first implementation of our system involved sending an impulse over the sewing thread channel. The impulse wave was created by recording a quick flick on the microphone and then using the Sound Recorder on the computer to make a wave file out of it. This wave file can easily be plotted in MATLAB to see how the impulse looks like and if it actually produces a very high amplitude compared to the noise, in as little time as possible.
+</para></section><para id="id12623583">Once the impulse was received at the receiver cup, the microphone captured this sound and again this was saved as a wave file on the computer. This wave file can easily be read into MATLAB as a vector using the wavread function. The next step is to take the FFT of this impulse response to figure out the transfer function of the channel. The following plot shows you how the transfer function (frequency domain representation of the impulse response) looked like.</para>
+    <figure id="id3266282">
+      <media id="idp4606560" alt=""><image src="../../media/graphics1-b6b1.png" mime-type="image/png" height="288" width="651"/></media>
+    </figure>
+    <para id="id7719893">As you can see in the figure above, there is a major pass band at about 250Hz. This is exactly what we chose to send our data stream over the channel. A closer look would reveal that there are actually several other smaller peaks in the transfer function too, which could possibly be used to modulate data at different frequencies, and hence utilize the Frequency Division Multiplexing scheme.</para>
+    <para id="id5228131">The actual data stream that we sent over the channel involved modulating at 250Hz with a sine wave of an appropriate period. The modulated sine wave is shown below. Each point on the wave represent one data bit that we were sending over the channel (0s, 1s and -1s).</para>
+    <figure id="id5187489">
+      <media id="idm14831232" alt=""><image src="../../media/Modsine.jpg" mime-type="image/jpeg" height="233" width="651"/></media>
+    </figure>
+    <para id="id3927007">Also, to reduce the amount of bit errors at the receiving end, we sent multiple replications of the data stream one after the other. This allowed us to compare multiple strings of data at the receiver and then optimize the choice of the string that best represented the data at the transmitting end.</para>
+    <para id="id4132784">The spectrogram below will help you visualize the signal we sent over the channel.</para>
+    <figure id="id4200857">
+      <media id="idp4634736" alt=""><image src="../../media/Spectro.jpg" mime-type="image/jpeg" height="232" width="651"/></media>
+    </figure>
+    <para id="id4175161">The figure above helps us prove and reiterate that the data we sent over the channel was in fact modulated at 250Hz – the horizontal dark red line at 250Hz suggests the major presence of that particular frequency in the transmitted data. Besides that, the multiple vertical sections that you see in the center of the spectrogram represent the data bits that are being sent over the channel at that particular instance. The presence of multiple sections indicates replication of the data bits, as I mentioned before.</para>
+    <para id="id3851804">Another important feature of this spectrogram is the presence of two impulse signals before and after the data bit stream. It is clearly visible that impulses of the same kind have been sent along with the actual data to help synchronize the receiver with the transmitter (as explained in the Channel Specifications module).</para>
+    
+    <section id="element-576"><title>Conclusions</title>
+<para id="element-218">Here are some of the important conclusions and take aways from our project:</para></section>
+    <list list-type="bulleted" id="id12451631">
+      <item>DMT modulation allows us to transmit the word “Hello” over a channel as inconsistent as a string by taking different channel characteristics such as channel capacity, frequency pass bands and noise introduction into account before transmitting data</item>
+      <item>Efficient data transmission fully exploits the bandwidth of the channel by using frequency division multiplexing by sending small, parallel blocks of data on orthogonal carriers</item>
+    </list>
+    <list list-type="bulleted" id="id13876064">
+      <item>Synchronization is one of the major challenges of using DMT modulation. One method of synchronizing the transmitted and received signals is to send loud bursts before and after the relevant data. This allows us to mark the start and end of the data in the received signal</item>
+    </list>
+  </content>
+</document>

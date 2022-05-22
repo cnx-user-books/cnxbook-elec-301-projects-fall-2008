@@ -1,0 +1,21 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Combining Results - Background Subtraction + Projective Geometry</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>d53f6438-a97a-40fa-8c7e-2c6c9e4eb9c2</md:uuid>
+</metadata>
+  <content>
+    <section id="id10989989">
+      <title>Combining Our Results – Projective Geometry + Background Subtraction</title>
+      <para id="id5854508"><title>Combining Our Results</title></para>
+      <para id="id11566094">By combining the result from our two parts, it is possible to tract the location of the object. As mentioned earlier, we need to use two different camera capturing image from different angle. This is because using one camera cannot differentiate depth and height. So by using two cameras, we can superimpose the two images (of world plane) and find an accurate location of the object(See figure 1 for result).</para>
+      <figure id="id11097148"><media id="idm5856448" alt=""><image src="../../media/graphics1-fd2a.png" mime-type="image/png" height="232" width="358"/></media><caption> Result after we combine the two processes (from 2 different cameras)</caption></figure>
+      <section id="id11926492">
+        
+        <para id="id6796799">We represent our result in the form of Weight Particles plots (shown in figure 2). By summing the two plot above (c, d), square this resulting sum and divide it with the sum of all the value in the matrix -&gt; matrix represents the weights of the final particles. If you plot this matrix, you will get the plot (as below) that represents the probability distribution of the target in x-y space.</para>
+        <para id="id4509810">
+          <figure id="id12866432"><media id="idm4898736" alt=""><image src="../../media/graphics2-bc0e.png" mime-type="image/png" height="205" width="341"/></media><caption>Weighted Particles Plots </caption></figure>
+        </para>
+        
+      </section>
+    </section>
+  </content>
+</document>

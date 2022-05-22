@@ -1,0 +1,9 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Decoding Information Hidden in Audio for Watermarking</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>f61e2351-28cc-471b-9af7-a14167e92be3</md:uuid>
+</metadata>
+  <content>
+    <para id="delete_me">To decode, our scheme needs certain information about the original signal.  We need to know how many segments were created and the relevant, comparable value(s) for each segment.  For simplicity’s sake we simply input the original signal, though it would have been possible to not repeat this work.</para><para id="element-829">Our decoding algorithms take the marked signal ŝ(t) and segment it in the time domain as in the encoding algorithms.  We next compare each segment of ŝ(t) to the original s(t) value.  If the values are the same it was a zero.  If the values have changed it was a one.</para><para id="element-168">To decide whether change has occurred, we subtract the proper values and create a sum of the differences, i.e. a scalar representing the amount of change.  We then compare this scalar to some threshold.  For marked signals with no noise, this threshold can be 0.</para><figure id="fig1"><title>Diagram of Decoding Algorithm</title><media id="idp529680" alt="Diagram of Decoding Algorithm."><image src="../../media/Decoding_Algorithm_Diagram.PNG" mime-type="image/png"/></media><caption>Diagram of Decoding Algorithm</caption></figure>   
+  </content>
+  
+</document>

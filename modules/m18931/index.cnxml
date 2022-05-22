@@ -1,0 +1,2622 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml" xmlns:bib="http://bibtexml.sf.net/">
+  <title>Signal Denoising using Wavelet-based Methods</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>fb2c7340-b3be-41b1-b09c-f222b54c9894</md:uuid>
+</metadata>
+  <content>
+    <para id="id2253708">Signal Denoising using Wavelets-based Methods
+Ioannis Kougioumtzoglou, Isaac Hernandez-Fajardo, Georgios Evangelatos</para>
+    <para id="id2253722">and Xin Ming.</para>
+    <para id="id2253728">
+      <emphasis>George R. Brown School of Engineering, Rice University</emphasis>
+    </para>
+    <para id="id2253737">
+      <emphasis> Houston, TX - USA</emphasis>
+    </para>
+    <section id="cid1">
+      <title>Introduction</title>
+      <para id="id2253752">The basic idea which lies behind wavelets is the representation of an arbitrary function as a combination of simpler
+functions, generated as scaled and dilated versions of a particular oscillatory “mother” function.</para>
+      <para id="id2253763">Late Jean Morlet, a geophysical engineer, introduced the term “wavelet” while attempting to analyze signals
+related to seismic data. The mathematical formulation of the wavelet transform and its inverse was rigorously
+established by Grossman and Morlet citep(<link target-id="bid0"/>). Since then, ideas from diverse scientific
+fields have resulted in developing wavelets into a powerful analysis tool.</para>
+      <para id="id2253787">The term <emphasis>wavelet</emphasis> is often used to denote a signal located in time with a concentrated amount of energy
+citep(<link target-id="bid1"/>). This “mother” wavelet is used to generate a set of “daughter”functions through the operations
+of scaling and dilation applied to the mother wavelet. This set forms an orthogonal basis that allows, using inner products,
+to decompose any given signal much like in the case of Fourier analysis. Wavelets, however, are superior to Fourier
+analysis for time information is not lost when moving to the frequency domain. This property makes them suitable for
+applications from diverse fields where the frequency content of a signal as well as the energy's temporal location
+is valuable.</para>
+      <para id="id2253816">The wavelets application of interest for this work is their use for data analysis, specifically for signals
+denoising. Denoising stands for the process of removing noise, i.e unwanted information, present in an unknown signal.
+The use of wavelets for noise removal was first introduced by Donoho and Johnstone citep(<link target-id="bid2"/>).
+The shrinkage methods for noise removal, first introduced by Donoho citep(<link target-id="bid3"/>), have led to a variety of
+approaches to signal denoising.</para>
+      <para id="id2253846">This work presents a revision of the wavelets basic theory. Definitions of mother wavelets, wavelets
+decomposition and its advantage over Fourier analysis are discussed in Section 1. Section 2 presents a summary of
+basic methods developed for noise removal. Their main features and limitations are presented, and a comparison study
+taken into account computational efficiency is performed. Section 3 introduces an example application for denoising
+methods. A given function contaminated with Gaussian additive noise is used as testbed for the described methods.
+Conclusions about the performance of the denoising procedures and the utility of using wavelet decomposition for this
+type of problem are presented.</para>
+    </section>
+    <section id="cid2">
+      <title>Wavelet Decomposition Basics</title>
+      <section id="uid1">
+        <title>Historical note</title>
+        <para id="id2253876">The term <emphasis>wavelet</emphasis> was first introduced by Jean Morlet while working on the analysis of signals for
+seismic analysis on oil-related projects. Before Morlet's work remarkable contributions were developed by Haar citep(<link target-id="bid4"/>)
+and Zweig in 1975. After the work of Morlet and Grossmann on the definition of the continous wavelet
+transform (CWT), several developings have followed. The work of researchers as Stromberg, Duabechies, Mallat and Newland,
+among others, has pushed forward the theoretical frontiers of wavelets-based orthogonal decomposition and also augmented
+the scope of possible application fields.</para>
+      </section>
+      <section id="uid2">
+        <title>Basic concepts</title>
+        <para id="id2253918">A review of basic concepts in the wavelets framework is presented in next lines. This review is based upon
+burrus1988.</para>
+        <para id="id2253932">The term <emphasis>wavelet</emphasis> is mostly used for denoting a particular wave whose energy is concentrated in a specific
+temporal location. A wavelet is therefore a known signal with some peculiar characteristics that allow it to be
+employed for studying the properties of other signals simultaneously in the frequency and time domains.
+An typical plot of a wavelet is shown in <link target-id="uid3"/></para>
+        <figure id="uid3" orient="horizontal">
+          <media id="idp4159968" alt=""><image src="../../media/wavelet1.png" mime-type="image/png" width="637"/><image for="pdf" src="../../media/wavelet1.eps" mime-type="application/postscript" print-width="7.5cm"/></media>
+          <caption>Daubechies wavelet <m:math><m:mrow><m:mi>ψ</m:mi><m:mi>D</m:mi><m:mn>20</m:mn></m:mrow></m:math> citep(<link target-id="bid1"/>)</caption>
+        </figure>
+        <para id="id2253985">Based on a particular wavelet, it is possible to define a <emphasis>wavelet expansion</emphasis>. A wavelet expansion is the
+representation of a signal in terms of an orthogonal collection of real-valued functions generated by applying
+suitable transformations to the original given wavelet. These functions are called “daughter” wavelets while the
+original wavelet is dubbed “mother” wavelet, acknowledging its function as source of the orthogonal collection.
+If <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is a given signal to be decomposed, then it is possible to represent the signal as:</para>
+        <equation id="uid4">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+                <m:mo>∑</m:mo>
+                <m:mi>i</m:mi>
+              </m:munder>
+              <m:msub>
+                <m:mi>a</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:msub>
+                <m:mi>ψ</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2254082">In equation <link target-id="uid4"/>, <m:math><m:mrow><m:msub><m:mi>ψ</m:mi><m:mi>i</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> are the orthogonal basis functions, and the coefficients <m:math><m:msub><m:mi>a</m:mi><m:mi>i</m:mi></m:msub></m:math> can be found
+through the inner product of <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the functions <m:math><m:mrow><m:msub><m:mi>ψ</m:mi><m:mi>i</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> (Equation <link target-id="uid5"/>).</para>
+        <equation id="uid5">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>a</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mrow>
+                <m:mrow>
+                  <m:mo>〈</m:mo>
+                  <m:msub>
+                    <m:mi>a</m:mi>
+                    <m:mi>i</m:mi>
+                  </m:msub>
+                  <m:mo>,</m:mo>
+                  <m:msub>
+                    <m:mi>ψ</m:mi>
+                    <m:mi>i</m:mi>
+                  </m:msub>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>t</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>〉</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mo>∫</m:mo>
+                <m:mi>f</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:msub>
+                  <m:mi>ψ</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mi>d</m:mi>
+                <m:mi>t</m:mi>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2254497">The previous equations represent the general formulation for orthogonal decomposition, and so they are the same equations
+discussed in the particular case of Fourier analysis. In the case of wavelets expansion, and consequently with their
+definition, the wavelets basis functions have two integer indexes, and Equation <link target-id="uid6"/> must be rewritten as</para>
+        <equation id="uid6">
+          <m:math mode="display">
+            <m:mrow>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munder>
+                <m:mo>∑</m:mo>
+                <m:mi>j</m:mi>
+              </m:munder>
+              <m:munder>
+                <m:mo>∑</m:mo>
+                <m:mi>k</m:mi>
+              </m:munder>
+              <m:msub>
+                <m:mi>a</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:msub>
+                <m:mi>ψ</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2254581">Equation <link target-id="uid6"/> is the <emphasis>wavelet expansion</emphasis> of <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> while the collection of coefficients <m:math><m:msub><m:mi>a</m:mi><m:mrow><m:mi>j</m:mi><m:mo>,</m:mo><m:mi>k</m:mi></m:mrow></m:msub></m:math> is
+the discrete wavelet transform (DWT) of <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</para>
+      </section>
+      <section id="uid7">
+        <title>Characteristic of wavelet expansions</title>
+        <para id="id2254654">The properties and hence advantages of a familiy of wavelets depend upon the mother wavelet features. However, a
+common set of features are shared by the most useful of them citep(<link target-id="bid1"/>).</para>
+        <list id="id2254670" list-type="enumerated">
+          <item id="uid8">A wavelet expansion is formed by a two-dimensional expansion of a signal. It should be noticed that the
+dimension of the signal itself is not determinant in the wavelet representation.
+</item>
+          <item id="uid9">A wavelet expansion provides a dual time-frequency localization of the input signal. This implies that
+most of the energy of the signal will be captured by a few coefficients.
+</item>
+          <item id="uid10">The computational complexity of the discrete wavelet transform is at most <m:math><m:mrow><m:mi>O</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mi>l</m:mi><m:mi>o</m:mi><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>)</m:mo></m:mrow></m:math> i.e. as bad as for
+the discrete Fourier transform (DFT) when calculated using the Fast Fourier Transform (FFT). For some particular
+types of wavelets, the complexity can be as low as <m:math><m:mrow><m:mi>O</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math>.
+</item>
+          <item id="uid11">The basis functions in a wavelet expansion are generated from the mother wavelet by <emphasis>scaling</emphasis> and
+<emphasis>translation</emphasis> operations. The indexing in two dimensions is achieved using this expression:
+<equation id="uid12"><m:math mode="display"><m:mrow><m:msub><m:mi>ψ</m:mi><m:mrow><m:mi>j</m:mi><m:mo>,</m:mo><m:mi>k</m:mi></m:mrow></m:msub><m:mrow><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:msup><m:mn>2</m:mn><m:mrow><m:mi>j</m:mi><m:mo>/</m:mo><m:mn>2</m:mn></m:mrow></m:msup><m:mi>ψ</m:mi><m:mrow><m:mo>(</m:mo><m:msup><m:mn>2</m:mn><m:mi>j</m:mi></m:msup><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow><m:mspace width="142.26378pt"/><m:mi>j</m:mi><m:mo>,</m:mo><m:mi>k</m:mi><m:mo>∈</m:mo><m:mi mathvariant="double-struck">Z</m:mi></m:mrow></m:math></equation></item>
+          <item id="uid13">Most wavelets basis functions satisfy <emphasis>multiresolution</emphasis> conditions. This property guarantees that
+if a set of signals can be represented by basis functions generated from a translation <m:math><m:mrow><m:mi>ψ</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math> of the
+mother wavelet, then a larger set of functions, including the original, can be represented by a new set of
+basis functions <m:math><m:mrow><m:mi>ψ</m:mi><m:mo>(</m:mo><m:mn>2</m:mn><m:mi>t</m:mi><m:mo>-</m:mo><m:mi>k</m:mi><m:mo>)</m:mo></m:mrow></m:math>. This feature is used in the algorithm of the <emphasis>fast wavelet transform</emphasis>, FWT
+the equivalent of the FFT algorithm for wavelets decomposition.
+</item>
+          <item id="uid14">The lower resolution coefficients can be calculated from the higher resolution coefficients using a
+<emphasis>filter bank</emphasis> algorithm. This property contributes to the efficiency of the calculation of the DWT.
+</item>
+        </list>
+      </section>
+    </section>
+    <section id="cid3">
+      <title>Denoising with Wavelets</title>
+      <para id="id2254963">If <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math> is an empirically recorded signal with and underlying description, <m:math><m:mrow><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>, a model for the noise addition
+process transforming g(t) into y(t) is described by Equation <link target-id="uid15"/>.</para>
+      <equation id="uid15">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>y</m:mi>
+              <m:mi>i</m:mi>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mi>g</m:mi>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:msub>
+                <m:mi>t</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mo>+</m:mo>
+            <m:mi>σ</m:mi>
+            <m:msub>
+              <m:mi>ϵ</m:mi>
+              <m:mi>i</m:mi>
+            </m:msub>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>i</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>,</m:mo>
+            <m:mo>...</m:mo>
+            <m:mo>,</m:mo>
+            <m:mi>n</m:mi>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255073">where <m:math><m:msub><m:mi>ϵ</m:mi><m:mi>i</m:mi></m:msub></m:math> are independent normal random variables <m:math><m:mrow><m:mi>N</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> and <m:math><m:mi>σ</m:mi></m:math> represents the intensity of the noise
+in <m:math><m:mrow><m:mi>y</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math>. Using this model, it follows that the objective of noise removal is, given a finite set of <m:math><m:msub><m:mi>y</m:mi><m:mi>i</m:mi></m:msub></m:math> values,
+reconstruct the original signal <m:math><m:mi>g</m:mi></m:math> without assuming a particular structure for the signal.</para>
+      <para id="id2255162">The usual approach to noise removal models noise as a high frequency signal added to an original signal. Fourier
+transform could be used to track this high frequency, ultimately removing it by adequate filtering. This noise removal
+strategy is conceptually clear and efficient since depends only on calculating the DFT of a given signal. However, there
+are some issues that must be taken into account. The most prominent of such issues ocurrs when the original signal has
+important information associated to the same frequency as the noise. When a frequency domain representation of the signal
+is obtained, filtering out this frequency will induce noticeable loss of information of the target signal.</para>
+      <para id="id2255177">In cases as the one described, the wavelets approach is more appropiated due to the fact that the signal will be
+studied using a “dual” frequency-time representation, which allows separating noise frequencies from valuable signal
+frequencies. Under this approach, noise will be represented as a consistent high frequency signal in the entire time scope
+and so its identification will be easier than using Fourier analysis.</para>
+      <para id="id2255195">Once the noise representation is identified, the removal process starts. It has been proven that a suitable strategy
+for noise removal consists in making the coefficients associated to the noise frequency equal to zero. This statement
+represents a global perspective for noise removal, different methods for denoising differ in the way these coefficients are
+tracked and taken out from the representation. The conceptual details of several of these methods are presented in the next
+sections. The main reference for the methods discussed here is antoniadis2001</para>
+      <para id="id2255224">Before attempting to describe the methods is convenient to discuss an alternative definition for wavelet representation used
+for noise removal. First, the description assumes that the representation is achieved using periodised wavelets bases on <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>]</m:mo></m:mrow></m:math>.
+Also, the basis functions are generated by dilation and translation of a compactely supported scaling function <m:math><m:mi>φ</m:mi></m:math>, also
+called <emphasis>father wavelet</emphasis> and a familiar mother wavelet function, <m:math><m:mi>ψ</m:mi></m:math>. <m:math><m:mi>ψ</m:mi></m:math> must be associated with an r-regular
+multiresolution analysis of <m:math><m:mrow><m:msup><m:mi>L</m:mi><m:mn>2</m:mn></m:msup><m:mrow><m:mo>(</m:mo><m:mi mathvariant="double-struck">R</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>. An advantage of this approach is that generated wavelets families allow
+integration of different kinds of smoothness and vanishing moments. This features lead to the fact that many signals in practice
+can be represented sparsely (with few wavelets coefficients) and uniquely under wavelets decomposition. The decomposition
+expresion using a father and a mother wavelet is depicted in Equation <link target-id="uid16"/>.</para>
+      <equation id="uid16">
+        <m:math mode="display">
+          <m:mstyle scriptlevel="0" displaystyle="true">
+            <m:mrow>
+              <m:mi>g</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:munderover>
+                <m:mo>∑</m:mo>
+                <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:msup>
+                    <m:mn>2</m:mn>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>α</m:mi>
+                <m:mrow>
+                  <m:msub>
+                    <m:mi>j</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:msub>
+                <m:mi>φ</m:mi>
+                <m:mrow>
+                  <m:msub>
+                    <m:mi>j</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:munderover>
+                <m:mo>∑</m:mo>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:msub>
+                    <m:mi>j</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                </m:mrow>
+                <m:mi>∞</m:mi>
+              </m:munderover>
+              <m:munderover>
+                <m:mo>∑</m:mo>
+                <m:mrow>
+                  <m:mi>k</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mrow>
+                  <m:msup>
+                    <m:mn>2</m:mn>
+                    <m:mi>j</m:mi>
+                  </m:msup>
+                  <m:mo>-</m:mo>
+                  <m:mn>1</m:mn>
+                </m:mrow>
+              </m:munderover>
+              <m:msub>
+                <m:mi>β</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:msub>
+                <m:mi>ψ</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>,</m:mo>
+              <m:mspace width="1.em"/>
+              <m:msub>
+                <m:mi>j</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+              <m:mo>≥</m:mo>
+              <m:mn>0</m:mn>
+              <m:mo>,</m:mo>
+              <m:mspace width="1.em"/>
+              <m:mi>t</m:mi>
+              <m:mo>∈</m:mo>
+              <m:mrow>
+                <m:mo>[</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>]</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:mstyle>
+        </m:math>
+      </equation>
+      <para id="id2255540">where <m:math><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:math> is a primary resolution level, and <m:math><m:msub><m:mi>α</m:mi><m:mrow><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub><m:mi>k</m:mi></m:mrow></m:msub></m:math> and <m:math><m:msub><m:mi>β</m:mi><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow></m:msub></m:math> are calculated as the inner products shown in Equations
+<link target-id="uid17"/> and <link target-id="uid18"/></para>
+      <equation id="uid17">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>α</m:mi>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>j</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mrow>
+              <m:mrow>
+                <m:mo>〈</m:mo>
+                <m:mi>g</m:mi>
+                <m:mo>,</m:mo>
+                <m:msub>
+                  <m:mi>φ</m:mi>
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>〉</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mn>1</m:mn>
+              </m:msubsup>
+              <m:mi>g</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msub>
+                <m:mi>φ</m:mi>
+                <m:mrow>
+                  <m:msub>
+                    <m:mi>j</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:msub>
+              <m:mi>j</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>≥</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>k</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>,</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>,</m:mo>
+            <m:mo>...</m:mo>
+            <m:mo>,</m:mo>
+            <m:msup>
+              <m:mn>2</m:mn>
+              <m:msub>
+                <m:mi>j</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+            </m:msup>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid18">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mi>β</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:mrow>
+              <m:mrow>
+                <m:mo>〈</m:mo>
+                <m:mi>g</m:mi>
+                <m:mo>,</m:mo>
+                <m:msub>
+                  <m:mi>ψ</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>〉</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:msubsup>
+                <m:mo>∫</m:mo>
+                <m:mrow>
+                  <m:mn>0</m:mn>
+                </m:mrow>
+                <m:mn>1</m:mn>
+              </m:msubsup>
+              <m:mi>g</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:msub>
+                <m:mi>ψ</m:mi>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mi>d</m:mi>
+              <m:mi>t</m:mi>
+            </m:mrow>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>j</m:mi>
+            <m:mo>≥</m:mo>
+            <m:msub>
+              <m:mi>j</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>≥</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>k</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>,</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>,</m:mo>
+            <m:mo>...</m:mo>
+            <m:mo>,</m:mo>
+            <m:msup>
+              <m:mn>2</m:mn>
+              <m:mi>j</m:mi>
+            </m:msup>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <para id="id2255924">When the discrete wavelet transform is used, the coefficients <m:math><m:msub><m:mi>c</m:mi><m:mrow><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub><m:mi>k</m:mi></m:mrow></m:msub></m:math>, <emphasis>discrete scaling coefficients</emphasis>
+and <m:math><m:msub><m:mi>d</m:mi><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow></m:msub></m:math>, <emphasis>discrete wavelet coefficients</emphasis> are used instead of the continous parameters <m:math><m:msub><m:mi>α</m:mi><m:mrow><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub><m:mi>k</m:mi></m:mrow></m:msub></m:math> and
+<m:math><m:msub><m:mi>β</m:mi><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow></m:msub></m:math>. The discrete parameters can be approximately calculated by applying a <m:math><m:msqrt><m:mi>n</m:mi></m:msqrt></m:math> factor to the continous
+coefficients.</para>
+      <para id="id2256034">Finally, when the DWT is applied to Equation <link target-id="uid15"/>, these expressions are obtained (Equations <link target-id="uid19"/> and <link target-id="uid20"/>):</para>
+      <equation id="uid19">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mover accent="true">
+                <m:mi>c</m:mi>
+                <m:mo>^</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>j</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>c</m:mi>
+              <m:mrow>
+                <m:msub>
+                  <m:mi>j</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:mi>σ</m:mi>
+            <m:msub>
+              <m:mi>ϵ</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>k</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>,</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>,</m:mo>
+            <m:mo>...</m:mo>
+            <m:mo>,</m:mo>
+            <m:msup>
+              <m:mn>2</m:mn>
+              <m:msub>
+                <m:mi>j</m:mi>
+                <m:mn>0</m:mn>
+              </m:msub>
+            </m:msup>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <equation id="uid20">
+        <m:math mode="display">
+          <m:mrow>
+            <m:msub>
+              <m:mover accent="true">
+                <m:mi>d</m:mi>
+                <m:mo>^</m:mo>
+              </m:mover>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>d</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>+</m:mo>
+            <m:mi>σ</m:mi>
+            <m:msub>
+              <m:mi>ϵ</m:mi>
+              <m:mrow>
+                <m:mi>j</m:mi>
+                <m:mi>k</m:mi>
+              </m:mrow>
+            </m:msub>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>j</m:mi>
+            <m:mo>=</m:mo>
+            <m:msub>
+              <m:mi>j</m:mi>
+              <m:mn>0</m:mn>
+            </m:msub>
+            <m:mo>,</m:mo>
+            <m:mo>...</m:mo>
+            <m:mo>,</m:mo>
+            <m:mi>J</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>,</m:mo>
+            <m:mspace width="1.em"/>
+            <m:mi>k</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>0</m:mn>
+            <m:mo>,</m:mo>
+            <m:mo>...</m:mo>
+            <m:mo>,</m:mo>
+            <m:msup>
+              <m:mn>2</m:mn>
+              <m:mi>j</m:mi>
+            </m:msup>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+      </equation>
+      <section id="uid21">
+        <title>Classical approach to wavelet thresholding</title>
+        <para id="id2256286">The original and simpler way to remove noise from a contaminated signal consists in modifying the wavelets coefficients
+in a smart way such that the “small” coefficients associated to the noise are basically neglected. The updated
+coefficients can thus be used to reconstruct the original underlying function free from the effects of noise. It is
+implicit in the strategy that only a few “large” wavelets coefficients <m:math><m:msub><m:mi>d</m:mi><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow></m:msub></m:math> are associated with the original signal,
+and that their identification and elimination of any other coefficients will allow a perfect reconstruction of the
+underlying signal <m:math><m:mi>g</m:mi></m:math>. Several methods use this idea and implement it in different ways. When attempting to descrease
+the influence of noise wavelets coefficients it is possible to do it in particular ways, also the need of information
+of the underlying signal leads to different statistical treatments of the available information.</para>
+        <para id="id2256340">In the linear penalization method every wavelet coefficient is affected by a linear shrinkage particular associated to
+the resolution level of the coefficient. A mathematical expression for this type of approach using <emphasis>linear</emphasis>
+shrinkage is shown in Equation <link target-id="uid22"/>.</para>
+        <equation id="uid22">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mover accent="true">
+                  <m:mi>d</m:mi>
+                  <m:mo>˜</m:mo>
+                </m:mover>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mfrac>
+                <m:msub>
+                  <m:mover accent="true">
+                    <m:mi>d</m:mi>
+                    <m:mo>^</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mi>λ</m:mi>
+                  <m:msup>
+                    <m:mn>2</m:mn>
+                    <m:mrow>
+                      <m:mn>2</m:mn>
+                      <m:mi>j</m:mi>
+                      <m:mi>s</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                </m:mrow>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256429">In Equation <link target-id="uid22"/>, parameter <m:math><m:mi>s</m:mi></m:math> is the <emphasis>known</emphasis> smoothness index of the underlying signal <m:math><m:mi>g</m:mi></m:math>, while parameter
+<m:math><m:mi>λ</m:mi></m:math> is a smooting factor whose determination is critical for this type of analysis.</para>
+        <para id="id2256472">It must be said that linear thresholding is adequate only for spatially homogenous signal with important levels of regularity.
+When homegeneity and regularity conditions are not met nonlinear wavelet thresholding or shrinkage methods are usually
+more suitable.</para>
+        <para id="id2256487">donoho1995 and donoho1995b proposed a nonlinear strategy for thresholding.
+Under their approach, the thresholding can be done by implementing either a hard or a soft thresholding rule. Their mathematical
+expressions are shown in Equation <link target-id="uid23"/> and Equation <link target-id="uid24"/> respectively.</para>
+        <para id="id2256513">In both methods, the role of the parameter <m:math><m:mi>λ</m:mi></m:math> as a threshold value is critical as the estimator leading to destruction,
+reduction, or increase in the value of a wavelet coefficient.</para>
+        <equation id="uid23">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi>δ</m:mi>
+                <m:mrow>
+                  <m:mi>λ</m:mi>
+                </m:mrow>
+                <m:mi>H</m:mi>
+              </m:msubsup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mover accent="true">
+                    <m:mi>d</m:mi>
+                    <m:mo>^</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mrow>
+                          <m:mspace width="1.em"/>
+                          <m:mi>i</m:mi>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="1.em"/>
+                          <m:mo>|</m:mo>
+                        </m:mrow>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mrow>
+                          <m:mo>|</m:mo>
+                          <m:mo>≤</m:mo>
+                          <m:mi>λ</m:mi>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:msub>
+                        <m:mover accent="true">
+                          <m:mi>d</m:mi>
+                          <m:mo>^</m:mo>
+                        </m:mover>
+                        <m:mrow>
+                          <m:mi>j</m:mi>
+                          <m:mi>k</m:mi>
+                        </m:mrow>
+                      </m:msub>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mrow>
+                          <m:mspace width="1.em"/>
+                          <m:mi>i</m:mi>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="1.em"/>
+                          <m:mo>|</m:mo>
+                        </m:mrow>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mrow>
+                          <m:mo>|</m:mo>
+                          <m:mo>&gt;</m:mo>
+                          <m:mi>λ</m:mi>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid24">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msubsup>
+                <m:mi>δ</m:mi>
+                <m:mrow>
+                  <m:mi>λ</m:mi>
+                </m:mrow>
+                <m:mi>S</m:mi>
+              </m:msubsup>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mover accent="true">
+                    <m:mi>d</m:mi>
+                    <m:mo>^</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>=</m:mo>
+              <m:mfenced separators="" open="{" close="">
+                <m:mtable>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mn>0</m:mn>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mrow>
+                          <m:mspace width="1.em"/>
+                          <m:mi>i</m:mi>
+                          <m:mi>f</m:mi>
+                          <m:mspace width="1.em"/>
+                          <m:mo>|</m:mo>
+                        </m:mrow>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mrow>
+                          <m:mo>|</m:mo>
+                          <m:mo>≤</m:mo>
+                          <m:mi>λ</m:mi>
+                        </m:mrow>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mo>-</m:mo>
+                        <m:mi>λ</m:mi>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="1.em"/>
+                        <m:mi>i</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mspace width="1.em"/>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mo>&gt;</m:mo>
+                        <m:mi>λ</m:mi>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                  <m:mtr>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mo>+</m:mo>
+                        <m:mi>λ</m:mi>
+                      </m:mrow>
+                    </m:mtd>
+                    <m:mtd columnalign="left">
+                      <m:mrow>
+                        <m:mspace width="1.em"/>
+                        <m:mi>i</m:mi>
+                        <m:mi>f</m:mi>
+                        <m:mspace width="1.em"/>
+                        <m:msub>
+                          <m:mover accent="true">
+                            <m:mi>d</m:mi>
+                            <m:mo>^</m:mo>
+                          </m:mover>
+                          <m:mrow>
+                            <m:mi>j</m:mi>
+                            <m:mi>k</m:mi>
+                          </m:mrow>
+                        </m:msub>
+                        <m:mo>&lt;</m:mo>
+                        <m:mo>-</m:mo>
+                        <m:mi>λ</m:mi>
+                      </m:mrow>
+                    </m:mtd>
+                  </m:mtr>
+                </m:mtable>
+              </m:mfenced>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2256945">Several authors have discussed the properties and limitations of these two strategies; hard thresholding, due to its
+induced discontinuity, can be unstable and sensitive even to small changes in the data. On the other hand, soft thresholding
+can create unnecessary bias when the true coefficients are large. Although more sophisticated methods has been introduced
+to account for the drawbacks of the described nonlinear strategies, the discussion in this report is limited to the hard
+and soft approaches.</para>
+        <section id="uid25">
+          <title>Term-by-Term Thresholding</title>
+          <para id="id2256963">One apparent problem in applying wavelet thresholding methods is the way of selecting an appropriate value for
+the threshold, <m:math><m:mi>λ</m:mi></m:math>. There are indeed several approaches for specifying the value of the parameter in question.
+In a general sense, these strategies can be classified in two groups: <emphasis>global</emphasis> thresholds and
+<emphasis>level-dependent</emphasis> thresholds. Global threshold implies the selection of one <m:math><m:mi>λ</m:mi></m:math> value, applied
+to all the wavelet coefficients. Level-dependent thresholds implies that a (possibly) different threshold value
+<m:math><m:mrow><m:mi>l</m:mi><m:mi>a</m:mi><m:mi>m</m:mi><m:mi>b</m:mi><m:mi>d</m:mi><m:msub><m:mi>a</m:mi><m:mi>j</m:mi></m:msub></m:mrow></m:math> is applied for each resolution level. All the alternatives require an estimate of the noise level <m:math><m:mi>σ</m:mi></m:math>.
+The standard deviation of the data values is clearly not a good estimator, unless the underlying response function <m:math><m:mi>g</m:mi></m:math>
+is reasonably flat. donoho1995 considered estimating <m:math><m:mi>σ</m:mi></m:math> in the wavelet domain by using the expression in
+Equation <link target-id="uid26"/>.</para>
+          <equation id="uid26">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mover accent="true">
+                  <m:mi>σ</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>m</m:mi>
+                    <m:mi>e</m:mi>
+                    <m:mi>d</m:mi>
+                    <m:mi>i</m:mi>
+                    <m:mi>a</m:mi>
+                    <m:mi>n</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mo>|</m:mo>
+                    <m:msub>
+                      <m:mover accent="true">
+                        <m:mi>d</m:mi>
+                        <m:mo>^</m:mo>
+                      </m:mover>
+                      <m:mrow>
+                        <m:mi>J</m:mi>
+                        <m:mo>-</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>,</m:mo>
+                        <m:mi>k</m:mi>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mo>|</m:mo>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>0</m:mn>
+                    <m:mo>.</m:mo>
+                    <m:mn>6745</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mo>,</m:mo>
+                <m:mspace width="1.em"/>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>,</m:mo>
+                <m:mo>...</m:mo>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mrow>
+                    <m:mi>J</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:math>
+          </equation>
+        </section>
+        <section id="uid27">
+          <title>The minimax threshold</title>
+          <para id="id2257213">donoho1995 obtained an optimal threshold value <m:math><m:msup><m:mi>λ</m:mi><m:mi>M</m:mi></m:msup></m:math> by minimizing the risk involved in estimating a
+function. The porposed <emphasis>minimax</emphasis> threshold depends of the available data and also takes into account the noise
+level contaminating the signal (Equation <link target-id="uid28"/>).</para>
+          <equation id="uid28">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msup>
+                  <m:mi>λ</m:mi>
+                  <m:mi>M</m:mi>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mover accent="true">
+                  <m:mi>σ</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:msubsup>
+                  <m:mi>λ</m:mi>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                  </m:mrow>
+                  <m:mo>*</m:mo>
+                </m:msubsup>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2257289">Where, <m:math><m:msubsup><m:mi>λ</m:mi><m:mrow><m:mi>n</m:mi></m:mrow><m:mo>*</m:mo></m:msubsup></m:math> is equal to the value of <m:math><m:mi>λ</m:mi></m:math> satisfying Equation <link target-id="uid29"/></para>
+          <equation id="uid29">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>λ</m:mi>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                  </m:mrow>
+                  <m:mo>*</m:mo>
+                </m:msubsup>
+                <m:mo>=</m:mo>
+                <m:munder>
+                  <m:mo movablelimits="true" form="prefix">inf</m:mo>
+                  <m:mi>λ</m:mi>
+                </m:munder>
+                <m:munder>
+                  <m:mo movablelimits="true" form="prefix">sup</m:mo>
+                  <m:mi>d</m:mi>
+                </m:munder>
+                <m:mfenced separators="" open="{" close="}">
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:msub>
+                        <m:mi>R</m:mi>
+                        <m:mi>λ</m:mi>
+                      </m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>d</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:msup>
+                        <m:mi>n</m:mi>
+                        <m:mrow>
+                          <m:mo>-</m:mo>
+                          <m:mn>1</m:mn>
+                        </m:mrow>
+                      </m:msup>
+                      <m:mo>+</m:mo>
+                      <m:msub>
+                        <m:mi>R</m:mi>
+                        <m:mrow>
+                          <m:mi>o</m:mi>
+                          <m:mi>r</m:mi>
+                          <m:mi>a</m:mi>
+                          <m:mi>c</m:mi>
+                          <m:mi>l</m:mi>
+                          <m:mi>e</m:mi>
+                        </m:mrow>
+                      </m:msub>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>d</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:mrow>
+                  </m:mfrac>
+                </m:mfenced>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2257443">In Equation <link target-id="uid29"/>, <m:math><m:mrow><m:msub><m:mi>R</m:mi><m:mi>λ</m:mi></m:msub><m:mrow><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is calculated following Equation <link target-id="uid30"/>.</para>
+          <equation id="uid30">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>R</m:mi>
+                  <m:mi>λ</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>d</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mi>E</m:mi>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>δ</m:mi>
+                      <m:mi>λ</m:mi>
+                    </m:msub>
+                    <m:mover accent="true">
+                      <m:mi>d</m:mi>
+                      <m:mo>^</m:mo>
+                    </m:mover>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2257538">while <m:math><m:mrow><m:msub><m:mi>R</m:mi><m:mrow><m:mi>o</m:mi><m:mi>r</m:mi><m:mi>a</m:mi><m:mi>c</m:mi><m:mi>l</m:mi><m:mi>e</m:mi></m:mrow></m:msub><m:mrow><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math> is an operators called <emphasis>oracle</emphasis> used to account for the risk associated to the modification
+of the value of a given wavelet coeficient. Two of these oracles were introduced by donoho1995:
+<emphasis>diagonal linear projection</emphasis> (DLP), and <emphasis>diagonal linear shrinker</emphasis> (DLS). The Equations <link target-id="uid31"/> and <link target-id="uid32"/>
+show the expressions for the two oracles.</para>
+          <equation id="uid31">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>R</m:mi>
+                  <m:mrow>
+                    <m:mi>o</m:mi>
+                    <m:mi>r</m:mi>
+                    <m:mi>a</m:mi>
+                    <m:mi>c</m:mi>
+                    <m:mi>l</m:mi>
+                    <m:mi>e</m:mi>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>D</m:mi>
+                    <m:mi>L</m:mi>
+                    <m:mi>P</m:mi>
+                  </m:mrow>
+                </m:msubsup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>d</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mi>m</m:mi>
+                <m:mi>i</m:mi>
+                <m:mi>n</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>,</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <equation id="uid32">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>R</m:mi>
+                  <m:mrow>
+                    <m:mi>o</m:mi>
+                    <m:mi>r</m:mi>
+                    <m:mi>a</m:mi>
+                    <m:mi>c</m:mi>
+                    <m:mi>l</m:mi>
+                    <m:mi>e</m:mi>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>D</m:mi>
+                    <m:mi>L</m:mi>
+                    <m:mi>S</m:mi>
+                  </m:mrow>
+                </m:msubsup>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>d</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:msup>
+                    <m:mi>d</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mi>d</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mo>+</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2257769">antoniadis2001 provided values of the minimax threshold for both the hard and soft nonlinear thresholding rules.
+For the soft rule, 1.669 and 2.226 for <m:math><m:mi>n</m:mi></m:math> equal to 128 and 1024; for the hard rule, 2.913 and 3.497 again for <m:math><m:mi>n</m:mi></m:math>
+equal to 128 and 1024.</para>
+        </section>
+        <section id="uid33">
+          <title>The universal threshold</title>
+          <para id="id2257811">donoho1995 proposed this threshold as an alternative to the minimax thresholds, applied to all the wavelet
+coefficients. The universal threshold is defined in Equation <link target-id="uid34"/>.</para>
+          <equation id="uid34">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msup>
+                  <m:mi>λ</m:mi>
+                  <m:mi>U</m:mi>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mover accent="true">
+                  <m:mi>σ</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:msqrt>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                    <m:mo form="prefix">log</m:mo>
+                    <m:mi>n</m:mi>
+                  </m:mrow>
+                </m:msqrt>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2257864">This threshold is easy to remember and its implementation in software is simpler and the optimization problem implicit
+in the minimax method are avoided. Also, the universal threshold ensures, with high probability, that every sample
+in the wavelet transform in which the underlying function is exactly zero will be estimated as zero, although the
+convergance rate (depending in the size of the sample) is slow.</para>
+        </section>
+        <section id="uid35">
+          <title>The translation invariant method</title>
+          <para id="id2257882">It has been noted that wavelet thresholding with either minimax thresholds or the universal threshold presents some
+inconvenient features. In particular, in the vicinity of discontinuities, these wavelet thresholds can exhibit
+pseudo-Gibbs phenomena. While these phenomena are less pronounced than in the case of Fourier analysis
+and also are present in a local scale, this situation represents a challenge for the thresholding methods.</para>
+          <para id="id2257900">coifman1995 proposed the use of the translation invariant wavelet thresholding scheme.
+The idea is to correct mis-alignments between features in the studied signal and features in the basis used
+for the decomposition. When the signal contains an important number of discontinuities, the method applies
+a range of shifts to it, and average the results obtained after such transformations.</para>
+          <para id="id2257910">If a empirical contaminated signal <m:math><m:mrow><m:mi>y</m:mi><m:mo>[</m:mo><m:mi>i</m:mi><m:mo>]</m:mo><m:mo>,</m:mo><m:mspace width="0.166667em"/><m:mo>(</m:mo><m:mi>i</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mo>...</m:mo><m:mo>,</m:mo><m:mi>n</m:mi><m:mo>)</m:mo></m:mrow></m:math> is provided, the tranlation invariant wavelet
+thresholding estimator is calculated as (Equation <link target-id="uid36"/>):</para>
+          <equation id="uid36">
+            <m:math mode="display">
+              <m:mstyle scriptlevel="0" displaystyle="true">
+                <m:mrow>
+                  <m:msup>
+                    <m:mover accent="true">
+                      <m:mi>g</m:mi>
+                      <m:mo>^</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:mi>T</m:mi>
+                      <m:mi>I</m:mi>
+                    </m:mrow>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>1</m:mn>
+                    <m:mi>n</m:mi>
+                  </m:mfrac>
+                  <m:munderover>
+                    <m:mo>∑</m:mo>
+                    <m:mrow>
+                      <m:mi>k</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                    <m:mi>n</m:mi>
+                  </m:munderover>
+                  <m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>W</m:mi>
+                      <m:msub>
+                        <m:mi>S</m:mi>
+                        <m:mi>k</m:mi>
+                      </m:msub>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:msup>
+                      <m:mrow/>
+                      <m:mo>'</m:mo>
+                    </m:msup>
+                  </m:msup>
+                  <m:msub>
+                    <m:mi>δ</m:mi>
+                    <m:mi>λ</m:mi>
+                  </m:msub>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>W</m:mi>
+                    <m:msub>
+                      <m:mi>S</m:mi>
+                      <m:mi>k</m:mi>
+                    </m:msub>
+                    <m:mi>y</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:mstyle>
+            </m:math>
+          </equation>
+          <para id="id2258071">where <m:math><m:msub><m:mi>δ</m:mi><m:mi>λ</m:mi></m:msub></m:math> is either the hard of soft thresholding rule, <m:math><m:mi>W</m:mi></m:math> is the size <m:math><m:mi>n</m:mi></m:math> orthogonal matrix
+associated to the DWT, and <m:math><m:msub><m:mi>S</m:mi><m:mi>k</m:mi></m:msub></m:math> is the shift kernel defined as:</para>
+          <equation id="uid37">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>S</m:mi>
+                  <m:mi>k</m:mi>
+                </m:msub>
+                <m:mo>=</m:mo>
+                <m:mfenced separators="" open="(" close=")">
+                  <m:mtable>
+                    <m:mtr>
+                      <m:mtd columnalign="left">
+                        <m:msub>
+                          <m:mi>O</m:mi>
+                          <m:mrow>
+                            <m:mi>k</m:mi>
+                            <m:mo>×</m:mo>
+                            <m:mo>(</m:mo>
+                            <m:mi>n</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>k</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:msub>
+                      </m:mtd>
+                      <m:mtd columnalign="left">
+                        <m:mrow>
+                          <m:mspace width="1.em"/>
+                          <m:msub>
+                            <m:mi>I</m:mi>
+                            <m:mrow>
+                              <m:mi>k</m:mi>
+                              <m:mo>×</m:mo>
+                              <m:mi>k</m:mi>
+                            </m:mrow>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mtd>
+                    </m:mtr>
+                    <m:mtr>
+                      <m:mtd columnalign="left">
+                        <m:msub>
+                          <m:mi>I</m:mi>
+                          <m:mrow>
+                            <m:mo>(</m:mo>
+                            <m:mi>n</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>k</m:mi>
+                            <m:mo>)</m:mo>
+                            <m:mo>×</m:mo>
+                            <m:mo>(</m:mo>
+                            <m:mi>n</m:mi>
+                            <m:mo>-</m:mo>
+                            <m:mi>k</m:mi>
+                            <m:mo>)</m:mo>
+                          </m:mrow>
+                        </m:msub>
+                      </m:mtd>
+                      <m:mtd columnalign="left">
+                        <m:mrow>
+                          <m:mspace width="1.em"/>
+                          <m:msub>
+                            <m:mi>O</m:mi>
+                            <m:mrow>
+                              <m:mo>(</m:mo>
+                              <m:mi>n</m:mi>
+                              <m:mo>-</m:mo>
+                              <m:mi>k</m:mi>
+                              <m:mo>)</m:mo>
+                              <m:mo>×</m:mo>
+                              <m:mi>k</m:mi>
+                            </m:mrow>
+                          </m:msub>
+                        </m:mrow>
+                      </m:mtd>
+                    </m:mtr>
+                  </m:mtable>
+                </m:mfenced>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2258265">In Equation <link target-id="uid37"/>, <m:math><m:mi>I</m:mi></m:math> is the identity matrix and <m:math><m:mi>O</m:mi></m:math> stands for a zero matrix with dimensions as indicated
+in the expression.</para>
+        </section>
+        <section id="uid38">
+          <title>The SureShrink Threshold</title>
+          <para id="id2258308">donoho1995 proposed a procedure to select a threshold value <m:math><m:msub><m:mi>λ</m:mi><m:mi>j</m:mi></m:msub></m:math> for every resolution level <m:math><m:mi>j</m:mi></m:math>.
+The method uses Steinâs unbiased risk criterion citep(<link target-id="bid5"/>) to get an unbiased estimate of the <m:math><m:msup><m:mi>l</m:mi><m:mn>2</m:mn></m:msup></m:math>-risk.</para>
+          <para id="id2258364">In mathematical terms, given a set <m:math><m:mrow><m:msub><m:mi>X</m:mi><m:mn>1</m:mn></m:msub><m:mo>,</m:mo><m:mo>...</m:mo><m:mo>,</m:mo><m:msub><m:mi>X</m:mi><m:mi>s</m:mi></m:msub></m:mrow></m:math> of variables distributed as <m:math><m:mrow><m:mi>N</m:mi><m:mo>(</m:mo><m:msub><m:mi>μ</m:mi><m:mi>i</m:mi></m:msub><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math> with <m:math><m:mrow><m:mi>i</m:mi><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mo>...</m:mo><m:mo>,</m:mo><m:mi>s</m:mi></m:mrow></m:math>, the problem consists in estimate the vector of means with minimum <m:math><m:mrow><m:msup><m:mi>l</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo></m:mrow></m:math>risk. It turns out an estimator of <m:math><m:mi>μ</m:mi></m:math>,
+can be describes as <m:math><m:mrow><m:mover accent="true"><m:mi>μ</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:mo>(</m:mo><m:mi>X</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mi>X</m:mi><m:mo>+</m:mo><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mi>X</m:mi><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, with <m:math><m:mi>g</m:mi></m:math> a function from <m:math><m:msup><m:mi mathvariant="double-struck">R</m:mi><m:mi>s</m:mi></m:msup></m:math> to <m:math><m:msup><m:mi mathvariant="double-struck">R</m:mi><m:mi>s</m:mi></m:msup></m:math> is weakly
+differentiable. With this information, the risk of the estimation can be described as (Equation <link target-id="uid39"/>):</para>
+          <equation id="uid39">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>E</m:mi>
+                  <m:mi>μ</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mover accent="true">
+                  <m:mi>μ</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>X</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>μ</m:mi>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>|</m:mo>
+                    <m:mo>|</m:mo>
+                  </m:mrow>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>+</m:mo>
+                <m:msub>
+                  <m:mi>E</m:mi>
+                  <m:mi>μ</m:mi>
+                </m:msub>
+                <m:mfenced separators="" open="(" close=")">
+                  <m:msup>
+                    <m:mrow>
+                      <m:mo>|</m:mo>
+                      <m:mo>|</m:mo>
+                      <m:mi>g</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:mi>X</m:mi>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mo>|</m:mo>
+                      <m:mo>|</m:mo>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mi>∇</m:mi>
+                  <m:mi>g</m:mi>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>X</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mfenced>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2258684">with,</para>
+          <equation id="id2258688">
+            <m:math mode="display">
+              <m:mstyle scriptlevel="0" displaystyle="true">
+                <m:mrow>
+                  <m:mi>∇</m:mi>
+                  <m:mi>g</m:mi>
+                  <m:mo>≡</m:mo>
+                  <m:munderover>
+                    <m:mo>∑</m:mo>
+                    <m:mrow>
+                      <m:mi>i</m:mi>
+                      <m:mo>=</m:mo>
+                      <m:mn>1</m:mn>
+                    </m:mrow>
+                    <m:mi>s</m:mi>
+                  </m:munderover>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mi>∂</m:mi>
+                      <m:msub>
+                        <m:mi>g</m:mi>
+                        <m:mi>i</m:mi>
+                      </m:msub>
+                    </m:mrow>
+                    <m:mrow>
+                      <m:mi>∂</m:mi>
+                      <m:msub>
+                        <m:mi>x</m:mi>
+                        <m:mi>i</m:mi>
+                      </m:msub>
+                    </m:mrow>
+                  </m:mfrac>
+                </m:mrow>
+              </m:mstyle>
+            </m:math>
+          </equation>
+          <para id="id2258750">If an operator SURE is defined as (Equation <link target-id="uid40"/>):</para>
+          <equation id="uid40">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>S</m:mi>
+                <m:mi>U</m:mi>
+                <m:mi>R</m:mi>
+                <m:mi>E</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>λ</m:mi>
+                  <m:mo>;</m:mo>
+                  <m:mi>X</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:mi>s</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>·</m:mo>
+                <m:mrow>
+                  <m:mo>#</m:mo>
+                  <m:mo>{</m:mo>
+                  <m:mi>i</m:mi>
+                  <m:mo>:</m:mo>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:msub>
+                  <m:mi>X</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mo>≤</m:mo>
+                  <m:mi>λ</m:mi>
+                  <m:mo>}</m:mo>
+                  <m:mo>+</m:mo>
+                  <m:mo>[</m:mo>
+                  <m:mo movablelimits="true" form="prefix">min</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:msub>
+                  <m:mi>X</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>|</m:mo>
+                    <m:mo>,</m:mo>
+                    <m:mi>λ</m:mi>
+                    <m:mo>)</m:mo>
+                    <m:mo>]</m:mo>
+                  </m:mrow>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2258874">where the operator <m:math><m:mrow><m:mo>#</m:mo><m:mo>{</m:mo><m:mi>A</m:mi><m:mo>}</m:mo></m:mrow></m:math> returns the cardinality of the set A, it is found that SURE is an unbiased estimate
+of the <m:math><m:mrow><m:msup><m:mi>l</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo></m:mrow></m:math>risk, i.e,</para>
+          <equation id="id2258914">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msub>
+                  <m:mi>E</m:mi>
+                  <m:mi>μ</m:mi>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>|</m:mo>
+                  <m:mo>|</m:mo>
+                </m:mrow>
+                <m:mover accent="true">
+                  <m:mi>μ</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>X</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>-</m:mo>
+                <m:mi>μ</m:mi>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>|</m:mo>
+                    <m:mo>|</m:mo>
+                  </m:mrow>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mi>S</m:mi>
+                <m:mi>U</m:mi>
+                <m:mi>R</m:mi>
+                <m:mi>E</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>λ</m:mi>
+                  <m:mo>;</m:mo>
+                  <m:mi>X</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2258992">Now, the threshold <m:math><m:mi>λ</m:mi></m:math> is found by minimizing SURE over the set <m:math><m:mi>X</m:mi></m:math> of give data. Extending this principle to
+the entire set of resolution levels, an expression for <m:math><m:msubsup><m:mi>λ</m:mi><m:mrow><m:mi>j</m:mi></m:mrow><m:mi>s</m:mi></m:msubsup></m:math> is found (Equation <link target-id="uid41"/>):</para>
+          <equation id="uid41">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msubsup>
+                  <m:mi>λ</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                  </m:mrow>
+                  <m:mi>s</m:mi>
+                </m:msubsup>
+                <m:mo>=</m:mo>
+                <m:mo form="prefix">arg</m:mo>
+                <m:munder>
+                  <m:mo movablelimits="true" form="prefix">min</m:mo>
+                  <m:mrow>
+                    <m:mn>0</m:mn>
+                    <m:mo>≤</m:mo>
+                    <m:mi>λ</m:mi>
+                    <m:mo>≤</m:mo>
+                    <m:msup>
+                      <m:mi>λ</m:mi>
+                      <m:mi>U</m:mi>
+                    </m:msup>
+                  </m:mrow>
+                </m:munder>
+                <m:mi>S</m:mi>
+                <m:mi>U</m:mi>
+                <m:mi>R</m:mi>
+                <m:mi>E</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>λ</m:mi>
+                  <m:mo>;</m:mo>
+                  <m:mfrac>
+                    <m:msub>
+                      <m:mover accent="true">
+                        <m:mi>d</m:mi>
+                        <m:mo>^</m:mo>
+                      </m:mover>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:mi>k</m:mi>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mover accent="true">
+                      <m:mi>σ</m:mi>
+                      <m:mo>^</m:mo>
+                    </m:mover>
+                  </m:mfrac>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>,</m:mo>
+                <m:mspace width="1.em"/>
+                <m:mi>j</m:mi>
+                <m:mo>=</m:mo>
+                <m:msub>
+                  <m:mi>j</m:mi>
+                  <m:mn>0</m:mn>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:mo>...</m:mo>
+                <m:mo>,</m:mo>
+                <m:mi>J</m:mi>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>;</m:mo>
+                <m:mspace width="1.em"/>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:mo>...</m:mo>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mi>j</m:mi>
+                </m:msup>
+                <m:mo>-</m:mo>
+                <m:mn>1</m:mn>
+                <m:mspace width="4pt"/>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2259208">where <m:math><m:msup><m:mi>λ</m:mi><m:mi>U</m:mi></m:msup></m:math> is the universal threshold, and <m:math><m:mover accent="true"><m:mi>σ</m:mi><m:mo>^</m:mo></m:mover></m:math> is the estimator of the noise level (Equation <link target-id="uid26"/>).</para>
+        </section>
+      </section>
+      <section id="uid42">
+        <title>Classical Methods: Block Thresholding</title>
+        <para id="id2259256">Thresholding approaches resorting to term-by-term modification on the wavelets coefficients attempt to balance
+variance and bias contribution to the mean squared error in the estimation of the underlying signal <m:math><m:mi>g</m:mi></m:math>. However,
+it has been proven that such balance is not optimal. Term-by-term thresholding end sup removing to many terms leading
+to estimation prone to bias and with a slower convergance rate due to the number of operations involved.</para>
+        <para id="id2259277">A useful resource to improve the quality of the aforementioned balanced is by using information of the set of data
+associated to a particular wavelet coefficient. In order to do so, a block strategy for thresholded is proposed.
+The main idea consists in isolating a block of wavelet coefficients and based upon the information collected about
+the entire set make a decision about decreasing or even entirely discard the group. This procedure will allow faster
+manipulation of the information and accelerated convergence rates.</para>
+        <section id="uid43">
+          <title>Overlapping Block Thresholding Estimator</title>
+          <para id="id2253544">cai2001 considered an overlapping block thresholding estimator by modifying the nonoverlapping block
+thresholding estimator citep(<link target-id="bid6"/>). The effect is that the treatment of empirical wavelet coefficients
+in the middle of each block depends on the data in the whole block. At each resolution level, this method packs
+wavelet coefficients <m:math><m:msub><m:mover accent="true"><m:mi>d</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow></m:msub></m:math> into nonoverlapping blocks (<m:math><m:msub><m:mi>j</m:mi><m:mi>b</m:mi></m:msub></m:math>) of length <m:math><m:msub><m:mi>L</m:mi><m:mn>0</m:mn></m:msub></m:math>. Following this, the blocks
+are extended in each direction an amount <m:math><m:mrow><m:msub><m:mi>L</m:mi><m:mn>1</m:mn></m:msub><m:mo>=</m:mo><m:mo movablelimits="true" form="prefix">max</m:mo><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>;</m:mo><m:mrow><m:mo>[</m:mo><m:mfrac><m:msub><m:mi>L</m:mi><m:mn>0</m:mn></m:msub><m:mn>2</m:mn></m:mfrac><m:mo>]</m:mo></m:mrow><m:mo>)</m:mo></m:mrow></m:mrow></m:math>, generating overlapping blocks
+(<m:math><m:msub><m:mi>j</m:mi><m:mi>B</m:mi></m:msub></m:math>) of augmented length <m:math><m:mrow><m:mi>L</m:mi><m:mo>=</m:mo><m:msub><m:mi>L</m:mi><m:mn>0</m:mn></m:msub><m:mo>+</m:mo><m:mn>2</m:mn><m:msub><m:mi>L</m:mi><m:mn>1</m:mn></m:msub></m:mrow></m:math>.</para>
+          <para id="id2259612">If <m:math><m:msubsup><m:mi>S</m:mi><m:mrow><m:mo>(</m:mo><m:msub><m:mi>j</m:mi><m:mi>B</m:mi></m:msub><m:mo>)</m:mo></m:mrow><m:mn>2</m:mn></m:msubsup></m:math> is the <m:math><m:mrow><m:msup><m:mi>L</m:mi><m:mn>2</m:mn></m:msup><m:mo>-</m:mo></m:mrow></m:math>energy of the empirical signal in the augmented block <m:math><m:msub><m:mi>j</m:mi><m:mi>B</m:mi></m:msub></m:math>, the wavelet
+coefficients in the blocks <m:math><m:msub><m:mi>j</m:mi><m:mi>b</m:mi></m:msub></m:math> will be estimated simultaneously using the expression in Equation <link target-id="uid44"/></para>
+          <equation id="uid44">
+            <m:math mode="display">
+              <m:mrow>
+                <m:msubsup>
+                  <m:mover accent="true">
+                    <m:mi>d</m:mi>
+                    <m:mo>˘</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mi>b</m:mi>
+                    </m:msub>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:msubsup>
+                <m:mo>=</m:mo>
+                <m:mo movablelimits="true" form="prefix">max</m:mo>
+                <m:mfenced separators="" open="(" close=")">
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:msubsup>
+                        <m:mi>S</m:mi>
+                        <m:mrow>
+                          <m:mo>(</m:mo>
+                          <m:msub>
+                            <m:mi>j</m:mi>
+                            <m:mi>B</m:mi>
+                          </m:msub>
+                          <m:mo>)</m:mo>
+                        </m:mrow>
+                        <m:mn>2</m:mn>
+                      </m:msubsup>
+                      <m:mo>-</m:mo>
+                      <m:mi>λ</m:mi>
+                      <m:mi>L</m:mi>
+                      <m:msup>
+                        <m:mover accent="true">
+                          <m:mi>σ</m:mi>
+                          <m:mo>^</m:mo>
+                        </m:mover>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                    </m:mrow>
+                    <m:msubsup>
+                      <m:mi>S</m:mi>
+                      <m:mrow>
+                        <m:mo>(</m:mo>
+                        <m:msub>
+                          <m:mi>j</m:mi>
+                          <m:mi>B</m:mi>
+                        </m:msub>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                      <m:mn>2</m:mn>
+                    </m:msubsup>
+                  </m:mfrac>
+                </m:mfenced>
+                <m:msub>
+                  <m:mover accent="true">
+                    <m:mi>d</m:mi>
+                    <m:mo>^</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2259843">Once the estimated wavelet coefficients <m:math><m:msubsup><m:mover accent="true"><m:mi>d</m:mi><m:mo>˘</m:mo></m:mover><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow><m:mrow><m:mo>(</m:mo><m:msub><m:mi>j</m:mi><m:mi>b</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:msubsup></m:math> have been calculated, an estimation of the underlying
+signal <m:math><m:mi>g</m:mi></m:math> can be obtained through using the new wavelet coefficients and the unmodified scaling coefficients
+<m:math><m:msub><m:mover accent="true"><m:mi>c</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub><m:mi>k</m:mi></m:mrow></m:msub></m:math> in the IDWT.
+The results from this method (<emphasis>NeigBlock</emphasis>) presented in this document used a value of <m:math><m:mrow><m:msub><m:mi>L</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mrow><m:mo>[</m:mo><m:mi>l</m:mi><m:mi>o</m:mi><m:mi>g</m:mi><m:mrow><m:mo>(</m:mo><m:mfrac><m:mi>n</m:mi><m:mn>2</m:mn></m:mfrac><m:mo>)</m:mo></m:mrow><m:mo>]</m:mo></m:mrow></m:mrow></m:math>
+and a value of <m:math><m:mrow><m:mi>λ</m:mi><m:mo>=</m:mo><m:mn>4</m:mn><m:mo>.</m:mo><m:mn>50524</m:mn></m:mrow></m:math> as suggested by cai2001.</para>
+        </section>
+      </section>
+      <section id="uid45">
+        <title>Bayesian Approach to wavelet shrinkage and thresholding</title>
+        <para id="id2260012">From Equations <link target-id="uid19"/> and <link target-id="uid20"/> it can be established that the empirical scaling and wavelet coefficients,
+conditional on their respective underlying coefficients, are independently distributed, i.e:</para>
+        <equation id="uid46">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mover accent="true">
+                  <m:mi>c</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:mrow>
+                  <m:msub>
+                    <m:mi>j</m:mi>
+                    <m:mn>0</m:mn>
+                  </m:msub>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>/</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:msub>
+                  <m:mi>c</m:mi>
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>σ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:mfenced>
+              <m:mo>∼</m:mo>
+              <m:mi>N</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>c</m:mi>
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>σ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <equation id="uid47">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mover accent="true">
+                  <m:mi>d</m:mi>
+                  <m:mo>^</m:mo>
+                </m:mover>
+                <m:mrow>
+                  <m:mi>j</m:mi>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:msub>
+              <m:mo>/</m:mo>
+              <m:mfenced separators="" open="(" close=")">
+                <m:msub>
+                  <m:mi>c</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>σ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:mfenced>
+              <m:mo>∼</m:mo>
+              <m:mi>N</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>d</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>σ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2260224">The Bayesian approach imposes an <emphasis>apriori</emphasis> model for the wavelets coefficients designed to capture the sparseness
+of the wavelet expansion common to most applications. An usual prior model for each wavelet coefficient <m:math><m:msub><m:mover accent="true"><m:mi>d</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:mi>j</m:mi><m:mi>k</m:mi></m:mrow></m:msub></m:math>
+is a mixture of two distributions, one of them associated to negligable coefficients and the other to significant
+coefficients. Two types of mixtures have been widely used. One of them employs two normal distributions while the
+other uses one normal distribution and one point mass at zero.</para>
+        <para id="id2260264">After mathematical manipulation, it can be shown that an estimator for the underlying signal can be written as
+(Equation <link target-id="uid48"/>):</para>
+        <equation id="uid48">
+          <m:math mode="display">
+            <m:mstyle scriptlevel="0" displaystyle="true">
+              <m:mrow>
+                <m:msub>
+                  <m:mover accent="true">
+                    <m:mi>g</m:mi>
+                    <m:mo>^</m:mo>
+                  </m:mover>
+                  <m:mrow>
+                    <m:mi>B</m:mi>
+                    <m:mi>R</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>=</m:mo>
+                <m:munderover>
+                  <m:mo>∑</m:mo>
+                  <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mn>2</m:mn>
+                      <m:msub>
+                        <m:mi>j</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                    </m:msup>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mfrac>
+                  <m:msub>
+                    <m:mover accent="true">
+                      <m:mi>c</m:mi>
+                      <m:mo>^</m:mo>
+                    </m:mover>
+                    <m:mrow>
+                      <m:msub>
+                        <m:mi>j</m:mi>
+                        <m:mn>0</m:mn>
+                      </m:msub>
+                      <m:mi>k</m:mi>
+                    </m:mrow>
+                  </m:msub>
+                  <m:msqrt>
+                    <m:mi>n</m:mi>
+                  </m:msqrt>
+                </m:mfrac>
+                <m:msub>
+                  <m:mi>φ</m:mi>
+                  <m:mrow>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>+</m:mo>
+                <m:munderover>
+                  <m:mo>∑</m:mo>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:msub>
+                      <m:mi>j</m:mi>
+                      <m:mn>0</m:mn>
+                    </m:msub>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mi>J</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:munderover>
+                  <m:mo>∑</m:mo>
+                  <m:mrow>
+                    <m:mi>k</m:mi>
+                    <m:mo>=</m:mo>
+                    <m:mn>0</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:msup>
+                      <m:mn>2</m:mn>
+                      <m:mi>j</m:mi>
+                    </m:msup>
+                    <m:mo>-</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:munderover>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>B</m:mi>
+                    <m:mi>R</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:msub>
+                      <m:mi>d</m:mi>
+                      <m:mrow>
+                        <m:mi>j</m:mi>
+                        <m:mi>k</m:mi>
+                      </m:mrow>
+                    </m:msub>
+                    <m:mo>|</m:mo>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:msub>
+                        <m:mi>d</m:mi>
+                        <m:mrow>
+                          <m:mi>j</m:mi>
+                          <m:mi>k</m:mi>
+                        </m:mrow>
+                      </m:msub>
+                      <m:mo>,</m:mo>
+                      <m:msup>
+                        <m:mi>σ</m:mi>
+                        <m:mn>2</m:mn>
+                      </m:msup>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:msqrt>
+                    <m:mi>n</m:mi>
+                  </m:msqrt>
+                </m:mfrac>
+                <m:msub>
+                  <m:mi>ψ</m:mi>
+                  <m:mrow>
+                    <m:mi>j</m:mi>
+                    <m:mi>k</m:mi>
+                  </m:mrow>
+                </m:msub>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>t</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:mstyle>
+          </m:math>
+        </equation>
+        <para id="id2260532">i.e. the scaling coefficients are estimated by the empirical scaling coefficients while the wavelet coefficients are
+estimated by a Bayesian rule (BR), taking into account the obtained empirical wavelet coefficient and the noise level.</para>
+        <section id="uid49">
+          <title>Shrinkage estimates based on deterministic/stochastic decompositions</title>
+          <para id="id2260554">huang2000 proposed a method that takes into account the value of the prior mean for each wavelet
+coefficient, by introducing a estimator for the parameter into the general wavelet shrinkage model. These authors
+assumed thatthe undelying signal is composed of a piecewise deterministic portion with an added zero mean stochastic
+part.</para>
+          <para id="id2260563">If <m:math><m:msub><m:mover accent="true"><m:mi mathvariant="bold">c</m:mi><m:mo>^</m:mo></m:mover><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:msub></m:math> is the vector of empirical scaling coefficients, <m:math><m:msub><m:mover accent="true"><m:mi mathvariant="bold">d</m:mi><m:mo>^</m:mo></m:mover><m:mi>j</m:mi></m:msub></m:math> the
+vector of empirical wavelet coefficients, <m:math><m:msub><m:mi mathvariant="bold">c</m:mi><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:msub></m:math> the vector of underlying scaling coefficients, and
+<m:math><m:msub><m:mi mathvariant="bold">d</m:mi><m:mi>j</m:mi></m:msub></m:math> the vector of underlying wavelet coefficients, then the Bayesian model (Equation <link target-id="uid50"/>):</para>
+          <equation id="uid50">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>ω</m:mi>
+                <m:mo>/</m:mo>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>β</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msup>
+                    <m:mi>σ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>∼</m:mo>
+                <m:mi>N</m:mi>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>β</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msup>
+                    <m:mi>σ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mi>I</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2260724">with <m:math><m:mrow><m:mi>ω</m:mi><m:mo>=</m:mo><m:msup><m:mrow><m:mo>(</m:mo><m:msub><m:mover accent="true"><m:mi mathvariant="bold">c</m:mi><m:mo>^</m:mo></m:mover><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:msub><m:mo>,</m:mo><m:msub><m:mover accent="true"><m:mi mathvariant="bold">d</m:mi><m:mo>^</m:mo></m:mover><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:msub><m:mo>,</m:mo><m:mo>...</m:mo><m:mo>,</m:mo><m:msubsup><m:mover accent="true"><m:mi mathvariant="bold">d</m:mi><m:mo>^</m:mo></m:mover><m:mrow><m:mi>J</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow><m:mo>'</m:mo></m:msubsup><m:mo>)</m:mo></m:mrow><m:mo>'</m:mo></m:msup></m:mrow></m:math> and the underlying
+signal <m:math><m:mrow><m:mi>β</m:mi><m:mo>=</m:mo><m:msup><m:mrow><m:mo>(</m:mo><m:msubsup><m:mi mathvariant="bold">c</m:mi><m:mrow><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:mrow><m:mo>'</m:mo></m:msubsup><m:mo>,</m:mo><m:msubsup><m:mi mathvariant="bold">d</m:mi><m:mrow><m:msub><m:mi>j</m:mi><m:mn>0</m:mn></m:msub></m:mrow><m:mo>'</m:mo></m:msubsup><m:mo>,</m:mo><m:mo>...</m:mo><m:mo>,</m:mo><m:msubsup><m:mi mathvariant="bold">d</m:mi><m:mrow><m:mi>J</m:mi><m:mo>-</m:mo><m:mn>1</m:mn></m:mrow><m:mo>'</m:mo></m:msubsup><m:mo>)</m:mo></m:mrow><m:mo>'</m:mo></m:msup></m:mrow></m:math> is assumed to follow an
+apriori distribution (Equation <link target-id="uid51"/>)</para>
+          <equation id="uid51">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>β</m:mi>
+                <m:mo>/</m:mo>
+                <m:mo>(</m:mo>
+                <m:mi>μ</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>θ</m:mi>
+                <m:mo>)</m:mo>
+                <m:mo>∼</m:mo>
+                <m:mi>N</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>μ</m:mi>
+                <m:mo>,</m:mo>
+                <m:mi>Σ</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>θ</m:mi>
+                <m:mo>)</m:mo>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2260974">where <m:math><m:mi>μ</m:mi></m:math> is the deterministic mean structure and <m:math><m:mrow><m:mi>Σ</m:mi><m:mo>(</m:mo><m:mi>θ</m:mi><m:mo>)</m:mo></m:mrow></m:math> accounts for the uncertainty and value correlation in
+the underlying signal. Notice that if <m:math><m:mi>η</m:mi></m:math> following a distribution <m:math><m:mrow><m:mi>N</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mi>Σ</m:mi><m:mo>(</m:mo><m:mi>θ</m:mi><m:mo>)</m:mo><m:mo>)</m:mo></m:mrow></m:math> is defined as the stochastic
+component representing small variation (high frequency) in the signal, then <m:math><m:mi>μ</m:mi></m:math> can be interpretated as the stochastic
+component accounting for the large-scale variation in <m:math><m:mi>β</m:mi></m:math>. So, it is possible to rewrite <m:math><m:mi>β</m:mi></m:math> as (Equation <link target-id="uid52"/>),</para>
+          <equation id="uid52">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>β</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>μ</m:mi>
+                <m:mo>+</m:mo>
+                <m:mi>η</m:mi>
+              </m:mrow>
+            </m:math>
+          </equation>
+          <para id="id2261103">Using this model, a shrinkage rule can be established by calculating the mean of <m:math><m:mi>β</m:mi></m:math> conditional on <m:math><m:msup><m:mi>σ</m:mi><m:mn>2</m:mn></m:msup></m:math> which
+is expressed as (Equation <link target-id="uid53"/>),</para>
+          <equation id="uid53">
+            <m:math mode="display">
+              <m:mrow>
+                <m:mi>E</m:mi>
+                <m:mfenced separators="" open="(" close=")">
+                  <m:mi>β</m:mi>
+                  <m:mo>/</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>,</m:mo>
+                  <m:msup>
+                    <m:mi>σ</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>)</m:mo>
+                </m:mfenced>
+                <m:mo>=</m:mo>
+                <m:mi>μ</m:mi>
+                <m:mo>+</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>Σ</m:mi>
+                    <m:mo>(</m:mo>
+                    <m:mi>θ</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>Σ</m:mi>
+                    <m:mrow>
+                      <m:mo>(</m:mo>
+                      <m:mi>θ</m:mi>
+                      <m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mo>+</m:mo>
+                    <m:msup>
+                      <m:mi>σ</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mi>I</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>ω</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mi>μ</m:mi>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:mrow>
+            </m:math>
+          </equation>
+        </section>
+      </section>
+    </section>
+    <section id="cid4">
+      <title>Numerical Simulations</title>
+      <section id="uid54">
+        <title>Description of the Scheme</title>
+        <para id="id2261253">In order to assess the efficiency and accuracy of the proposed methods, a number of simulations have been conducted.
+To this aim, data have been generated according to the following scheme</para>
+        <equation id="id2261260">
+          <m:math mode="display">
+            <m:mrow>
+              <m:msub>
+                <m:mi>y</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:mo>=</m:mo>
+              <m:mi>f</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:msub>
+                  <m:mi>x</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mo>)</m:mo>
+              </m:mrow>
+              <m:mo>+</m:mo>
+              <m:msub>
+                <m:mi>ϵ</m:mi>
+                <m:mi>i</m:mi>
+              </m:msub>
+              <m:mo>,</m:mo>
+              <m:mrow>
+                <m:mo>{</m:mo>
+                <m:msub>
+                  <m:mi>ϵ</m:mi>
+                  <m:mi>i</m:mi>
+                </m:msub>
+                <m:mo>}</m:mo>
+              </m:mrow>
+              <m:mspace width="3.33333pt"/>
+              <m:mi>N</m:mi>
+              <m:mrow>
+                <m:mo>(</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>,</m:mo>
+                <m:msup>
+                  <m:mi>σ</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>)</m:mo>
+              </m:mrow>
+            </m:mrow>
+          </m:math>
+        </equation>
+        <para id="id2261343">where the data <m:math><m:mrow><m:mo>{</m:mo><m:msub><m:mi>x</m:mi><m:mi>i</m:mi></m:msub><m:mo>}</m:mo></m:mrow></m:math> are considered equally spaced in the interval <m:math><m:mrow><m:mo>[</m:mo><m:mn>0</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>]</m:mo></m:mrow></m:math>. The signal-to-noise ratio has been
+taken equal to 3. In these simulations the Symmlet 8 wavelet basis has been used. Given the random nature of <m:math><m:mrow><m:mo>{</m:mo><m:msub><m:mi>ϵ</m:mi><m:mi>i</m:mi></m:msub><m:mo>}</m:mo></m:mrow></m:math>,
+100 realizations of the function <m:math><m:mrow><m:mo>{</m:mo><m:msub><m:mi>y</m:mi><m:mi>i</m:mi></m:msub><m:mo>}</m:mo></m:mrow></m:math> have been produced. This has been done in order to apply the comparison
+criteria to the ensemble average of the realizations. Since the primary goal of the simulations is the comparison of
+the different denoising methods, the following criteria are introduced:</para>
+        <list id="id2261434" list-type="enumerated">
+          <item id="uid55"><emphasis>Root Mean Squared Error</emphasis>: The mean squared error defined as (Equation <link target-id="uid56"/>)
+<equation id="uid56"><m:math mode="display"><m:mrow><m:mfrac><m:mn>1</m:mn><m:mi>N</m:mi></m:mfrac><m:munderover><m:mo>∑</m:mo><m:mrow><m:mi>i</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow><m:mi>N</m:mi></m:munderover><m:msup><m:mfenced open="(" close=")"><m:mfenced separators="" open="(" close=")"><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:msub><m:mi>x</m:mi><m:mi>i</m:mi></m:msub><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:msub><m:mi>f</m:mi><m:mrow><m:mi>d</m:mi><m:mi>n</m:mi></m:mrow></m:msub><m:mrow><m:mo>(</m:mo></m:mrow><m:msub><m:mi>x</m:mi><m:mi>i</m:mi></m:msub></m:mfenced></m:mfenced><m:mn>2</m:mn></m:msup></m:mrow></m:math></equation>
+is computed for each realization and averaged over the 100 samples. Then, its square root is taken.
+</item>
+          <item id="uid57"><emphasis>Maximum Deviation</emphasis>: The average over the 100 samples of <m:math><m:mstyle scriptlevel="0" displaystyle="true"><m:mrow><m:munder><m:mo movablelimits="true" form="prefix">max</m:mo><m:mrow><m:mn>1</m:mn><m:mo>&lt;</m:mo><m:mi>i</m:mi><m:mo>&lt;</m:mo><m:mi>N</m:mi></m:mrow></m:munder><m:mfenced separators="" open="|" close="|"><m:mi>f</m:mi><m:mrow><m:mo>(</m:mo><m:msub><m:mi>x</m:mi><m:mi>i</m:mi></m:msub><m:mo>)</m:mo></m:mrow><m:mo>-</m:mo><m:msub><m:mi>f</m:mi><m:mrow><m:mi>d</m:mi><m:mi>n</m:mi></m:mrow></m:msub><m:mrow><m:mo>(</m:mo><m:msub><m:mi>x</m:mi><m:mi>i</m:mi></m:msub><m:mo>)</m:mo></m:mrow></m:mfenced></m:mrow></m:mstyle></m:math></item>
+        </list>
+        <para id="id2261651">Computational efficiency has not been chosen as one of the criteria, since it is greatly depended on the individual
+programming skills of the individual. Therefore, in order to avoid a non-uniform programming approach which could
+possibly result in misleading conclusions, time efficiency has not been considered.</para>
+        <para id="id2261660">The test functions <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math> and the sample sizes <m:math><m:mi>N</m:mi></m:math> have been chosen as the factors of the comparison studies. To
+this aim, two samples, one of moderate moderate size (<m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>128</m:mn></m:mrow></m:math>) and another of larger size (<m:math><m:mrow><m:mi>N</m:mi><m:mo>=</m:mo><m:mn>1024</m:mn></m:mrow></m:math>) have been
+considered.</para>
+        <para id="id2261721">As far as the test functions are concerned, two smooth signals (Figures <link target-id="uid58"/> and <link target-id="uid59"/>) and two discontinuous ones
+(Figures <link target-id="uid60"/> and <link target-id="uid61"/>) were taken into account. In <link target-id="uid58"/>, the function consists of the sum of
+two sinusoids, whereas in <link target-id="uid59"/>, a time shifted sine is illustrated. Since the signals are smooth, linear
+methods are expected to be comparable to the nonlinear ones. On the other hand, nonlinear wavelet estimators are
+expected to perform better for the functions in (<link target-id="uid60"/>, <link target-id="uid61"/>). These highly discontinuous signals
+have been used as examples in donoho1993</para>
+        <figure id="uid58" orient="horizontal">
+          <media id="idp1474240" alt=""><image src="../../media/waveG.png" mime-type="image/png" width="543"/><image for="pdf" src="../../media/waveG.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Original function with added Gaussian White noise (Wave function)</caption>
+        </figure>
+        <figure id="uid59" orient="horizontal">
+          <media id="idp597248" alt=""><image src="../../media/TSsineG.png" mime-type="image/png" width="539"/><image for="pdf" src="../../media/TSsineG.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Original function with added Gaussian White noise (Time shifted sine function)</caption>
+        </figure>
+        <figure id="uid60" orient="horizontal">
+          <media id="idp3825632" alt=""><image src="../../media/BlocksG.png" mime-type="image/png" width="539"/><image for="pdf" src="../../media/BlocksG.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Original function with added Gaussian White noise (Blocks function)</caption>
+        </figure>
+        <figure id="uid61" orient="horizontal">
+          <media id="idp1643408" alt=""><image src="../../media/BumpsG.png" mime-type="image/png" width="543"/><image for="pdf" src="../../media/BumpsG.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Original function with added Gaussian White noise (Bumps function)</caption>
+        </figure>
+      </section>
+      <section id="uid62">
+        <title>Results</title>
+        <para id="id2261840">The following plots, (Figures <link target-id="uid73"/> - <link target-id="uid80"/>), illustrate the denoising performance for the 10 methods used.
+Each integer corresponds to a particular method as follows</para>
+        <list id="id2261854" list-type="enumerated">
+          <item id="uid63">VisuShrink-Hard: Universal threshold with hard thresholding rule
+</item>
+          <item id="uid64">VisuShrink-Soft: Universal threshold with soft thresholding rule
+</item>
+          <item id="uid65">SureShrink: SureShrink threshold
+</item>
+          <item id="uid66">Translation-Invariant-Hard: Translation invariant threshold with hard thresholding rule
+</item>
+          <item id="uid67">Translation-Invariant-Soft: Translation invariant threshold with soft thresholding rule
+</item>
+          <item id="uid68">Minimax-Hard: Minimax threshold with hard thresholding rule
+</item>
+          <item id="uid69">Minimax-Soft: Minimax threshold with soft thresholding rule
+</item>
+          <item id="uid70">NeighBlock: Overlapping block thresholding (with <m:math><m:mrow><m:msub><m:mi>L</m:mi><m:mn>0</m:mn></m:msub><m:mo>=</m:mo><m:mrow><m:mo>[</m:mo><m:mo form="prefix">log</m:mo><m:mi>n</m:mi><m:mo>/</m:mo><m:mn>2</m:mn><m:mo>]</m:mo></m:mrow></m:mrow></m:math>, <m:math><m:mrow><m:mi>λ</m:mi><m:mo>=</m:mo><m:mn>4</m:mn><m:mo>.</m:mo><m:mn>50524</m:mn></m:mrow></m:math>)
+</item>
+          <item id="uid71">Linear Penalization: Term-by-term thresholding using linear shrinking
+</item>
+          <item id="uid72">Deterministic/Stochastic: Bayesian thresholding method for shrinkage estimates
+</item>
+        </list>
+        <figure id="uid73" orient="horizontal">
+          <media id="idp1200448" alt=""><image src="../../media/Wave128G.png" mime-type="image/png" width="551"/><image for="pdf" src="../../media/Wave128G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Wave function. N=128</caption>
+        </figure>
+        <figure id="uid74" orient="horizontal">
+          <media id="idm4187520" alt=""><image src="../../media/Wave1024G.png" mime-type="image/png" width="555"/><image for="pdf" src="../../media/Wave1024G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Wave function. N=1024</caption>
+        </figure>
+        <figure id="uid75" orient="horizontal">
+          <media id="idp1383040" alt=""><image src="../../media/TSsine128G.png" mime-type="image/png" width="558"/><image for="pdf" src="../../media/TSsine128G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Time-shifted sine function. N=128</caption>
+        </figure>
+        <figure id="uid76" orient="horizontal">
+          <media id="idm715280" alt=""><image src="../../media/TSsine1024G.png" mime-type="image/png" width="550"/><image for="pdf" src="../../media/TSsine1024G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Time-shifted sine function. N=1024</caption>
+        </figure>
+        <figure id="uid77" orient="horizontal">
+          <media id="idp1179040" alt=""><image src="../../media/Blocks128G.png" mime-type="image/png" width="554"/><image for="pdf" src="../../media/Blocks128G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Blocks function. N=128</caption>
+        </figure>
+        <figure id="uid78" orient="horizontal">
+          <media id="idm4797760" alt=""><image src="../../media/Blocks1024G.png" mime-type="image/png" width="558"/><image for="pdf" src="../../media/Blocks1024G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Blocks function. N=1024</caption>
+        </figure>
+        <figure id="uid79" orient="horizontal">
+          <media id="idm4801168" alt=""><image src="../../media/Bumps128G.png" mime-type="image/png" width="552"/><image for="pdf" src="../../media/Bumps128G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Bumps function. N=128</caption>
+        </figure>
+        <figure id="uid80" orient="horizontal">
+          <media id="idm2443920" alt=""><image src="../../media/Bumps1024G.png" mime-type="image/png" width="560"/><image for="pdf" src="../../media/Bumps1024G.eps" mime-type="application/postscript" print-width="9.75cm"/></media>
+          <caption>Comparison Study using Bumps function. N=1024</caption>
+        </figure>
+      </section>
+    </section>
+    <section id="cid5">
+      <title>Conclusions</title>
+      <para id="id2262135">A general comment can be made related to the Root Mean Squared Error (RMSE). As expected, the bigger the sample size
+the lower the value of the RMSE. It is readily seen that this is true for the same test function and denoising procedure.</para>
+      <para id="id2262142">Focusing on the smooth Wave function, the bayesian method performs well. However, the linear penalization method
+and the Translation-Invariant-Hard method are very competitive. The performance of the penalization method should not be
+surprising since the linear estimators are expected to achieve good results in smooth functions such as the Wave signal.
+Similar remarks can be made about the Time-Shifted Sine signal, a function that shares with the Wave signal the smoothnes
+feature.</para>
+      <para id="id2262154">As far as the Bumps function and the Blocks function are concerned, the Bayesian method outperform the classical ones
+in terms of RMSE. This leads to the conclusion that using Bayesian methods for such type of functions is preferable if
+computational efficiency is not an issue. In fact, it is well established that non-Bayesian methods uniformly outperform
+Bayesian methods in terms of CPU time.</para>
+      <para id="id2262164">Finally, as a general remark, larger values of MaxDeviation occur for functions with many spikes and discontinuities.</para>
+    </section>
+    <section id="cid6">
+      <title>Acknowledgments</title>
+      <para id="id2262179">The authors wish to thank Professor C. Sidney Burrus for his help and guidance through the development of
+this work.</para>
+    </section>
+  </content>
+  <bib:file>
+    <bib:entry id="bid1">
+      <bib:book>
+<!--required fields-->
+        <bib:author>Burrus, C.S. and Gopinath, R.A. and Guo, H.</bib:author>
+        <bib:title>Introduction to Wavelets and Wavelet Transforms: A Primer</bib:title>
+        <bib:publisher>Prentice-Hall</bib:publisher>
+        <bib:year>1988</bib:year>
+<!--optional fields-->
+        <bib:volume/>
+        <bib:series/>
+        <bib:address/>
+        <bib:edition/>
+        <bib:month/>
+        <bib:note/>
+      </bib:book>
+    </bib:entry>
+    <bib:entry id="bid6">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Cai, Tony</bib:author>
+        <bib:title>Adaptive wavelet estimation: a block thresholding and oracle inequality approach</bib:title>
+        <bib:journal>The Annals of Statistics</bib:journal>
+        <bib:year>1999</bib:year>
+<!--optional fields-->
+        <bib:volume>27</bib:volume>
+        <bib:number/>
+        <bib:pages>898–924</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid2">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Donoho, David L. and Johnstone, Iain M.</bib:author>
+        <bib:title>Adapting to unknown smoothness via wavelet shrinkage</bib:title>
+        <bib:journal>Journal of the American Statistical Association</bib:journal>
+        <bib:year>1995</bib:year>
+<!--optional fields-->
+        <bib:volume>90</bib:volume>
+        <bib:number/>
+        <bib:pages>1200–1224</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid3">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Donoho, D.</bib:author>
+        <bib:title>Unconditional bases are optimal bases for data compression and for statistical estimation</bib:title>
+        <bib:journal>Applied and Computational Harmonic Analysis</bib:journal>
+        <bib:year>1993</bib:year>
+<!--optional fields-->
+        <bib:volume>1</bib:volume>
+        <bib:number/>
+        <bib:pages>100–115</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid0">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Grossmann, A. and Morlet, J.</bib:author>
+        <bib:title>Decomposition of Hardy Functions into Square Integrable Wavelets of Constant Shape</bib:title>
+        <bib:journal>SIAM Journal on Mathematical Analysis</bib:journal>
+        <bib:year>1984</bib:year>
+<!--optional fields-->
+        <bib:volume>15</bib:volume>
+        <bib:number>4</bib:number>
+        <bib:pages>723-736</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid4">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Haar, A.</bib:author>
+        <bib:title>Zur Theorie der orthogonalen Funktionensysteme</bib:title>
+        <bib:journal>Mathematische Annalen</bib:journal>
+        <bib:year>1910</bib:year>
+<!--optional fields-->
+        <bib:volume>69</bib:volume>
+        <bib:number/>
+        <bib:pages>331–371</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+    <bib:entry id="bid5">
+      <bib:article>
+<!--required fields-->
+        <bib:author>Stein, Charles M.</bib:author>
+        <bib:title>Estimation of the Mean of a Multivariate Normal Distribution</bib:title>
+        <bib:journal>The Annals of Statistics</bib:journal>
+        <bib:year>1981</bib:year>
+<!--optional fields-->
+        <bib:volume>9</bib:volume>
+        <bib:number>6</bib:number>
+        <bib:pages>1135–1151</bib:pages>
+        <bib:month/>
+        <bib:note/>
+      </bib:article>
+    </bib:entry>
+  </bib:file>
+</document>

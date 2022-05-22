@@ -1,0 +1,17 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Birdcall Identification: Method Refinement</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>5f2ca91f-ad83-4794-8ffd-ab1a217e0aa6</md:uuid>
+</metadata>
+  <content>
+    
+    <para id="id18797227"><title>Need for Improvement</title>The matched filter implementation gave the right result in most cases, but occasionally reported a fairly good correlation between an input signal and a filter that were clearly quite distinct from one another. The matched filter often doesn't recognize a strong difference between two signals if one has power in a particular frequency range that the other lacks. For instance, a loon tremolo has a wide spectrum compared to a ferruginous pygmy owl, but the matched filter often reported a good match because the owl's pitch was in the loon's range.</para>
+    
+    <para id="id16983345"><title>Frequency-domain Analysis</title>We hoped to adjust the matched filter results by taking into account the frequency-domain error between the signal and the filter. The convolution step of the matched filter showed not only the strongest match between the signal and the filter, but also the time of that match in the input signal. We windowed out the chunk of the input signal that matched best. We then used the mean-squared error between the magnitudes of that chunk's FFT and the filter's FFT to obtain a number indicating how well the frequency content of the two signals matched.</para>
+    <para id="id9160457">As an example, a comparison of a hawk shriek versus a filter for a hawk cry shows that their frequency ranges don't match very well:</para>
+    <figure id="id21720944"><media id="idm4584160" alt=""><image src="../../media/newworse.png" mime-type="image/png" height="450" width="800"/></media></figure>
+    <para id="id11939847">In contrast, the same shriek versus a filter for a shriek shows a lower mean-squared error (0.4637 compared to 0.9257, after scaling):</para>
+    <figure id="id18898504"><media id="idm5633728" alt=""><image src="../../media/newbetter.png" mime-type="image/png" height="450" width="800"/></media></figure>
+    
+    <para id="id19587579"><title>Correction Algorithm</title>The mean-squared FFT error by itself was a good predictor of which filter matched best with an input signal, despite ignoring phase information to focus only on magnitudes. We divided the matched filter output by the mean-squared error to arrive at a final result value.<note type="note" id="idp7802048">We added a small number to the error before dividing, to avoid dividing by zero in the case where the signal perfectly matches the filter.</note>In all cases where the matched filter had selected the correct bird as the strongest match, this adjustment increased the ratio between the strong match and the others. It corrected the errors between different red-tailed hawk vocalizations, but wasn't sufficient to recognize the loon tremolo.</para>
+  </content>
+</document>
